@@ -1,0 +1,41 @@
+<html xmlns = "http://www.w3.org/1999/xhtml"
+   xmlns:py = "http://genshi.edgewall.org/">
+
+   <head>
+      <link rel = "stylesheet" type = "text/css" media = "screen"
+         href = "${tg.url('/css/style.css')}" />
+      <title>Welcome to TurboGears</title>
+   </head>
+
+   <body>
+      <h1>Welcome to TurboGears</h1>
+
+      <py:with vars = "flash = tg.flash_obj.render('flash', use_js = False)">
+         <div py:if = "flash" py:replace = "Markup(flash)" />
+      </py:with>
+
+      <h2>Current Entries</h2>
+
+      <table border = '1'>
+         <thead>
+            <tr>
+               <th>container_id</th>
+               <th>status</th>
+               <th>author_user_id</th>
+            </tr>
+         </thead>
+
+         <tbody>
+            <py:for each = "entry in entries">
+               <tr>
+                  <td>${entry.container_id}</td>
+                  <td>${entry.status}</td>
+                  <td>${entry.author_user_id}</td>
+               </tr>
+            </py:for>
+         </tbody>
+      </table>
+
+   </body>
+
+</html>

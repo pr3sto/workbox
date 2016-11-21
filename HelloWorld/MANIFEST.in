@@ -1,4 +1,0 @@
-recursive-include helloworld/public *
-include helloworld/public/favicon.ico
-recursive-include helloworld/i18n *
-recursive-include helloworld/templates *
