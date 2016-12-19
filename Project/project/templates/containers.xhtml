@@ -1,0 +1,35 @@
+<html py:extends="master.xhtml" py:strip="True">
+  <head py:block="head" py:strip="True">
+    <title py:block="master_title">Containers</title>
+  </head>
+
+  <body py:block="body" py:strip="True">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>container_id</th>
+          <th>datetime_of_creation</th>
+          <th>vagrantfile_path</th>
+          <th>status</th>
+          <th>port</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <py:for each = "entry in entries">
+          <tr>
+            <td>${entry.container_id}</td>
+            <td>${entry.datetime_of_creation}</td>
+            <td>${entry.vagrantfile_path}</td>
+            <td>${entry.status}</td>
+            <td>${entry.port}</td>
+            <td><form action="start?c_id=${entry._id}" method="post"><button class="btn btn-success">Start</button></form></td>
+            <td><form action="stop?c_id=${entry._id}" method="post"><button class="btn btn-danger">Stop</button></form></td>
+          </tr>
+        </py:for>
+      </tbody>
+    </table>
+  </body>
+</html>

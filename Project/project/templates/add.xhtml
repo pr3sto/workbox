@@ -1,0 +1,42 @@
+<html py:extends="master.xhtml" py:strip="True">
+  <head py:block="head" py:strip="True">
+    <title py:block="master_title">Add new container</title>
+    <meta name="generator" content="HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org" />
+  </head>
+
+  <body py:block="body" py:strip="True">
+    <form class="form-horizontal" action="addnew" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+      <fieldset>
+
+      <!-- Form Name -->
+      <legend>Input container parameters</legend>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">Port number</label>
+        <div class="col-md-4">
+        <input id="textinput" name="textinput" placeholder="type number here ..." class="form-control input-md" required="" type="text"/>
+
+        </div>
+      </div>
+
+      <!-- File Button -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="filebutton">Vagrantfile</label>
+        <div class="col-md-4">
+          <input id="filebutton" name="filebutton" class="input-file" type="file"/>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="singlebutton"></label>
+        <div class="col-md-4">
+          <button class="btn btn-primary">Add</button>
+        </div>
+      </div>
+
+      </fieldset>
+    </form>
+  </body>
+</html>

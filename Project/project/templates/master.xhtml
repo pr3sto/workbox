@@ -31,9 +31,9 @@
     <div class="collapse navbar-collapse" id="navbar-content">
       <ul class="nav navbar-nav">
         <li class="${('', 'active')[self.defined('page') and page=='index']}"><a href="${tg.url('/')}">Welcome</a></li>
-        <li class="${('', 'active')[self.defined('page') and page=='about']}"><a href="${tg.url('/about')}">About</a></li>
-        <li class="${('', 'active')[self.defined('page') and page=='data']}"><a href="${tg.url('/data')}">Serving Data</a></li>
-        <li class="${('', 'active')[self.defined('page') and page=='environ']}"><a href="${tg.url('/environ')}">WSGI Environment</a></li>
+        <li py:if="request.identity" class="${('', 'active')[self.defined('page') and page=='add']}"><a href="${tg.url('/add')}">Add container</a></li>
+        <li py:if="request.identity" class="${('', 'active')[self.defined('page') and page=='containers']}"><a href="${tg.url('/containers')}">Containers</a></li>
+        <li py:if="request.identity" class="${('', 'active')[self.defined('page') and page=='logs']}"><a href="${tg.url('/logs')}">Logs</a></li>
       </ul>
       <ul py:if="tg.auth_stack_enabled" class="nav navbar-nav navbar-right">
         <li py:if="not request.identity"><a href="${tg.url('/login')}">Login</a></li>

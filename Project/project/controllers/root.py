@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 """Main Controller"""
 
+import os
+import shutil
+import uuid
+import vagrant
+from fabric.api import local
+from fabric.context_managers import lcd
+from datetime import datetime
+from project.config.app_cfg import *
+from bson.objectid import ObjectId
 from tg import expose, flash, require, url, lurl
 from tg import request, redirect, tmpl_context
 from tg.i18n import ugettext as _, lazy_ugettext as l_
@@ -11,10 +20,18 @@ from project.controllers.secure import SecureController
 from tgext.admin.mongo import BootstrapTGMongoAdminConfig as TGAdminConfig
 from tgext.admin.controller import AdminController
 
+from tw2.forms import DataGrid
+
 from project.lib.base import BaseController
 from project.controllers.error import ErrorController
 
+
 __all__ = ['RootController']
+
+addressbook_grid = DataGrid(fields=[
+    ('Name', 'container_id'),
+    ('Surname', 'vagrantfile_path')
+])
 
 
 class RootController(BaseController):
@@ -44,24 +61,99 @@ class RootController(BaseController):
         """Handle the front-page."""
         return dict(page='index')
 
-    @expose('project.templates.about')
-    def about(self):
-        """Handle the 'about' page."""
-        return dict(page='about')
+    @expose('project.templates.add')
+    @require(predicates.not_anonymous(msg=l_('Only for authorized users')))
+    def add(self):
+        """Handle the 'add' page."""
+        return dict(page='add')
 
-    @expose('project.templates.environ')
-    def environ(self):
+    @expose()
+    @require(predicates.not_anonymous(msg=l_('Only for authorized users')))
+    def start(self, c_id):
+        c = model.Container.query.get(_id=ObjectId(c_id))
+
+        v = vagrant.Vagrant(c.vagrantfile_path)
+        v.up()
+
+        with lcd(c.vagrantfile_path):
+            str_id = local('vagrant docker-exec default -- cat /etc/hostname', capture=True)
+        print(str_id)
+        c_id = str_id.split(':')[1].strip()
+
+        c1 = model.Container()
+        c1.container_id = c_id
+        c1.user = base_config.sa_auth.user_class.query.get(user_name=request.identity['repoze.who.userid'])
+        c1.datetime_of_creation = c.datetime_of_creation
+        c1.datetime_of_launch = datetime.now()
+        c1.vagrantfile_path = c.vagrantfile_path
+        c1.port = int(c.port)
+        c1.status = 'started'
+        model.DBSession.flush()
+        model.DBSession.clear()
+
+        flash(_('Successfully start container!'))
+        return HTTPFound(location='/containers')
+
+    @expose()
+    @require(predicates.not_anonymous(msg=l_('Only for authorized users')))
+    def stop(self, c_id):
+        c = model.Container.query.get(_id=ObjectId(c_id))
+
+        v = vagrant.Vagrant(c.vagrantfile_path)
+        v.destroy()
+
+        c1 = model.Container()
+        c1.container_id = c.container_id
+        c1.user = base_config.sa_auth.user_class.query.get(user_name=request.identity['repoze.who.userid'])
+        c1.datetime_of_creation = c.datetime_of_creation
+        c1.datetime_of_launch = c1.datetime_of_launch
+        c1.vagrantfile_path = c.vagrantfile_path
+        c1.port = int(c.port)
+        c1.status = 'stopped'
+        model.DBSession.flush()
+        model.DBSession.clear()
+        flash(_('Successfully stopped container!'))
+        return HTTPFound(location='/containers')
+
+    @expose()
+    @require(predicates.not_anonymous(msg=l_('Only for authorized users')))
+    def addnew(self):
+        input_file = request.POST['filebutton'].file
+        directory = '/tmp/' + str(uuid.uuid4())
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        file_path = os.path.join(directory, 'Vagrantfile')
+        temp_file_path = file_path + '~'
+
+        input_file.seek(0)
+        with open(temp_file_path, 'wb') as output_file:
+            shutil.copyfileobj(input_file, output_file)
+
+        os.rename(temp_file_path, file_path)
+
+        c = model.Container()
+        c.user = base_config.sa_auth.user_class.query.get(user_name=request.identity['repoze.who.userid'])
+        c.datetime_of_creation = datetime.now()
+        c.vagrantfile_path = directory
+        c.status = 'created'
+        c.port = int(request.POST['textinput'])
+        model.DBSession.flush()
+        model.DBSession.clear()
+
+        flash(_('Successfully add new continer!'))
+        return HTTPFound(location='/add')
+
+    @expose('project.templates.logs')
+    def logs(self):
         """This method showcases TG's access to the wsgi environment."""
-        return dict(page='environ', environment=request.environ)
+        return dict(page='logs')
 
-    @expose('project.templates.data')
-    @expose('json')
-    def data(self, **kw):
-        """
-        This method showcases how you can use the same controller
-        for a data page and a display page.
-        """
-        return dict(page='data', params=kw)
+    @expose('project.templates.containers')
+    def containers(self):
+        entries = model.Container.query.find()
+        return dict(page='containers', entries=entries)
 
     @expose('project.templates.index')
     @require(predicates.has_permission('manage', msg=l_('Only for managers')))
