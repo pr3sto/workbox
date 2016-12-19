@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Template Helpers used in Project."""
+
 import logging
 from markupsafe import Markup
 from datetime import datetime

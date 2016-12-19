@@ -2,15 +2,14 @@
 """Setup the Project application"""
 
 import logging
-
 from project.config.environment import load_environment
+from .schema import setup_schema
+from .bootstrap import bootstrap
+
 
 __all__ = ['setup_app']
 
 log = logging.getLogger(__name__)
-
-from .schema import setup_schema
-from .bootstrap import bootstrap
 
 
 def setup_app(command, conf, vars):

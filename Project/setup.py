@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
 
-#  Quickstarted Options:
-#
-#  sqlalchemy: False
-#  auth:       ming
-#  mako:       False
-#
-#
-
 # This is just a work-around for a Python2.7 issue causing
 # interpreter crash at exit when trying to log an info message.
 try:
@@ -41,7 +33,8 @@ install_requires = [
     "repoze.who",
     "tw2.forms",
     "tgext.admin >= 0.6.1",
-    "WebHelpers2"
+    "WebHelpers2",
+    "ez_setup"
 ]
 
 if py_version != (3, 2):
@@ -52,8 +45,8 @@ setup(
     name='Project',
     version='0.1',
     description='',
-    author='',
-    author_email='',
+    author='Chirukhin Aleksey',
+    author_email='pr3sto1377@gmail.com',
     url='',
     packages=find_packages(exclude=['ez_setup']),
     install_requires=install_requires,

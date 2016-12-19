@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Setup the Project application"""
-from __future__ import print_function
 
+from __future__ import print_function
 from tg import config
 
 

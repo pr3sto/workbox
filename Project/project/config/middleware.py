@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """WSGI middleware initialization for the Project application."""
+
 from project.config.app_cfg import base_config
 from project.config.environment import load_environment
 

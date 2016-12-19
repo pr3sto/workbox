@@ -5,6 +5,7 @@ Global configuration file for TG2-specific settings in Project.
 This file complements development/deployment.ini.
 
 """
+
 from tg.configuration import AppConfig
 
 import project
@@ -32,24 +33,26 @@ base_config.renderers.append('json')
 
 # Set the default renderer
 base_config.renderers.append('kajiki')
-
 base_config.default_renderer = 'kajiki'
 
 
 # Configure Sessions, store data as JSON to avoid pickle security issues
 base_config['session.enabled'] = True
 base_config['session.data_serializer'] = 'json'
+
 # Configure the base Ming Setup
 base_config.use_sqlalchemy = False
 base_config['tm.enabled'] = False
-
 base_config.use_ming = True
 base_config.model = project.model
 base_config.DBSession = project.model.DBSession
+
 # Configure the authentication backend
 base_config.auth_backend = 'ming'
+
 # YOU MUST CHANGE THIS VALUE IN PRODUCTION TO SECURE YOUR APP
 base_config.sa_auth.cookie_secret = "10d3d029-ddf6-4ac1-98a6-3ae901d8e5de"
+
 # what is the class you want to use to search for users in the database
 base_config.sa_auth.user_class = model.User
 
@@ -102,21 +105,12 @@ class ApplicationAuthMetadata(TGAuthMetadata):
     def get_permissions(self, identity, userid):
         return [p.permission_name for p in identity['user'].permissions]
 
+
 base_config.sa_auth.authmetadata = ApplicationAuthMetadata(base_config.sa_auth)
 
 # In case ApplicationAuthMetadata didn't find the user discard the whole identity.
 # This might happen if logged-in users are deleted.
 base_config['identity.allow_missing_user'] = False
-
-# You can use a different repoze.who Authenticator if you want to
-# change the way users can login
-# base_config.sa_auth.authenticators = [('myauth', SomeAuthenticator()]
-
-# You can add more repoze.who metadata providers to fetch
-# user metadata.
-# Remember to set base_config.sa_auth.authmetadata to None
-# to disable authmetadata and use only your own metadata providers
-# base_config.sa_auth.mdproviders = [('myprovider', SomeMDProvider()]
 
 # override this if you would like to provide a different who plugin for
 # managing login and logout of your application
@@ -129,9 +123,3 @@ base_config.sa_auth.post_login_url = '/post_login'
 # You may optionally define a page where you want users to be redirected to
 # on logout:
 base_config.sa_auth.post_logout_url = '/post_logout'
-try:
-    # Enable DebugBar if available, install tgext.debugbar to turn it on
-    from tgext.debugbar import enable_debugbar
-    enable_debugbar(base_config)
-except ImportError:
-    pass

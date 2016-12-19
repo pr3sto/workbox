@@ -119,7 +119,7 @@ class RootController(BaseController):
     @require(predicates.not_anonymous(msg=l_('Only for authorized users')))
     def addnew(self):
         input_file = request.POST['filebutton'].file
-        directory = '/tmp/' + str(uuid.uuid4())
+        directory = '/tmp/project_bsc/' + str(uuid.uuid4())
 
         if not os.path.exists(directory):
             os.makedirs(directory)

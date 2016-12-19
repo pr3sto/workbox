@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Setup the Project application"""
+
 from __future__ import print_function, unicode_literals
 from project import model
 
@@ -19,15 +20,10 @@ def bootstrap(command, conf, vars):
     p.groups = [g]
 
     u = model.User()
-    u.user_name = 'manager'
-    u.display_name = 'Mr Manager'
+    u.user_name = 'admin'
+    u.display_name = 'Admin'
     u.groups = [g]
-    u.password = 'managerpass'
-
-    u1 = model.User()
-    u1.user_name = 'teacher'
-    u1.display_name = 'Mr Teacher'
-    u1.password = 'teacherpass'
+    u.password = 'admin'
 
     model.DBSession.flush()
     model.DBSession.clear()

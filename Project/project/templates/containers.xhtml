@@ -25,8 +25,8 @@
             <td>${entry.vagrantfile_path}</td>
             <td>${entry.status}</td>
             <td>${entry.port}</td>
-            <td><form action="start?c_id=${entry._id}" method="post"><button class="btn btn-success">Start</button></form></td>
-            <td><form action="stop?c_id=${entry._id}" method="post"><button class="btn btn-danger">Stop</button></form></td>
+            <td><div py:if="entry.status != 'started'"><form action="start?c_id=${entry._id}" method="post"><button class="btn btn-success">Start</button></form></div></td>
+            <td><div py:if="entry.status not in ['created', 'stopped']"><form action="stop?c_id=${entry._id}" method="post"><button class="btn btn-danger">Stop</button></form></div></td>
           </tr>
         </py:for>
       </tbody>
