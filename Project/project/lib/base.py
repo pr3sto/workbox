@@ -4,7 +4,6 @@
 from tg import TGController, tmpl_context
 from tg import request
 
-
 __all__ = ['BaseController']
 
 

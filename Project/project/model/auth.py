@@ -8,16 +8,17 @@ It's perfectly fine to re-use this definition in the Project application,
 though.
 
 """
+
 import os
 from datetime import datetime
 from hashlib import sha256
-__all__ = ['User', 'Group', 'Permission']
 
 from ming import schema as s
 from ming.odm import FieldProperty, ForeignIdProperty, RelationProperty
-from ming.odm import Mapper
 from ming.odm.declarative import MappedClass
 from project.model import DBSession
+
+__all__ = ['User', 'Group', 'Permission']
 
 
 class Group(MappedClass):

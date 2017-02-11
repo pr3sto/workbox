@@ -1,10 +1,12 @@
 <html py:extends="master.xhtml" py:strip="True">
-    <head py:block="head" py:strip="True">
-        <title py:block="master_title">A ${code} error has occurred</title>
-    </head>
+  <head py:block="head" py:strip="True">
+    <title py:block="master_title">Ошибка ${code}</title>
+  </head>
 
-<body py:block="body" py:strip="True">
-  <h1>Error ${code}</h1>
+  <body py:block="body" py:strip="True">
+    <div class="outer-center">
+      <div class="inner-center">
+        <p style="font-size:64px;"><span class="icomoon icon-error_outline" style="color:#f44336;"></span>&nbsp;Ошибка ${code}</p>
 
 <?python
 import re
@@ -12,6 +14,14 @@ mf = re.compile(r'(</?)script', re.IGNORECASE)
 def fixmessage(message):
     return mf.sub(r'\1noscript', message)
 ?>
-  <div>${literal(fixmessage(message))}</div>
-</body>
+        <div style="font-size:22px;">${literal(fixmessage(message))}</div>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+   $(document).ready(function() {
+      $('body').css('background-image', 'url(../img/graphy.png)');
+   });
+  </script>
 </html>
