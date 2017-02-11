@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="${response.charset}" />
+
+    <title py:block="master_title"></title>
+
+    <link rel="shortcut icon" href="${tg.url('/img/favicon.ico')}" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/bootstrap.min.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/style.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/workbox-font-icons.css')}" />
+
+    <py:block name="head"></py:block>
+  </head>
+
+  <body>
+    <div class="content">
+      <div class="content-inside">
+
+        <!-- Dummy navbar -->
+        <nav class="navbar navbar-default"></nav>
+        <!-- Real navbar -->
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="${tg.url('/')}">WorkBox</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar-content">
+              <ul class="nav navbar-nav">
+                <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/new')]}">
+                  <a href="${tg.url('/box/new')}"><span class="icomoon icon-cube"></span>&nbsp;Создать контейнер</a>
+                </li>
+                <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/list')]}">
+                  <a href="${tg.url('/box/list')}"><span class="icomoon icon-cubes"></span>&nbsp;Контейнеры</a>
+                </li>
+                <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history/')]}">
+                  <a href="${tg.url('/history/')}"><span class="icomoon icon-clipboard-edit"></span>&nbsp;Журнал</a>
+                </li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li py:if="request.identity" class="hidden-xs">
+                  <a style="pointer-events: none; display: inline-block;">&nbsp;Добро пожаловать, <b>${request.identity['user'].display_name}</b>&nbsp;</a>
+                </li>
+                <li py:if="tg.predicates.has_permission('manage')" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/admin')]}">
+                  <a href="${tg.url('/admin')}"><span class="icomoon icon-cogs"></span>&nbsp;Панель администратора</a>
+                </li>
+                <li py:if="not request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/login')]}">
+                  <a href="${tg.url('/login')}"><span class="icomoon icon-enter"></span>&nbsp;Вход</a>
+                </li>
+                <li py:if="request.identity">
+                  <a href="${tg.url('/logout_handler')}"><span class="icomoon icon-exit"></span>&nbsp;Выход</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <div class="container-fluid" style="height: calc(100% - 90px);">
+          <!-- Main included content -->
+          <py:block name="body"></py:block>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="copyright">Copyright &copy; WorkBox ${h.current_year()}</p>
+    </footer>
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="${tg.url('/javascript/bootstrap.min.js')}"></script>
+  </body>
+</html>
