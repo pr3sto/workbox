@@ -1,27 +1,23 @@
 <html py:extends="master.xhtml" py:strip="True">
   <head py:block="head" py:strip="True">
-    <title py:block="master_title">Авторизация</title>
+    <title py:block="master_title">Авторизация | WorkBox</title>
   </head>
 
   <body py:block="body" py:strip="True">
-    <div class="outer-center">
-      <div class="container inner-center">
+    <div class="outer-center" style="padding-top:20px;">
+      <div class="container" style="text-align:center;">
         <div class="row">
           <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h4> Авторизация</h4>
+                <h4>Авторизация в <b>WorkBox</b></h4>
               </div>
 
               <div class="panel-body">
                 <form action="${tg.url('/login_handler', params=dict(came_from=came_from))}"
                             method="post" accept-charset="UTF-8">
                   <fieldset>
-                    <div class="row" style="font-size:100px;color:#e5e5e5;">
-                      <span class="icomoon icon-account_circle"></span>
-                    </div>
-
-                    <div class="row">
+                    <div class="row" style="padding-top:15px;">
                       <div class="col-sm-12 col-md-10  col-md-offset-1 ">
                         <div py:if="error_msg" class="form-group alert alert-danger" >
                           <p>${error_msg}</p>

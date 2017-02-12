@@ -31,16 +31,24 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="${tg.url('/')}">WorkBox</a>
+              <a class="navbar-brand" href="${tg.url('/')}"><img src="/img/favicon.ico" height="20"/>&nbsp;WorkBox</a>
             </div>
 
             <div class="collapse navbar-collapse" id="navbar-content">
               <ul class="nav navbar-nav">
-                <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/new')]}">
-                  <a href="${tg.url('/box/new')}"><span class="icomoon icon-cube"></span>&nbsp;Создать контейнер</a>
-                </li>
-                <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/list')]}">
-                  <a href="${tg.url('/box/list')}"><span class="icomoon icon-cubes"></span>&nbsp;Контейнеры</a>
+
+                <li py:if="request.identity" class="dropdown ${('', 'active')[request.environ['PATH_INFO'].startswith('/box')]}">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="icomoon icon-box"></span>&nbsp;Виртуальная рабочая среда<span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="${tg.url('/box/new')}"><span class="icomoon icon-cube"></span>&nbsp;Создать новую рабочую среду</a>
+                    </li>
+                    <li>
+                      <a href="${tg.url('/box/list')}"><span class="icomoon icon-cubes"></span>&nbsp;Список рабочих сред</a>
+                    </li>
+                  </ul>
                 </li>
                 <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history/')]}">
                   <a href="${tg.url('/history/')}"><span class="icomoon icon-clipboard-edit"></span>&nbsp;Журнал</a>
@@ -64,7 +72,7 @@
           </div>
         </nav>
 
-        <div class="container-fluid" style="height: calc(100% - 90px);">
+        <div class="${('container-fluid', 'container')[request.environ['PATH_INFO'].startswith('/admin')]}" style="height: calc(100% - 90px);">
           <!-- Main included content -->
           <py:block name="body"></py:block>
         </div>
@@ -74,7 +82,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <p class="copyright">Copyright &copy; WorkBox ${h.current_year()}</p>
+      <p class="copyright">&copy; ${h.current_year()} WorkBox</p>
     </footer>
 
     <script src="http://code.jquery.com/jquery.js"></script>

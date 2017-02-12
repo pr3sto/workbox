@@ -32,9 +32,9 @@ class BoxController(BaseController):
     def index(self):
         redirect('/box/new')
 
-    @expose('workbox.templates.box_new')
+    @expose('workbox.templates.box.new')
     def new(self):
-        return dict(page='box_new')
+        return dict(page='new')
 
     @expose()
     def create(self):
@@ -64,10 +64,10 @@ class BoxController(BaseController):
 
         return HTTPFound(location='/box/new')
 
-    @expose('workbox.templates.box_list')
+    @expose('workbox.templates.box.list')
     def list(self):
         entries = model.Box.query.find()
-        return dict(page='box_list', entries=entries)
+        return dict(page='list', entries=entries)
 
     @expose()
     def start(self, c_id):

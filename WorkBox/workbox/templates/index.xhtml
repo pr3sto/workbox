@@ -4,10 +4,88 @@
   </head>
 
   <body py:block="body" py:strip="True">
-    <div class="outer-center">
-      <div class="container inner-center">
-        <p style="font-size:64px;">Добро пожаловать в WorkBox!</p>
-      </div>
+    <!-- not authorized user -->
+    <div py:if="not request.identity">
+      <section class="anon-welcome" id="welcome">
+        <div class="container outer-center">
+          <div class="inner-center">
+            <h1><b>WorkBox</b></h1>
+            <h2>Сервис для настройки, запуска и мониторинга виртуальных рабочих сред</h2>
+          </div>
+        </div>
+        <a href="#why">Для чего использовать сервис?</a>
+      </section>
+      <section class="anon-why-use" id="why">
+        <div class="container outer-center">
+          <div class="inner-center">
+            <h1>Использование <b>WorkBox</b></h1>
+            <div class=" col-xs-10 col-xs-offset-1">
+              <div class="paragraph">
+                <span class="icomoon icon-navigate_next"></span>
+                <div>
+                  <h2>Проведение лабораторных занятий</h2>
+                  <h3>
+                    Настраивайте и создавайте виртуальные рабочие среды,
+                    генерируйте данные для доступа к ним и раздавайте студентам.
+                    Благодаря тому, что виртуальная среда полностью изолирована от системы,
+                    ее использование полностью безопасно.
+                  </h3>
+                </div>
+              </div>
+              <div class="paragraph">
+                <span class="icomoon icon-navigate_next"></span>
+                <div>
+                  <h2>Работа с программами</h2>
+                  <h3>
+                    Необходимо использовать программу один раз, и поэтому
+                    не хочется устанавливать ее на свой компьютер? Нет проблем!
+                    Запустите ее в виртуальной среде за всего за несколько минут.
+                  </h3>
+                </div>
+              </div>
+              <div class="paragraph">
+                <span class="icomoon icon-navigate_next"></span>
+                <div>
+                  <h2>Свой вариант</h2>
+                  <h3>
+                    Знаете другое применение виртуальной среды?
+                    Используйте сервис так, как хотите!
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="anon-authorize-request" id="account">
+        <div class="container">
+          <h1>Для работы с сервисом необходима <a href="/login">авторизация</a></h1>
+          <h2>Если у Вас еще нет аккаунта, пожалуйста, свяжитесь с администратором</h2>
+        </div>
+      </section>
+    </div>
+    <!-- authorized user -->
+    <div py:if="request.identity">
+
     </div>
   </body>
+
+  <script type="text/javascript">
+    $(function() {
+      $('a[href*="#"]:not([href="#"])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')) {
+          if (location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+              $('html, body').animate({
+                scrollTop: target.offset().top - 50
+              }, 1000);
+              return false;
+            }
+          }
+        }
+      });
+    });
+  </script>
 </html>
