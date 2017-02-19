@@ -2,14 +2,15 @@
 """Setup the workbox application"""
 
 import logging
-from workbox.config.environment import load_environment
-from .schema import setup_schema
-from .bootstrap import bootstrap
 
+from workbox.config.environment import load_environment
 
 __all__ = ['setup_app']
 
 log = logging.getLogger(__name__)
+
+from .schema import setup_schema
+from .bootstrap import bootstrap
 
 
 def setup_app(command, conf, vars):

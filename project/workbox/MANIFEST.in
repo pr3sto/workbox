@@ -2,3 +2,4 @@ recursive-include workbox/public *
 include workbox/public/img/favicon.ico
 recursive-include workbox/i18n *
 recursive-include workbox/templates *
+recursive-include workbox/wsgiconfig *

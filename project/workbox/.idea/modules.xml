@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Documents/bsc/project/workbox/.idea/workbox.iml" filepath="$USER_HOME$/Documents/bsc/project/workbox/.idea/workbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/workbox.iml" filepath="$PROJECT_DIR$/.idea/workbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../project/workbox/.idea/workbox.iml" filepath="$PROJECT_DIR$/../../../../project/workbox/.idea/workbox.iml" />
     </modules>
   </component>
 </project>

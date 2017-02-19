@@ -4,11 +4,6 @@
 import ming.odm
 from .session import mainsession, DBSession
 
-from workbox.model.auth import User, Group, Permission
-from workbox.model.box import Box
-
-__all__ = ('User', 'Group', 'Permission', 'Box')
-
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model."""
@@ -17,3 +12,8 @@ def init_model(engine):
 
     for mapper in ming.odm.Mapper.all_mappers():
         mainsession.ensure_indexes(mapper.collection)
+
+from workbox.model.auth import User, Group, Permission
+from workbox.model.box import Box
+
+__all__ = ('User', 'Group', 'Permission', 'Box')

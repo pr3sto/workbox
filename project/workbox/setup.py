@@ -28,13 +28,12 @@ testpkgs = [
 install_requires = [
     "TurboGears2 >= 2.3.9",
     "Beaker >= 1.8.0",
-    "Kajiki >= 0.3.5",
+    "Kajiki >= 0.6.1",
     "ming >= 0.4.3",
     "repoze.who",
     "tw2.forms",
     "tgext.admin >= 0.6.1",
-    "WebHelpers2",
-    "ez_setup"
+    "WebHelpers2"
 ]
 
 if py_version != (3, 2):
@@ -45,7 +44,7 @@ setup(
     name='workbox',
     version='0.1',
     description='Service for creating virtual working environments',
-    author='Chirukhin Aleksey',
+    author='Chirukhin Alexey',
     author_email='pr3sto1377@gmail.com',
     url='',
     packages=find_packages(exclude=['ez_setup']),
@@ -60,7 +59,7 @@ setup(
     ]},
     message_extractors={'workbox': [
         ('**.py', 'python', None),
-        ('templates/**.xhtml', 'kajiki', None),
+        ('templates/**.xhtml', 'kajiki', {'strip_text': False}),
         ('public/**', 'ignore', None)
     ]},
     entry_points={
