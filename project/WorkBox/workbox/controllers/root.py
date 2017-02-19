@@ -38,7 +38,12 @@ class RootController(BaseController):
         """Start the user login."""
         error_msg = None
         if failure is not None:
-            error_msg = 'Ошибка авторизации'.decode("utf8")
+            if failure == 'user-not-found':
+                error_msg = 'Пользователь не найден'.decode("utf8")
+            elif failure == 'invalid-password':
+                error_msg = 'Некорректный пароль'.decode("utf8")
+            else:
+                error_msg = 'Ошибка авторизации'.decode("utf8")
 
         return dict(page='login', came_from=came_from, login=login, error_msg=error_msg)
 

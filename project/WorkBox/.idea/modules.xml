@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Documents/tg_projects/WorkBox/.idea/WorkBox.iml" filepath="$USER_HOME$/Documents/tg_projects/WorkBox/.idea/WorkBox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/WorkBox.iml" filepath="$PROJECT_DIR$/.idea/WorkBox.iml" />
     </modules>
   </component>
 </project>

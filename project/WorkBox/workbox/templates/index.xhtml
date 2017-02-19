@@ -1,19 +1,21 @@
 <html py:extends="master.xhtml" py:strip="True">
   <head py:block="head" py:strip="True">
     <title py:block="master_title">WorkBox</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/index.css')}" />
   </head>
 
   <body py:block="body" py:strip="True">
     <!-- not authorized user -->
     <div py:if="not request.identity">
       <section class="anon-welcome" id="welcome">
-        <div class="container outer-center">
-          <div class="inner-center">
-            <h1><b>WorkBox</b></h1>
-            <h2>Сервис для настройки, запуска и мониторинга виртуальных рабочих сред</h2>
-          </div>
+        <div class="container">
+          <img src="/img/box.png"/>
+          <h1><b>WorkBox</b></h1>
+          <h2>Сервис для настройки, запуска и мониторинга виртуальных рабочих сред</h2>
         </div>
-        <a href="#why">Для чего использовать сервис?</a>
+        <div class="to-bottom">
+          <a href="#why">Для чего подходит WorkBox?</a>
+        </div>
       </section>
       <section class="anon-why-use" id="why">
         <div class="container outer-center">
@@ -27,27 +29,28 @@
                   <h3>
                     Настраивайте и создавайте виртуальные рабочие среды,
                     генерируйте данные для доступа к ним и раздавайте студентам.
-                    Благодаря тому, что виртуальная среда полностью изолирована от системы,
-                    ее использование полностью безопасно.
+                    Благодаря тому, что виртуальная среда полностью изолирована,
+                    ее использование безопасно, а любые ошибки не выйдут за ее пределы.
                   </h3>
                 </div>
               </div>
               <div class="paragraph">
                 <span class="icomoon icon-navigate_next"></span>
                 <div>
-                  <h2>Работа с программами</h2>
+                  <h2>Запуск программ</h2>
                   <h3>
                     Необходимо использовать программу один раз, и поэтому
                     не хочется устанавливать ее на свой компьютер? Нет проблем!
-                    Запустите ее в виртуальной среде за всего за несколько минут.
+                    Запустите ее в виртуальной среде всего за несколько минут.
                   </h3>
                 </div>
               </div>
               <div class="paragraph">
                 <span class="icomoon icon-navigate_next"></span>
                 <div>
-                  <h2>Свой вариант</h2>
+                  <h2>Больше возможностей</h2>
                   <h3>
+                    Использование сервиса не ограничивается приведенными сценариями.
                     Знаете другое применение виртуальной среды?
                     Используйте сервис так, как хотите!
                   </h3>
@@ -60,7 +63,7 @@
       <section class="anon-authorize-request" id="account">
         <div class="container">
           <h1>Для работы с сервисом необходима <a href="/login">авторизация</a></h1>
-          <h2>Если у Вас еще нет аккаунта, пожалуйста, свяжитесь с администратором</h2>
+          <h2>Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</h2>
         </div>
       </section>
     </div>

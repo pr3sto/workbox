@@ -9,7 +9,7 @@ from fabric.api import local
 from fabric.context_managers import lcd
 from bson.objectid import ObjectId
 from tg import expose
-from tg.i18n import ugettext as _, lazy_ugettext as l_
+from tg.i18n import lazy_ugettext as l_
 from tg.exceptions import HTTPFound
 from tg.predicates import not_anonymous
 from tg import request, redirect

@@ -1,0 +1,84 @@
+.anon-welcome {
+    height: calc(100vh - 50px);
+    min-height: 750px;
+    text-align: center;
+    padding: 50px 0;
+    display: block;
+    position: relative;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.anon-welcome h1 {
+    font-size: 80px;
+}
+
+.anon-welcome h2 {
+    font-size: 48px;
+}
+
+.anon-welcome .to-bottom {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+    font-size: 14px;
+    color: #3276b1;
+}
+
+.anon-why-use {
+    padding: 50px 0;
+    background: url('/img/cubes.png');
+    display: block;
+    position: relative;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.anon-why-use h1 {
+    text-align: center;
+    font-size: 48px;
+}
+
+.anon-why-use h2 {
+    text-align: left;
+    font-size: 32px;
+}
+
+.anon-why-use h3 {
+    text-align: justify;
+    color: #777;
+    font-size:20px;
+}
+
+.anon-authorize-request {
+    text-align: center;
+    padding: 30px 0;
+    display: block;
+    position: relative;
+    color: #777;
+}
+
+.anon-authorize-request h1 {
+    font-size: 20px;
+}
+
+.anon-authorize-request h2 {
+    font-size: 12px;
+}
+
+.anon-authorize-request a {
+    color: #3276b1;
+}
+
+.paragraph {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.paragraph span {
+    margin: auto;
+    color: #3276b1;
+    font-size: 100px;
+}
