@@ -1,9 +1,9 @@
 Installation and Setup
 ======================
 
-Install ``WorkBox`` using the setup.py script::
+Install ``workbox`` using the setup.py script::
 
-    $ cd WorkBox
+    $ cd workbox
     $ python setup.py develop
 
 Create the workbox database for any model classes defined::

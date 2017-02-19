@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Template Helpers used in WorkBox."""
+"""Template Helpers used in workbox."""
 
 import logging
 from markupsafe import Markup

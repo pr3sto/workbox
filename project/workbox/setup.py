@@ -42,7 +42,7 @@ if py_version != (3, 2):
     install_requires.append("Babel")
 
 setup(
-    name='WorkBox',
+    name='workbox',
     version='0.1',
     description='Service for creating virtual working environments',
     author='Chirukhin Aleksey',

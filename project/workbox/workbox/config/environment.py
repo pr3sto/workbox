@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""WSGI environment setup for WorkBox."""
+"""WSGI environment setup for workbox."""
 
 from workbox.config.app_cfg import base_config
 

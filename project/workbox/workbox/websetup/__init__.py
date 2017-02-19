@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Setup the WorkBox application"""
+"""Setup the workbox application"""
 
 import logging
 from workbox.config.environment import load_environment

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""WSGI middleware initialization for the WorkBox application."""
+"""WSGI middleware initialization for the workbox application."""
 
 from workbox.config.app_cfg import base_config
 from workbox.config.environment import load_environment
@@ -13,18 +13,18 @@ make_base_app = base_config.setup_tg_wsgi_app(load_environment)
 
 def make_app(global_conf, full_stack=True, **app_conf):
     """
-    Set WorkBox up with the settings found in the PasteDeploy configuration
+    Set workbox up with the settings found in the PasteDeploy configuration
     file used.
 
-    :param global_conf: The global settings for WorkBox (those
+    :param global_conf: The global settings for workbox (those
         defined under the ``[DEFAULT]`` section).
     :type global_conf: dict
     :param full_stack: Should the whole TG2 stack be set up?
     :type full_stack: str or bool
-    :return: The WorkBox application with all the relevant middleware
+    :return: The workbox application with all the relevant middleware
         loaded.
 
-    This is the PasteDeploy factory for the WorkBox application.
+    This is the PasteDeploy factory for the workbox application.
 
     ``app_conf`` contains all the application-specific settings (those defined
     under ``[app:main]``.

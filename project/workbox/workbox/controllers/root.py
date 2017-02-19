@@ -18,7 +18,7 @@ __all__ = ['RootController']
 
 
 class RootController(BaseController):
-    """The root controller for the WorkBox application"""
+    """The root controller for the workbox application"""
 
     box = BoxController()
     history = HistoryController()

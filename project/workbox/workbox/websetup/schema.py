@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Setup the WorkBox application"""
+"""Setup the workbox application"""
 
 from __future__ import print_function
 
