@@ -13,5 +13,10 @@ apt-get -y install python python-virtualenv
 virtualenv --no-site-packages $1env
 cd $1env
 
+# turbogears dependencies
+source bin/activate
+pip install tg.devtools
+deactivate
+
 # create folder for project
 mkdir work

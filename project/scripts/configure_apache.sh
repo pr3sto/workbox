@@ -1,13 +1,7 @@
 #!/bin/bash
 
-if [ "$#" -ne 1 ]
-then
-	echo "Usage: $0 ip_address. Please specify ip address."
-	exit
-fi
-
-# apache site config
-echo "<VirtualHost $1:80>
+# apache config
+echo "<VirtualHost *:80>
     ServerName workbox
     ServerAdmin webmaster@localhost
 
@@ -34,7 +28,7 @@ echo "<VirtualHost $1:80>
 # bind ip address
 echo "" >> /etc/hosts
 echo "# workbox service by Chirukhin Alexey" >> /etc/hosts
-echo -e "$1\tworkbox" >> /etc/hosts
+echo -e "127.0.0.1\tworkbox" >> /etc/hosts
 
 # enable site
 a2ensite workbox.conf
