@@ -1,0 +1,57 @@
+#!/bin/sh
+# postinst script for workbox
+
+set -e
+
+case "$1" in
+
+  configure)
+    # Set up our config for apache
+    echo "<VirtualHost *:80>
+    ServerName workbox
+    ServerAdmin webmaster@localhost
+
+    WSGIProcessGroup workbox
+    WSGIDaemonProcess workbox user=www-data group=www-data threads=4 python-path=/opt/venvs/workbox/lib/python2.7/site-packages
+    WSGIScriptAlias / /opt/venvs/workbox/lib/python2.7/site-packages/workbox/wsgiconfig/app.wsgi
+
+    #Serve static files directly without TurboGears
+    Alias /images /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/img
+    Alias /css /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/css
+    Alias /js /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/javascript
+
+    CustomLog \${APACHE_LOG_DIR}/workbox-access_log common
+    ErrorLog \${APACHE_LOG_DIR}/workbox-error_log
+
+    # Set access permission
+    <Directory \"/opt/venvs/workbox/lib/python2.7/site-packages/workbox\">
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet" > /etc/apache2/sites-available/workbox.conf
+
+    # bind ip address
+    echo "" >> /etc/hosts
+    echo "# workbox service by Chirukhin Alexey" >> /etc/hosts
+    echo 127.0.0.1'\t'workbox >> /etc/hosts
+
+    # enable site
+    /usr/sbin/a2ensite workbox.conf
+    /etc/init.d/apache2 reload
+  ;;
+
+  abort-upgrade|abort-remove|abort-deconfigure)
+    exit 0
+  ;;
+
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+  ;;
+
+esac
+
+#DEBHELPER#
+
+exit 0

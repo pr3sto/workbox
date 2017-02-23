@@ -1,5 +1,5 @@
 #!/bin/bash
 
-rm -r debian/
-rm ../${PWD##*/}_*
-rm ../${PWD##*/}-*
+/bin/rm -r debian/
+/bin/rm ../${PWD##*/}_*
+/bin/rm ../${PWD##*/}-*

@@ -1,11 +1,18 @@
 #!/bin/bash
 
 # create debian configurations
-pip install make-deb
-make-deb
+/usr/bin/pip install make-deb
+/usr/local/bin/make-deb
 
-# install dependencies
-apt-get -y install debhelper dh-virtualenv
+# add postinst script
+/bin/cp postinst ./debian
+
+# add service dependencies
+/usr/bin/awk -i inplace '/Depends:/{print $0 ", apache2, libapache2-mod-wsgi (>= 4.5), mongodb-org (>= 3.0), vagrant (>= 1.8), docker (>= 1.5)"; next}1' ./debian/control
+
+# install buildpackage dependencies
+/usr/bin/apt-get update
+/usr/bin/apt-get -y install debhelper dh-virtualenv
 
 # build package
-dpkg-buildpackage -us -uc
+/usr/bin/dpkg-buildpackage -us -uc

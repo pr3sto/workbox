@@ -7,16 +7,17 @@ then
 fi
 
 # install venv
-apt-get -y install python python-virtualenv
+/usr/bin/apt-get update
+/usr/bin/apt-get -y install python python-virtualenv
 
 # create and activate venv for project
-virtualenv --no-site-packages $1env
+/usr/local/bin/virtualenv --no-site-packages $1env
 cd $1env
 
 # turbogears dependencies
 source bin/activate
-pip install tg.devtools
+bin/pip install tg.devtools
 deactivate
 
 # create folder for project
-mkdir work
+/bin/mkdir work
