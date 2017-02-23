@@ -6,11 +6,7 @@
 
 ### Код сервиса
 
-```
-#!
-
-/ bsc_docker_service / project / workbox /
-```
+[bsc_docker_service](https://bitbucket.org/pr3sto/bsc_docker_service/src) / project / workbox
 
 ### Wiki
 
