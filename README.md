@@ -4,10 +4,6 @@
 
 Разработка сервиса запуска docker-контейнеров для организации лабораторных и практических занятий
 
-### Wiki
-
-### [**--->**](https://bitbucket.org/pr3sto/bsc_docker_service/wiki/Home)
-
 ### Код сервиса
 
 ```
@@ -16,6 +12,9 @@
 / bsc_docker_service / project / workbox /
 ```
 
+### Wiki
+
+### [**--->**](https://bitbucket.org/pr3sto/bsc_docker_service/wiki/Home)
 
 ### Сборка и развертывание
 
