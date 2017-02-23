@@ -10,7 +10,12 @@
 
 ### Код сервиса
 
-### / bsc_docker_service / project / workbox /)
+```
+#!
+
+/ bsc_docker_service / project / workbox /
+```
+
 
 ### Сборка и развертывание
 
