@@ -1,0 +1,51 @@
+#!/bin/sh
+# postrm script workbox
+
+set -e
+
+LOGDIR='/var/log/workbox'
+
+case "$1" in
+
+  abort-install)
+    exit 0
+  ;;
+
+  remove)
+    # remove all created files
+    if [ -d /opt/venvs/workbox ]
+    then
+      /bin/rm -rf /opt/venvs/workbox
+    fi
+  ;;
+
+  purge)
+    # remove apache config
+    if [ -f /etc/apache2/sites-available/workbox.conf ]
+    then
+      /bin/rm -f /etc/apache2/sites-available/workbox.conf
+    fi
+
+    # remove log files
+    if [ -d $LOGDIR ]
+    then
+      /bin/rm -rf $LOGDIR
+    fi
+  ;;
+
+# ----
+
+  upgrade|failed-upgrade|abort-upgrade|disappear)
+    exit 0
+  ;;
+
+  *)
+    echo "postrm called with unknown argument \`$1'" >&2
+    exit 1
+  ;;
+
+esac
+
+#DEBHELPER#
+
+exit 0

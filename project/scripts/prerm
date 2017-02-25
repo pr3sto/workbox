@@ -1,0 +1,40 @@
+#!/bin/sh
+# prerm script for workbox
+
+set -e
+
+LOGDIR='/var/log/workbox'
+RMLOGFILE='/var/log/workbox/remove.log' 
+
+# create log dir for workbox
+[ -d $LOGDIR ] || mkdir $LOGDIR
+
+case "$1" in
+
+  remove)
+    # disable if site exists
+    if [ -f /etc/apache2/sites-enabled/workbox.conf ]
+    then
+      /bin/date >> $RMLOGFILE
+      /usr/sbin/a2dissite workbox.conf >> $RMLOGFILE
+      printf "\n" >> $RMLOGFILE
+      /etc/init.d/apache2 reload
+    fi
+  ;;
+
+# ----
+
+  failed-upgrade|upgrade|deconfigure)
+    exit 0
+  ;;
+
+  *)
+    echo "prerm called with unknown argument \`$1'" >&2
+    exit 1
+  ;;
+
+esac
+
+#DEBHELPER#
+
+exit 0

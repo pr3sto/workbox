@@ -1,0 +1,33 @@
+#!/bin/sh
+# preinst script for workbox
+
+set -e
+
+case "$1" in
+
+  install)
+    RED='\033[0;31m'
+    NC='\033[0m'
+
+    # service apache2 should be started
+    /bin/ps ax | /bin/grep -v /bin/grep | /bin/grep apache2 > /dev/null || ( /usr/bin/printf "\n${RED}Error:${NC} service apache2 not started\n\n"; exit 1 )
+    # service mongod should be started
+    /bin/ps ax | /bin/grep -v /bin/grep | /bin/grep mongod > /dev/null || ( /usr/bin/printf "\n${RED}Error:${NC} service mongod not started\n\n"; exit 1 )
+  ;;
+
+# ----
+
+  upgrade|abort-upgrade)
+    exit 0
+  ;;
+
+  *)
+    echo "preinst called with unknown argument \`$1'" >&2
+    exit 1
+  ;;
+
+esac
+
+#DEBHELPER#
+
+exit 0

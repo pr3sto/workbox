@@ -3,11 +3,31 @@
 
 set -e
 
+LOGDIR='/var/log/workbox'
+INSTLOGFILE='/var/log/workbox/install.log'
+RMLOGFILE='/var/log/workbox/remove.log'
+
+# create log dir for workbox
+[ -d $LOGDIR ] || mkdir $LOGDIR
+
 case "$1" in
 
   configure)
+    # bind ip address
+    if ! /bin/grep -q -P '127.0.0.1\tworkbox' /etc/hosts ; then
+      /usr/bin/printf "\n# WorkBox service by Chirukhin Alexey\n127.0.0.1\tworkbox\n" >> /etc/hosts
+    fi
+
+    # disable if site exists
+    if [ -f /etc/apache2/sites-enabled/workbox.conf ]
+    then
+      /bin/date >> $INSTLOGFILE
+      /usr/sbin/a2dissite workbox.conf >> $INSTLOGFILE
+      printf "\n" >> $INSTLOGFILE
+    fi
+
     # Set up our config for apache
-    echo "<VirtualHost *:80>
+    /usr/bin/printf "<VirtualHost *:80>
     ServerName workbox
     ServerAdmin webmaster@localhost
 
@@ -16,9 +36,10 @@ case "$1" in
     WSGIScriptAlias / /opt/venvs/workbox/lib/python2.7/site-packages/workbox/wsgiconfig/app.wsgi
 
     #Serve static files directly without TurboGears
-    Alias /images /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/img
+    Alias /images /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/images
+    Alias /fonts /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/fonts
     Alias /css /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/css
-    Alias /js /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/javascript
+    Alias /js /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/js
 
     CustomLog \${APACHE_LOG_DIR}/workbox-access_log common
     ErrorLog \${APACHE_LOG_DIR}/workbox-error_log
@@ -29,19 +50,37 @@ case "$1" in
     </Directory>
 </VirtualHost>
 
-# vim: syntax=apache ts=4 sw=4 sts=4 sr noet" > /etc/apache2/sites-available/workbox.conf
-
-    # bind ip address
-    echo "" >> /etc/hosts
-    echo "# workbox service by Chirukhin Alexey" >> /etc/hosts
-    echo 127.0.0.1'\t'workbox >> /etc/hosts
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet\n" > /etc/apache2/sites-available/workbox.conf
 
     # enable site
-    /usr/sbin/a2ensite workbox.conf
+    /bin/date >> $INSTLOGFILE
+    /usr/sbin/a2ensite workbox.conf >> $INSTLOGFILE
+    printf "\n" >> $INSTLOGFILE
     /etc/init.d/apache2 reload
+
+    # setup workbox
+    /bin/date >> $INSTLOGFILE
+    . /opt/venvs/workbox/bin/activate
+    cd /opt/venvs/workbox
+    /opt/venvs/workbox/bin/gearbox setup-app -c /opt/venvs/workbox/lib/python2.7/site-packages/workbox/wsgiconfig/production.ini >> $INSTLOGFILE
+    printf "\n" >> $INSTLOGFILE
+    deactivate
   ;;
 
-  abort-upgrade|abort-remove|abort-deconfigure)
+  abort-remove)
+    # enable site
+    if [ -f /etc/apache2/sites-available/workbox.conf ] && [ ! -f /etc/apache2/sites-enabled/workbox.conf ]
+    then
+      /bin/date >> $RMLOGFILE
+      /usr/sbin/a2ensite workbox.conf >> $RMLOGFILE
+      printf "\n" >> $RMLOGFILE
+      /etc/init.d/apache2 reload
+    fi
+  ;;
+
+# ----
+
+  abort-upgrade|abort-deconfigure)
     exit 0
   ;;
 

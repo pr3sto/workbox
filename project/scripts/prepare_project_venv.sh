@@ -2,7 +2,7 @@
 
 if [ "$#" -ne 1 ] 
 then
-	echo "Usage: $0 project_name. Please specify project name."
+	/usr/bin/printf "Usage: $0 project_name. Please specify project name.\n"
 	exit
 fi
 
@@ -15,7 +15,7 @@ fi
 cd $1env
 
 # turbogears dependencies
-source bin/activate
+. bin/activate
 bin/pip install tg.devtools
 deactivate
 
