@@ -1,15 +1,27 @@
 .anon-welcome {
     height: calc(100vh - 50px);
+    margin-top: -20px;
     min-height: 750px;
     text-align: center;
     padding: 50px 0;
     display: block;
     position: relative;
     border-bottom: 1px solid #e5e5e5;
+
+    background: linear-gradient(
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.9)
+    ), url('/images/drawing.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .anon-welcome h1 {
-    font-size: 80px;
+    font-size: 100px;
 }
 
 .anon-welcome h2 {
@@ -27,7 +39,7 @@
     color: #3276b1;
 }
 
-.anon-why-use {
+.anon-usage {
     padding: 50px 0;
     background: url('/images/cubes.png');
     display: block;
@@ -35,17 +47,17 @@
     border-bottom: 1px solid #e5e5e5;
 }
 
-.anon-why-use h1 {
+.anon-usage h1 {
     text-align: center;
     font-size: 48px;
 }
 
-.anon-why-use h2 {
+.anon-usage h2 {
     text-align: left;
     font-size: 32px;
 }
 
-.anon-why-use h3 {
+.anon-usage h3 {
     text-align: justify;
     color: #777;
     font-size:20px;

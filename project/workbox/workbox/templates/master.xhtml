@@ -1,91 +1,102 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta charset="${response.charset}" />
+    <meta charset="${response.charset}"/>
 
     <title py:block="master_title"></title>
 
-    <link rel="shortcut icon" href="${tg.url('/img/favicon.ico')}" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/bootstrap.min.css')}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/common.css')}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/workbox-font-icons.css')}" />
+    <link rel="shortcut icon" href="${tg.url('/images/favicon.ico')}" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/bootstrap.min.css')}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/common.css')}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/workbox-font-icons.css')}"/>
 
     <py:block name="head"></py:block>
-  </head>
+</head>
 
-  <body>
-    <div class="content">
-      <div class="content-inside">
+<body>
+<div class="content">
+    <div class="content-inside">
 
         <!-- Dummy navbar -->
         <nav class="navbar navbar-default"></nav>
         <!-- Real navbar -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="${tg.url('/')}">WorkBox</a>
-            </div>
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="${tg.url('/')}"><img src="/images/favicon.ico"/></a>
+                </div>
 
-            <div class="collapse navbar-collapse" id="navbar-content">
-              <ul class="nav navbar-nav">
+                <div class="collapse navbar-collapse" id="navbar-content">
+                    <ul class="nav navbar-nav">
 
-                <li py:if="request.identity" class="dropdown ${('', 'active')[request.environ['PATH_INFO'].startswith('/box')]}">
-                  <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    Виртуальная рабочая среда<span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="${tg.url('/box/new')}">Создать новую рабочую среду</a>
-                    </li>
-                    <li>
-                      <a href="${tg.url('/box/list')}">Список рабочих сред</a>
-                    </li>
-                  </ul>
-                </li>
-                <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history/')]}">
-                  <a href="${tg.url('/history/')}">Журнал</a>
-                </li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right">
-                <li py:if="request.identity" class="hidden-xs">
-                  <a style="pointer-events: none; display: inline-block; color: #3276b1;">Добро пожаловать, <b>${request.identity['user'].display_name}</b>&nbsp;</a>
-                </li>
-                <li py:if="tg.predicates.has_permission('manage')" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/admin')]}">
-                  <a href="${tg.url('/admin')}">Панель администратора</a>
-                </li>
-                <li py:if="not request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/login')]}">
-                  <a href="${tg.url('/login')}">Вход</a>
-                </li>
-                <li py:if="request.identity">
-                  <a href="${tg.url('/logout_handler')}">Выход</a>
-                </li>
-              </ul>
+                        <li py:if="request.identity"
+                            class="dropdown ${('', 'active')[request.environ['PATH_INFO'].startswith('/box')]}">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                               aria-expanded="false">
+                                Виртуальная рабочая среда<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="${tg.url('/box/new/')}">Создать новую рабочую среду</a>
+                                </li>
+                                <li>
+                                    <a href="${tg.url('/box/list/')}">Список рабочих сред</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li py:if="request.identity"
+                            class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history')]}">
+                            <a href="${tg.url('/history/')}">Журнал</a>
+                        </li>
+                        <li py:if="request.identity"
+                            class="${('', 'active')[request.environ['PATH_INFO'].startswith('/help')]}">
+                            <a href="${tg.url('/help/')}">Справка</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li py:if="request.identity" class="hidden-xs">
+                            <a style="pointer-events: none; display: inline-block; color: #3276b1;">Добро пожаловать,
+                                <b>${request.identity['user'].display_name}</b></a>
+                        </li>
+                        <li py:if="tg.predicates.has_permission('manage')"
+                            class="${('', 'active')[request.environ['PATH_INFO'].startswith('/admin')]}">
+                            <a href="${tg.url('/admin/')}">Панель администратора</a>
+                        </li>
+                        <li py:if="not request.identity"
+                            class="${('', 'active')[request.environ['PATH_INFO'].startswith('/login')]}">
+                            <a href="${tg.url('/login/')}">Вход</a>
+                        </li>
+                        <li py:if="request.identity">
+                            <a href="${tg.url('/logout_handler')}">Выход</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-          </div>
         </nav>
 
-        <div class="${('container-fluid', 'container')[request.environ['PATH_INFO'].startswith('/admin')]}" style="height: calc(100% - 90px);">
-          <!-- Main included content -->
-          <py:block name="body"></py:block>
+        <div class="${('', 'container')[request.environ['PATH_INFO'].startswith('/admin')]}"
+             style="height: calc(100% - 90px);">
+            <!-- Main included content -->
+            <py:block name="body"></py:block>
         </div>
 
-      </div>
     </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <p class="copyright">&copy; ${h.current_year()} WorkBox</p>
-    </footer>
+<!-- Footer -->
+<footer class="footer">
+    <p class="copyright">&copy; ${h.current_year()} WorkBox</p>
+</footer>
 
-    <script src="${tg.url('/javascript/jquery-3.1.1.min.js')}"></script>
-    <script src="${tg.url('/javascript/bootstrap.min.js')}"></script>
-  </body>
+<script src="${tg.url('/js/jquery-3.1.1.min.js')}"></script>
+<script src="${tg.url('/js/bootstrap.min.js')}"></script>
+</body>
 </html>
