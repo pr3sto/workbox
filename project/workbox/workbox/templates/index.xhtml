@@ -1,96 +1,123 @@
 <html py:extends="master.xhtml" py:strip="True">
+
 <head py:block="head" py:strip="True">
     <title py:block="master_title">WorkBox</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/index.css')}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/index.css')}" />
 </head>
 
 <body py:block="body" py:strip="True">
-<!-- not authorized user -->
-<div py:if="not request.identity">
-    <section class="anon-welcome" id="welcome">
-        <div class="container outer-center">
-            <div class="inner-center" style="">
-                <img src="/images/box.png"/>
-                <h1><b>WorkBox</b></h1>
-                <h2>Сервис для настройки, запуска и мониторинга виртуальных рабочих сред</h2>
+    <!-- not authorized user -->
+    <div py:if="not request.identity">
+        <section class="anon-welcome" id="welcome">
+            <div class="container outer-center">
+                <div class="inner-center" style="">
+                    <img src="/images/box.png" />
+                    <h1><b>WorkBox</b></h1>
+                    <h2>Сервис для настройки, запуска и мониторинга виртуальных рабочих сред</h2>
+                </div>
             </div>
-        </div>
-        <div class="to-bottom">
-            <a href="#usage">Для чего подходит WorkBox?</a>
-        </div>
-    </section>
-    <section class="anon-usage" id="usage">
-        <div class="container outer-center">
-            <div class="inner-center">
-                <h1>Использование <b>WorkBox</b></h1>
-                <div class=" col-xs-10 col-xs-offset-1">
-                    <div class="paragraph">
-                        <span class="icomoon icon-navigate_next"></span>
-                        <div>
-                            <h2>Проведение лабораторных занятий</h2>
-                            <h3>
-                                Настраивайте и создавайте виртуальные рабочие среды,
-                                генерируйте данные для доступа к ним и раздавайте студентам.
-                                Благодаря тому, что виртуальная среда полностью изолирована,
-                                ее использование безопасно, а любые ошибки не выйдут за ее пределы.
-                            </h3>
+            <div class="to-bottom">
+                <a href="#usage">Как использовать сервис?</a>
+            </div>
+        </section>
+        <section class="anon-usage" id="usage">
+            <div class="container outer-center">
+                <div class="inner-center">
+                    <h1>Использование <b>WorkBox</b></h1>
+                    <div class=" col-xs-10 col-xs-offset-1">
+                        <div class="paragraph">
+                            <span class="icomoon icon-navigate_next"></span>
+                            <div>
+                                <h2>Проведение лабораторных занятий</h2>
+                                <h3>
+                                    Настраивайте и создавайте виртуальные рабочие среды, генерируйте данные для доступа к ним и раздавайте студентам. Благодаря
+                                    тому, что виртуальная среда полностью изолирована, ее использование безопасно, а любые
+                                    ошибки не выйдут за ее пределы.
+                                </h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="paragraph">
-                        <span class="icomoon icon-navigate_next"></span>
-                        <div>
-                            <h2>Запуск программ</h2>
-                            <h3>
-                                Необходимо использовать программу один раз, и поэтому
-                                не хочется устанавливать ее на свой компьютер? Нет проблем!
-                                Запустите ее в виртуальной среде всего за несколько минут.
-                            </h3>
+                        <div class="paragraph">
+                            <span class="icomoon icon-navigate_next"></span>
+                            <div>
+                                <h2>Запуск программ</h2>
+                                <h3>
+                                    Необходимо использовать программу один раз, и поэтому не хочется устанавливать ее на свой компьютер? Нет проблем! Запустите
+                                    ее в виртуальной среде всего за несколько минут.
+                                </h3>
+                            </div>
                         </div>
-                    </div>
-                    <div class="paragraph">
-                        <span class="icomoon icon-navigate_next"></span>
-                        <div>
-                            <h2>Больше возможностей</h2>
-                            <h3>
-                                Использование сервиса не ограничивается приведенными сценариями.
-                                Знаете другое применение виртуальной среды?
-                                Используйте сервис так, как хотите!
-                            </h3>
+                        <div class="paragraph">
+                            <span class="icomoon icon-navigate_next"></span>
+                            <div>
+                                <h2>Больше возможностей</h2>
+                                <h3>
+                                    Использование сервиса не ограничивается приведенными сценариями. Знаете другое применение виртуальной среды? Используйте
+                                    сервис так, как хотите!
+                                </h3>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="anon-authorize-request" id="account">
-        <div class="container">
-            <h1>Для работы с сервисом необходима <a href="/login">авторизация</a></h1>
-            <h2>Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</h2>
-        </div>
-    </section>
-</div>
-<!-- authorized user -->
-<div py:if="request.identity">
+        </section>
+        <section class="anon-authorize-request" id="account">
+            <div class="container">
+                <h1>Для работы с сервисом необходима <a href="/login/">авторизация</a></h1>
+                <h2>Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</h2>
+            </div>
+        </section>
+    </div>
+    <!-- authorized user -->
+    <div py:if="request.identity">
 
-</div>
+    </div>
 </body>
 
 <script type="text/javascript">
-    $(function() {
-      $('a[href*="#"]:not([href="#"])').click(function() {
-        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')) {
-          if (location.hostname == this.hostname) {
-            var target = $(this.hash);
-            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-            if (target.length) {
-              $('html, body').animate({
-                scrollTop: target.offset().top - 50
-              }, 1000);
-              return false;
-            }
-          }
-        }
-      });
+    $(document).ready(function () {
+        var randomColor1 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor2 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor3 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor4 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor5 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor6 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor7 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor8 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor9 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor10 = '#' + Math.random().toString(16).slice(-6)
+
+        var bcolor = 'linear-gradient(-90deg,' +
+            randomColor1 + ' 10%,' +
+            randomColor2 + ' 10%, ' + randomColor2 + ' 20%,' +
+            randomColor3 + ' 20%, ' + randomColor3 + ' 30%,' +
+            randomColor4 + ' 30%, ' + randomColor4 + ' 40%,' +
+            randomColor5 + ' 40%, ' + randomColor5 + ' 50%,' +
+            randomColor6 + ' 50%, ' + randomColor6 + ' 60%,' +
+            randomColor7 + ' 60%, ' + randomColor7 + ' 70%,' +
+            randomColor8 + ' 70%, ' + randomColor8 + ' 80%,' +
+            randomColor9 + ' 80%, ' + randomColor9 + ' 90%,' +
+            randomColor10 + ' 90%) 2';
+
+        $('.anon-welcome').css('border-image', bcolor);
     });
+
+    $(function () {
+        $('a[href*="#"]:not([href="#"])').click(function () {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')) {
+                if (location.hostname == this.hostname) {
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    if (target.length) {
+                        $('html, body').animate({
+                            scrollTop: target.offset().top - 50
+                        }, 1000);
+                        return false;
+                    }
+                }
+            }
+        });
+    });
+
 </script>
+
 </html>

@@ -1,55 +1,72 @@
 <html py:extends="master.xhtml" py:strip="True">
+
 <head py:block="head" py:strip="True">
     <title py:block="master_title">Авторизация | WorkBox</title>
 </head>
 
 <body py:block="body" py:strip="True">
-<div class="outer-center">
-    <div class="container inner-center">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <p style="font-size:48px; font-family:RobotoBold">WorkBox</p>
-                <form action="${tg.url('/login_handler', params=dict(came_from=came_from))}" method="post"
-                      accept-charset="UTF-8">
-                    <fieldset>
-                        <div class="row" style="padding-top:15px;">
-                            <div class="col-sm-12 col-md-10  col-md-offset-1 ">
-                                <div py:if="error_msg" class="form-group" style="color:red;">
-                                    <p>${error_msg}</p>
-                                </div>
+    <div class="outer-center">
+        <div class="container inner-center">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <p class="col-sm-12 col-md-10 col-md-offset-1 login-header" style="font-size:48px;"><b>WorkBox</b></p>
+                    <form action="${tg.url('/login_handler', params=dict(came_from=came_from))}" method="post" accept-charset="UTF-8">
+                        <fieldset>
+                            <div class="row" style="padding-top:15px;">
+                                <div class="col-sm-12 col-md-10 col-md-offset-1">
+                                    <div py:if="error_msg" class="form-group" style="color:red;">
+                                        <p>${error_msg}</p>
+                                    </div>
 
-                                <div class="form-group">
-                                    <input class="form-control" required="true" placeholder="Логин" name="login"
-                                           type="text" value="${login}"/>
-                                </div>
+                                    <div class="form-group">
+                                        <input class="form-control" required="true" placeholder="Логин" name="login" type="text" value="${login}" />
+                                    </div>
 
-                                <div class="form-group">
-                                    <input class="form-control" required="true" placeholder="Пароль"
-                                           name="password"
-                                           type="password"/>
-                                </div>
+                                    <div class="form-group">
+                                        <input class="form-control" required="true" placeholder="Пароль" name="password" type="password" />
+                                    </div>
 
-                                <div class="form-group">
-                                    <div class="checkbox" style="text-align:left;">
-                                        <label>
+                                    <div class="form-group">
+                                        <div class="checkbox" style="text-align:left;">
+                                            <label>
                                             <input type="checkbox" name="remember" value="2252000"/> Запомнить
                                             пароль
                                         </label>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Вход"/>
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Вход" />
+                                    </div>
+                                    <p style="font-size: 12px;color:#777;">Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</p>
                                 </div>
-                                <p style="font-size: 12px;color:#777;">Если у Вас нет аккаунта, пожалуйста,
-                                    свяжитесь с администратором</p>
                             </div>
-                        </div>
-                    </fieldset>
-                </form>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var randomColor1 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor2 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor3 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor4 = '#' + Math.random().toString(16).slice(-6)
+        var randomColor5 = '#' + Math.random().toString(16).slice(-6)
+
+        var bcolor = 'white linear-gradient(-90deg,' +
+            randomColor1 + ' 20%,' +
+            randomColor2 + ' 20%, ' + randomColor2 + ' 40%,' +
+            randomColor3 + ' 40%, ' + randomColor3 + ' 60%,' +
+            randomColor4 + ' 60%, ' + randomColor4 + ' 80%,' +
+            randomColor5 + ' 80%) no-repeat scroll 0px 100% / 100% 2px';
+
+        $('.login-header').css('background', bcolor);
+    });
+
+</script>
+
 </html>
