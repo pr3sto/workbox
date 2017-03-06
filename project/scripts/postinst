@@ -15,7 +15,7 @@ case "$1" in
   configure)
     # bind ip address
     if ! /bin/grep -q -P '127.0.0.1\tworkbox' /etc/hosts ; then
-      /usr/bin/printf "\n# WorkBox service by Chirukhin Alexey\n127.0.0.1\tworkbox\n" >> /etc/hosts
+      /usr/bin/printf "\n# WorkBox service by Chirukhin Alexey\n127.0.0.1\tworkbox\n127.0.0.1\tdev.workbox\n" >> /etc/hosts
     fi
 
     # disable if site exists
@@ -29,10 +29,14 @@ case "$1" in
     # Set up our config for apache
     /usr/bin/printf "<VirtualHost *:80>
     ServerName workbox
-    ServerAdmin webmaster@localhost
+    RedirectMatch permanent ^/(.*)$ http://dev.workbox/\$1
+</VirtualHost>
 
-    WSGIProcessGroup workbox
-    WSGIDaemonProcess workbox user=www-data group=www-data threads=4 python-path=/opt/venvs/workbox/lib/python2.7/site-packages
+<VirtualHost *:80>
+    ServerName dev.workbox
+
+    WSGIProcessGroup dev.workbox
+    WSGIDaemonProcess dev.workbox user=www-data group=www-data threads=4 python-path=/opt/venvs/workbox/lib/python2.7/site-packages
     WSGIScriptAlias / /opt/venvs/workbox/lib/python2.7/site-packages/workbox/wsgiconfig/app.wsgi
 
     #Serve static files directly without TurboGears
@@ -57,14 +61,6 @@ case "$1" in
     /usr/sbin/a2ensite workbox.conf >> $INSTLOGFILE
     printf "\n" >> $INSTLOGFILE
     /etc/init.d/apache2 reload
-
-    # setup workbox
-    /bin/date >> $INSTLOGFILE
-    . /opt/venvs/workbox/bin/activate
-    cd /opt/venvs/workbox
-    /opt/venvs/workbox/bin/gearbox setup-app -c /opt/venvs/workbox/lib/python2.7/site-packages/workbox/wsgiconfig/production.ini >> $INSTLOGFILE
-    printf "\n" >> $INSTLOGFILE
-    deactivate
   ;;
 
   abort-remove)

@@ -11,8 +11,6 @@ case "$1" in
 
     # service apache2 should be started
     /bin/ps ax | /bin/grep -v /bin/grep | /bin/grep apache2 > /dev/null || ( /usr/bin/printf "\n${RED}Error:${NC} service apache2 not started\n\n"; exit 1 )
-    # service mongod should be started
-    /bin/ps ax | /bin/grep -v /bin/grep | /bin/grep mongod > /dev/null || ( /usr/bin/printf "\n${RED}Error:${NC} service mongod not started\n\n"; exit 1 )
   ;;
 
 # ----
