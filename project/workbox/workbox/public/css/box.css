@@ -1,0 +1,48 @@
+/***
+box.css
+
+styles for box pages
+***/
+
+
+.nav-tabs li {
+    width: 50%;
+    text-align: center;
+}
+
+.tab-placeholder {
+    color: #777;
+}
+
+.tab-placeholder h1 {
+    font-size: 32px;
+    color: #777;
+}
+
+.tab-placeholder h2 {
+    font-size: 20px;
+    color: #777;
+}
+
+.tab-vagrant textarea {
+    resize: vertical;
+    min-height: 400px;
+}
+
+.tab-vagrant input[type="number"] {
+    width: 200px;
+}
+
+.tab-vagrant .form-inline {
+    padding: 20px;
+}
+
+.loading {
+    background: rgba(255, 255, 255, 0.5);
+    position: fixed;
+    margin-top: -20px;
+    height: 100%;
+    width: 100%;
+    z-index: 999999;
+    visibility: hidden;
+}

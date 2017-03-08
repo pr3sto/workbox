@@ -1,3 +1,10 @@
+/***
+master.css
+
+general styles for site
+***/
+
+
 html, body {
     height: 100%;
     margin: 0;
@@ -36,7 +43,7 @@ body {
     padding: 0px;
 }
 
-.navbar-brand>img {
+.navbar-brand img {
     display: table-cell;
     height: 100%;
     padding: 15px;
@@ -61,6 +68,10 @@ body {
     border: 0px !important;
 }
 
+.crud-sidebar .active {
+    border-left: none !important;
+}
+
 .footer {
     height: 50px;
     margin-top: -50px;
@@ -79,6 +90,10 @@ body {
     line-height: 48px;
 }
 
+.dev {
+    position: relative;
+}
+
 .dev:hover .credits {
     visibility: visible;
 }
@@ -91,10 +106,6 @@ body {
     padding-left: 13px;
     position: absolute;
     cursor: default;
-}
-
-.dev {
-    position: relative;
 }
 
 .credits {
@@ -151,6 +162,7 @@ body {
 }
 
 .inner-center {
+    max-height: 100%;
     text-align: center;
     align-self: center;
     margin: auto;

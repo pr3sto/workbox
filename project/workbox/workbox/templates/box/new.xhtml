@@ -1,42 +1,79 @@
 <html py:extends="master.xhtml" py:strip="True">
+
 <head py:block="head" py:strip="True">
     <title py:block="master_title">Создание виртуальной рабочей среды | WorkBox</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/box.css')}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/box.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/spinner.css')}" />
 </head>
 
 <body py:block="body" py:strip="True">
-<form class="form-horizontal" action="create" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-    <fieldset>
+    <!-- loader -->
+    <div class="loading">
+        <div class="outer-center" style="padding-bottom:100px;">
+            <div class="spinner inner-center"></div>
+        </div>
+    </div>
 
-        <!-- Form Name -->
-        <legend>Input container parameters</legend>
+    <!-- content -->
+    <div class="container" style="height:100%">
+        <div style="height:50px;">
+            <ul class="nav nav-tabs">
+                <li><a data-toggle="tab" href="#vagrantfile">Vagrantfile</a></li>
+                <li><a data-toggle="tab" href="#parameters">Ввод параметров</a></li>
+            </ul>
+        </div>
+        <div style="height:calc(100% - 50px);padding-top:20px;">            
+            <div class="outer-center">
+                <div class="inner-center" style="width:100%;">
+                    <div class="tab-content inner-center">
 
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="textinput">Port number</label>
-            <div class="col-md-4">
-                <input id="textinput" name="textinput" placeholder="type number here ..." class="form-control input-md"
-                       required="" type="text"/>
+                        <div class="tab-placeholder tab-pane fade in active">
+                            <h1>Выберите способ создания виртуальной среды:</h1>
+                            <h2>'Vagrantfile' - для опытных пользователей, знакомых со структурой файла конфигурации</h2>
+                            <h2>'Ввод параметров' - для настройки параметров с помощью формы</h2>
+                        </div>
+
+                        <div id="vagrantfile" class="tab-vagrant tab-pane fade">
+                            <form action="${tg.url('/box/create')}" method="post" accept-charset="UTF-8">
+                                <label class="btn btn-lg btn-default">Загрузить Vagrantfile<input type="file" style="display:none;"/></label>
+                                <p style="padding:20px;">Или воспользуйтесь редактором для создания нового файла</p>
+                                <textarea class="form-control" id="vagrantfile-data" required="true"></textarea>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <input placeholder="Количество копий" class="form-control" type="number" min="1" max="20" required="true"/>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Создать</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="parameters" class="tab-pane fade">
+                            <h3>Панель 2</h3>
+                            <p>Содержимое 2 панели...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- File Button -->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="filebutton">Vagrantfile</label>
-            <div class="col-md-4">
-                <input id="filebutton" name="filebutton" class="input-file" type="file"/>
-            </div>
-        </div>
-
-        <!-- Button -->
-        <div class="form-group">
-            <label class="col-md-4 control-label" for="singlebutton"></label>
-            <div class="col-md-4">
-                <button class="btn btn-primary">Add</button>
-            </div>
-        </div>
-
-    </fieldset>
-</form>
+    </div>
 </body>
+
+<script type="text/javascript">
+    $(':file').on('change', function() {
+        $('.loading').css('visibility', 'visible');
+        var fr = new FileReader();
+        fr.onload = showFile;
+        fr.readAsText(this.files[0]);
+    
+        function showFile() {          
+            $('#vagrantfile-data').val(fr.result);
+            $('.loading').fadeTo(500, 0, function() {
+                $('.loading').css('visibility', 'hidden');  
+                $('.loading').css('opacity', 1);
+            });             
+        }
+    });
+
+</script>
+
 </html>

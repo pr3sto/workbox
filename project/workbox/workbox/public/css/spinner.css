@@ -1,0 +1,56 @@
+/***
+spinner.css
+
+loading spinner style
+***/
+
+
+.spinner {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background: #0FF;
+    animation: 1s spin infinite;
+}
+
+.spinner::before,
+.spinner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    animation: .5s infinite alternate linear;
+}
+
+.spinner::before {
+    background: #F0F;
+    border-radius: 5px;
+    animation-name: blur1;
+}
+
+.spinner::after {
+    background: #fff;
+    border-radius: 5px;
+    animation-name: blur2;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes blur1 {
+    to {
+        transform: rotate(-30deg);
+    }
+}
+
+@keyframes blur2 {
+    to {
+        transform: rotate(-15deg);
+    }
+}

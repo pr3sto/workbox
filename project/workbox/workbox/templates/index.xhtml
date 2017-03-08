@@ -2,7 +2,7 @@
 
 <head py:block="head" py:strip="True">
     <title py:block="master_title">WorkBox</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/index.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/index.css" />
 </head>
 
 <body py:block="body" py:strip="True">
@@ -10,7 +10,7 @@
     <div py:if="not request.identity">
         <section class="anon-welcome" id="welcome">
             <div class="container outer-center">
-                <div class="inner-center" style="">
+                <div class="inner-center">
                     <img src="/images/box.png" />
                     <h1><b>WorkBox</b></h1>
                     <h2>Сервис для настройки, запуска и мониторинга виртуальных рабочих сред</h2>
@@ -24,7 +24,7 @@
             <div class="container outer-center">
                 <div class="inner-center">
                     <h1>Использование <b>WorkBox</b></h1>
-                    <div class=" col-xs-10 col-xs-offset-1">
+                    <div class="col-xs-10 col-xs-offset-1">
                         <div class="paragraph">
                             <span class="icomoon icon-navigate_next"></span>
                             <div>
@@ -67,55 +67,30 @@
             </div>
         </section>
     </div>
+
     <!-- authorized user -->
     <div py:if="request.identity">
-
+        <section class="auth-welcome">
+            <h1><b>${request.identity['user'].display_name}</b>, добро пожаловать в Ваш <b>WorkBox</b></h1>
+        </section>
+        <section class="auth-statistics">
+            <div class="row">
+            <div class="stat1"></div>
+            <div class="stat2"></div>
+            <div class="stat3"></div>
+            </div>
+            <div class="stat4"></div>            
+        </section>
     </div>
+
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/smooth-goto-href.js"></script>
+    <script src="/js/colorgen.js"></script>
 </body>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var randomColor1 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor2 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor3 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor4 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor5 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor6 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor7 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor8 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor9 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor10 = '#' + Math.random().toString(16).slice(-6)
-
-        var bcolor = 'linear-gradient(-90deg,' +
-            randomColor1 + ' 10%,' +
-            randomColor2 + ' 10%, ' + randomColor2 + ' 20%,' +
-            randomColor3 + ' 20%, ' + randomColor3 + ' 30%,' +
-            randomColor4 + ' 30%, ' + randomColor4 + ' 40%,' +
-            randomColor5 + ' 40%, ' + randomColor5 + ' 50%,' +
-            randomColor6 + ' 50%, ' + randomColor6 + ' 60%,' +
-            randomColor7 + ' 60%, ' + randomColor7 + ' 70%,' +
-            randomColor8 + ' 70%, ' + randomColor8 + ' 80%,' +
-            randomColor9 + ' 80%, ' + randomColor9 + ' 90%,' +
-            randomColor10 + ' 90%) 2';
-
-        $('.anon-welcome').css('border-image', bcolor);
-    });
-
-    $(function () {
-        $('a[href*="#"]:not([href="#"])').click(function () {
-            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')) {
-                if (location.hostname == this.hostname) {
-                    var target = $(this.hash);
-                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                    if (target.length) {
-                        $('html, body').animate({
-                            scrollTop: target.offset().top - 50
-                        }, 1000);
-                        return false;
-                    }
-                }
-            }
-        });
+        $('.anon-welcome').css('border-image', gen10colors_border());
     });
 
 </script>

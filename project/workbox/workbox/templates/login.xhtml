@@ -29,9 +29,8 @@
                                     <div class="form-group">
                                         <div class="checkbox" style="text-align:left;">
                                             <label>
-                                            <input type="checkbox" name="remember" value="2252000"/> Запомнить
-                                            пароль
-                                        </label>
+                                                <input type="checkbox" name="remember" value="2252000"/> Запомнить пароль
+                                            </label>
                                         </div>
                                     </div>
 
@@ -47,24 +46,13 @@
             </div>
         </div>
     </div>
+
+    <script src="/js/colorgen.js"></script>
 </body>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var randomColor1 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor2 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor3 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor4 = '#' + Math.random().toString(16).slice(-6)
-        var randomColor5 = '#' + Math.random().toString(16).slice(-6)
-
-        var bcolor = 'white linear-gradient(-90deg,' +
-            randomColor1 + ' 20%,' +
-            randomColor2 + ' 20%, ' + randomColor2 + ' 40%,' +
-            randomColor3 + ' 40%, ' + randomColor3 + ' 60%,' +
-            randomColor4 + ' 60%, ' + randomColor4 + ' 80%,' +
-            randomColor5 + ' 80%) no-repeat scroll 0px 100% / 100% 2px';
-
-        $('.login-header').css('background', bcolor);
+        $('.login-header').css('background', gen5colors_bkg());
     });
 
 </script>

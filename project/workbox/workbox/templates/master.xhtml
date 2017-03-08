@@ -8,10 +8,10 @@
 
     <title py:block="master_title"></title>
 
-    <link rel="shortcut icon" href="${tg.url('/images/favicon.ico')}" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/bootstrap.min.css')}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/master.css')}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/workbox-font-icons.css')}" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/master.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/fonts.css" />
 
     <py:block name="head"></py:block>
 </head>
@@ -32,9 +32,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                        <a class="navbar-brand" href="${tg.url('/')}"><img src="/images/favicon.ico" onmouseover="this.src='/images/box.png'" onmouseout="this.src='/images/favicon.ico'"
-                            />
-                            <span class="bubble-tag">DEV</span></a>
+                        <a class="navbar-brand" href="/"><img id="brand-img" src="/images/favicon.ico"/>
+                            <span class="bubble-tag">DEV</span>
+                        </a>
                     </div>
 
                     <div class="collapse navbar-collapse" id="navbar-content">
@@ -43,36 +43,32 @@
                             <li py:if="request.identity" class="dropdown ${('', 'active')[request.environ['PATH_INFO'].startswith('/box')]}">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                 Виртуальная рабочая среда<span class="caret"></span>
-                            </a>
+                                </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="${tg.url('/box/new/')}">Создать новую рабочую среду</a>
+                                        <a href="/box/new/">Создать новую виртуальную среду</a>
                                     </li>
                                     <li>
-                                        <a href="${tg.url('/box/list/')}">Список рабочих сред</a>
+                                        <a href="/box/list/">Список виртуальных сред</a>
                                     </li>
                                 </ul>
                             </li>
                             <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history')]}">
-                                <a href="${tg.url('/history/')}">Журнал</a>
+                                <a href="/history/">Журнал</a>
                             </li>
                             <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/help')]}">
-                                <a href="${tg.url('/help/')}">Справка</a>
+                                <a href="/help/">Справка</a>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li py:if="request.identity" class="hidden-xs">
-                                <a style="pointer-events: none; display: inline-block; color: #3276b1;">Добро пожаловать,
-                                <b>${request.identity['user'].display_name}</b></a>
-                            </li>
                             <li py:if="tg.predicates.has_permission('manage')" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/admin')]}">
-                                <a href="${tg.url('/admin/')}">Панель администратора</a>
+                                <a href="/admin/">Панель администратора</a>
                             </li>
                             <li py:if="not request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/login')]}">
-                                <a href="${tg.url('/login/')}">Вход</a>
+                                <a href="/login/">Вход</a>
                             </li>
                             <li py:if="request.identity">
-                                <a href="${tg.url('/logout_handler')}">Выход</a>
+                                <a href="/logout_handler">Выход</a>
                             </li>
                         </ul>
                     </div>
@@ -95,21 +91,28 @@
                 <p>Created with&nbsp;<span class="icomoon icon-heart" />&nbsp;by</p>
                 <p>Alexey Chirukhin</p>
                 <p>&lt;pr3sto1377@gmail.com&gt;</p>
-                <p style="margin-bottom:0px;">2016-2017</p>
+                <p style="margin-bottom:0px;">LETI 2016-2017</p>
             </div>
         </div>
         <p class="copyright">&copy; ${h.current_year()} WorkBox</p>
     </footer>
 
-    <script src="${tg.url('/js/jquery-3.1.1.min.js')}"></script>
-    <script src="${tg.url('/js/bootstrap.min.js')}"></script>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 </body>
 
 <script type="text/javascript">
     $('.dev').on('mouseover mouseout', function () {
-        var randomColor = '#' + Math.random().toString(16).slice(-6)
+        var randomColor = '#' + Math.random().toString(16).slice(-6);
         $('.icon-heart').css('color', randomColor);
     });
+    $("#brand-img").on('mouseover', function() {
+        $(this).stop().fadeOut(0).attr('src', '/images/box.png').fadeIn(300);
+    });
+    $("#brand-img").on('mouseout', function() {
+        $(this).stop().fadeOut(0).attr('src', '/images/favicon.ico').fadeIn(300);
+    });
+
 </script>
 
 </html>
