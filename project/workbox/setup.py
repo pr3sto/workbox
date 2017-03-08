@@ -32,8 +32,10 @@ install_requires = [
     "ming >= 0.4.3",
     "repoze.who",
     "tw2.forms",
+    "gearbox",
     "tgext.admin >= 0.6.1",
-    "WebHelpers2"
+    "WebHelpers2",
+    "python-vagrant >= 0.5.14"
 ]
 
 if py_version != (3, 2):
@@ -44,6 +46,8 @@ setup(
     name='workbox',
     version='0.1',
     description='Service for creating virtual working environments',
+    maintainer='Chirukhin Alexey',
+    maintainer_email='pr3sto1377@gmail.com',
     author='Chirukhin Alexey',
     author_email='pr3sto1377@gmail.com',
     url='',

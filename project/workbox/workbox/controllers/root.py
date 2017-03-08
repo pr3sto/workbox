@@ -33,8 +33,16 @@ class RootController(BaseController):
         """Handle the front-page."""
         return dict(page='index')
 
+    @expose('workbox.templates.help')
+    def help(self):
+        """Handle the help-page."""
+        return dict(page='help')
+
     @expose('workbox.templates.login')
     def login(self, came_from=lurl('/'), failure=None, login=''):
+        if request.identity:
+            return HTTPFound(location='/')
+
         """Start the user login."""
         error_msg = None
         if failure is not None:

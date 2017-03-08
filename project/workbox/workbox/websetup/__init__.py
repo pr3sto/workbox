@@ -2,7 +2,6 @@
 """Setup the workbox application"""
 
 import logging
-
 from workbox.config.environment import load_environment
 
 __all__ = ['setup_app']
