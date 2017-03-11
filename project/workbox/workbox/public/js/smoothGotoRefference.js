@@ -1,8 +1,9 @@
-/***
-smooth-goto-href.js
+/*!
+ * smoothGotoRefference.js
+ *
+ * smooth slide to href on page
+ */
 
-smooth slide to href on page
-***/
 
 $(function () {
     $('a[href*="#"]:not([href="#"])').click(function () {

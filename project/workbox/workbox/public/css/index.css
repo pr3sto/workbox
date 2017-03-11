@@ -1,15 +1,14 @@
-/***
-index.css
-
-styles for index page
-***/
+/*
+ * index.css
+ *
+ * styles for index page
+ */
 
 
 /* anonymous user */
 
 .anon-welcome {
     height: calc(100vh - 50px);
-    margin-top: -20px;
     min-height: 750px;
     text-align: center;
     padding: 50px 0;
@@ -20,7 +19,7 @@ styles for index page
     background: linear-gradient(
         rgba(255, 255, 255, 0),
         rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.6),
         rgba(255, 255, 255, 0.7),
         rgba(255, 255, 255, 0.9)
     ), url('/images/drawing.jpg');
@@ -29,11 +28,17 @@ styles for index page
     background-position: center;
 }
 
+.anon-welcome img {
+    width: 200px;
+    height: 200px;
+}
+
 .anon-welcome h1 {
-    font-size: 100px;
+    font-size: 72px;
 }
 
 .anon-welcome h2 {
+    font-family: "RobotoLight";
     font-size: 48px;
 }
 
@@ -44,15 +49,18 @@ styles for index page
     left: 0;
     right: 0;
     bottom: 50px;
-    font-size: 14px;
-    color: #3276b1;
+}
+
+.anon-welcome .to-bottom a {
+    font-size: 48px;
+    outline: none !important;
+    border: none !important;
+    text-decoration: none !important;
 }
 
 .anon-usage {
     padding: 50px 0;
     background: url('/images/cubes.png');
-    display: block;
-    position: relative;
     border-bottom: 1px solid #e5e5e5;
 }
 
@@ -67,19 +75,14 @@ styles for index page
 }
 
 .anon-usage h3 {
+    font-family: "RobotoLight";
     text-align: justify;
-    color: #777;
-    font-size:20px;
+    font-size: 20px;
 }
 
 .anon-authorize-request {
-    background-image: repeating-linear-gradient(
-        -45deg, transparent, transparent 35px, rgba(240, 240, 240, 0.5) 35px, rgba(240, 240, 240, 0.5) 70px
-    );
     text-align: center;
     padding: 30px 0;
-    display: block;
-    position: relative;
     color: #777;
 }
 
@@ -98,7 +101,7 @@ styles for index page
 .paragraph {
     display: flex;
     justify-content: center;
-    margin-top: 60px;
+    margin-top: 50px;
 }
 
 .paragraph span {
@@ -110,7 +113,6 @@ styles for index page
 /* authorized user */
 
 .auth-welcome {
-    margin-top: -20px;
     padding: 50px 0;
     border-bottom: 1px solid #e5e5e5;
 }
@@ -120,9 +122,30 @@ styles for index page
     font-size: 32px;
 }
 
-.stat1, .stat2, .stat3 {
-    width: 300px;
+.auth-statistics {
+    padding: 20px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.statistic-block {
+    text-align: center;
+    margin: 10px;
+    min-width: 300px;
     height: 300px;
-    background: grey;
-    margin: 50px;
+}
+
+.statistic-block > p {
+    font-family: "RobotoLight"; 
+    font-size: 20px;
+}
+
+.auth-chart {
+    text-align: center;
+    padding: 20px;
+}
+
+.auth-chart p {
+    font-family: "RobotoLight";    
+    font-size: 32px;
+    padding-bottom: 20px;
 }

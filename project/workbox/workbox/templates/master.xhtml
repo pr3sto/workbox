@@ -32,7 +32,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                        <a class="navbar-brand" href="/"><img id="brand-img" src="/images/favicon.ico"/>
+                        <a class="navbar-brand" href="/"><img id="brand-img" src="/images/favicon.ico" />
                             <span class="bubble-tag">DEV</span>
                         </a>
                     </div>
@@ -75,7 +75,7 @@
                 </div>
             </nav>
 
-            <div class="${('', 'container')[request.environ['PATH_INFO'].startswith('/admin')]}" style="height: calc(100% - 90px);">
+            <div class="${('main-content', 'container admin-panel')[request.environ['PATH_INFO'].startswith('/admin')]}">
                 <!-- Main included content -->
                 <py:block name="body"></py:block>
             </div>
@@ -85,8 +85,8 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="dev">
-            <span class="dev-icon icomoon icon-embed"></span>
+        <div class="dev-tag">
+            <span class="icomoon icon-embed"></span>
             <div class="credits">
                 <p>Created with&nbsp;<span class="icomoon icon-heart" />&nbsp;by</p>
                 <p>Alexey Chirukhin</p>
@@ -99,20 +99,18 @@
 
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $('.dev-tag').on('mouseover mouseout', function () {
+            var randomColor = '#' + Math.random().toString(16).slice(-6);
+            $('.icon-heart').css('color', randomColor);
+        });
+        $("#brand-img").on('mouseover', function () {
+            $(this).stop().fadeOut(0).attr('src', '/images/box.png').fadeIn(300);
+        });
+        $("#brand-img").on('mouseout', function () {
+            $(this).stop().fadeOut(0).attr('src', '/images/favicon.ico').fadeIn(300);
+        });
+    </script>
 </body>
-
-<script type="text/javascript">
-    $('.dev').on('mouseover mouseout', function () {
-        var randomColor = '#' + Math.random().toString(16).slice(-6);
-        $('.icon-heart').css('color', randomColor);
-    });
-    $("#brand-img").on('mouseover', function() {
-        $(this).stop().fadeOut(0).attr('src', '/images/box.png').fadeIn(300);
-    });
-    $("#brand-img").on('mouseout', function() {
-        $(this).stop().fadeOut(0).attr('src', '/images/favicon.ico').fadeIn(300);
-    });
-
-</script>
 
 </html>

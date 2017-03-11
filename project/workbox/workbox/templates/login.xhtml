@@ -6,7 +6,7 @@
 
 <body py:block="body" py:strip="True">
     <div class="outer-center">
-        <div class="container inner-center">
+        <div class="container inner-center" style="margin-top:20px; margin-bottom:20px;">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                     <p class="col-sm-12 col-md-10 col-md-offset-1 login-header" style="font-size:48px;"><b>WorkBox</b></p>
@@ -27,14 +27,6 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="checkbox" style="text-align:left;">
-                                            <label>
-                                                <input type="checkbox" name="remember" value="2252000"/> Запомнить пароль
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
                                         <input type="submit" class="btn btn-lg btn-primary btn-block" value="Вход" />
                                     </div>
                                     <p style="font-size: 12px;color:#777;">Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</p>
@@ -47,14 +39,13 @@
         </div>
     </div>
 
-    <script src="/js/colorgen.js"></script>
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/colorsGenerator.js"></script>
+    <script type="text/javascript">
+        $(function ($) {
+            $('.login-header').css('background', gen5colorsBackground());
+        });
+    </script>
 </body>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.login-header').css('background', gen5colors_bkg());
-    });
-
-</script>
 
 </html>

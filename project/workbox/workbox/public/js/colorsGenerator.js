@@ -1,10 +1,11 @@
-/***
-colorgen.js
+/*!
+ * colorsGenerator.js
+ *
+ * generate colors background
+ */
 
-generate colors background
-***/
 
-function gen5colors_bkg() {
+function gen5colorsBackground() {
     var randomColor1 = '#' + Math.random().toString(16).slice(-6);
     var randomColor2 = '#' + Math.random().toString(16).slice(-6);
     var randomColor3 = '#' + Math.random().toString(16).slice(-6);
@@ -19,7 +20,7 @@ function gen5colors_bkg() {
         randomColor5 + ' 80%) no-repeat scroll 0px 100% / 100% 2px';
 }
 
-function gen10colors_border() {
+function gen10colorsBorder() {
     var randomColor1 = '#' + Math.random().toString(16).slice(-6);
     var randomColor2 = '#' + Math.random().toString(16).slice(-6);
     var randomColor3 = '#' + Math.random().toString(16).slice(-6);

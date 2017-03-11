@@ -9,68 +9,79 @@
 <body py:block="body" py:strip="True">
     <!-- loader -->
     <div class="loading">
-        <div class="outer-center" style="padding-bottom:100px;">
+        <div class="outer-center">
             <div class="spinner inner-center"></div>
         </div>
     </div>
 
     <!-- content -->
-    <div class="container" style="height:100%">
+    <div class="container new-main-content">
         <div style="height:50px;">
             <ul class="nav nav-tabs">
-                <li><a data-toggle="tab" href="#vagrantfile">Vagrantfile</a></li>
-                <li><a data-toggle="tab" href="#parameters">Ввод параметров</a></li>
+                <li><a data-toggle="tab" href="#tab-vagrantfile">Vagrantfile</a></li>
+                <li><a data-toggle="tab" href="#tab-parameters">Ввод параметров</a></li>
             </ul>
         </div>
-        <div style="height:calc(100% - 50px);padding-top:20px;">            
-            <div class="outer-center">
-                <div class="inner-center" style="width:100%;">
-                    <div class="tab-content inner-center">
-
-                        <div class="tab-placeholder tab-pane fade in active">
-                            <h1>Выберите способ создания виртуальной среды:</h1>
-                            <h2>'Vagrantfile' - для опытных пользователей, знакомых со структурой файла конфигурации</h2>
-                            <h2>'Ввод параметров' - для настройки параметров с помощью формы</h2>
-                        </div>
-
-                        <div id="vagrantfile" class="tab-vagrant tab-pane fade">
-                            <form action="${tg.url('/box/create')}" method="post" accept-charset="UTF-8">
-                                <label class="btn btn-lg btn-default">Загрузить Vagrantfile<input type="file" style="display:none;"/></label>
-                                <p style="padding:20px;">Или воспользуйтесь редактором для создания нового файла</p>
-                                <textarea class="form-control" id="vagrantfile-data" required="true"></textarea>
-                                <div class="form-inline">
-                                    <div class="form-group">
-                                        <input placeholder="Количество копий" class="form-control" type="number" min="1" max="20" required="true"/>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Создать</button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div id="parameters" class="tab-pane fade">
-                            <h3>Панель 2</h3>
-                            <p>Содержимое 2 панели...</p>
-                        </div>
-                    </div>
-                </div>
+        <div class="tab-content outer-center" style="height:calc(100% - 50px);padding-top:20px;">
+            <!-- placeholder -->
+            <div class="inner-center tab-placeholder tab-pane fade in active">
+                <h1>Выберите способ создания виртуальной среды:</h1>
+                <h2>'Vagrantfile' - для опытных пользователей, знакомых со структурой файла конфигурации</h2>
+                <h2>'Ввод параметров' - для настройки параметров с помощью формы</h2>
+                <h2>&nbsp;</h2>
+                <h2>Вы также можете скопировать существующую виртуальную среду</h2><h2>Для этого найдите ее в <a href="/box/list/">списке</a> и нажмите на кнопку 'Копировать'</h2>
             </div>
+            <!-- vagrantfile -->
+            <div id="tab-vagrantfile" class="tab-pane fade">
+                <form action="${tg.url('/box/create')}" method="post" accept-charset="UTF-8">
+                    <p style="padding:20px;"><label tabindex="0" class="file-label btn btn-default">Загрузите Vagrantfile<input class="file-input btn btn-default" type="file" style="display:none;"/></label> 
+                    или воспользуйтесь редактором для создания нового файла</p>
+                    <textarea class="form-control" id="vagrantfile-data" required="true"></textarea>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <input placeholder="Количество копий" class="form-control" type="number" min="1" max="20" required="true" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Создать</button>
+                    </div>
+                </form>
+            </div>
+            <!-- parameters -->
+            <div id="tab-parameters" class="tab-pane fade">
+                <form action="${tg.url('/box/create')}" method="post" accept-charset="UTF-8">
+
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <input placeholder="Количество копий" class="form-control" type="number" min="1" max="20" required="true" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Создать</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </body>
 
 <script type="text/javascript">
-    $(':file').on('change', function() {
+    $(':file').on('change', function () {
         $('.loading').css('visibility', 'visible');
         var fr = new FileReader();
         fr.onload = showFile;
         fr.readAsText(this.files[0]);
-    
-        function showFile() {          
+
+        function showFile() {
             $('#vagrantfile-data').val(fr.result);
-            $('.loading').fadeTo(500, 0, function() {
-                $('.loading').css('visibility', 'hidden');  
+            $('.loading').fadeTo(500, 0, function () {
+                $('.loading').css('visibility', 'hidden');
                 $('.loading').css('opacity', 1);
-            });             
+            });
+        }
+    });
+
+    $('.file-label').on('keypress', function(event) {
+        if ((event.which || event.keyCode) === 13  ) {
+            $('.file-input').click();
+            event.preventDefault();
         }
     });
 

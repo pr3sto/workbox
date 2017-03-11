@@ -1,9 +1,47 @@
-/***
-box.css
+/*
+ * box.css
+ *
+ * styles for box pages
+ */
 
-styles for box pages
-***/
 
+.loading {
+    background: rgba(255, 255, 255, 0.5);
+    position: fixed;
+    height: calc(100% - 100px);
+    width: 100%;
+    z-index: 999998; 
+    visibility: hidden;
+}
+
+.new-main-content {
+    height: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.nav-tabs > li > a {
+    border: none !important;
+}
+
+.nav-tabs a {
+    color: #777 !important;
+    background: transparent !important;
+}
+
+.nav-tabs a:hover {
+    color: #3276b1 !important;
+    background: transparent !important;
+}
+
+.nav-tabs > li.active > a {
+    background: #ffffff !important;
+    border-top: 2px solid #3276b1 !important;
+    border-left: 1px solid #e5e5e5 !important;
+    border-right: 1px solid #e5e5e5 !important;   
+    outline: none;
+    border-radius: 0; 
+}
 
 .nav-tabs li {
     width: 50%;
@@ -11,12 +49,11 @@ styles for box pages
 }
 
 .tab-placeholder {
-    color: #777;
+    text-align: center;
 }
 
 .tab-placeholder h1 {
     font-size: 32px;
-    color: #777;
 }
 
 .tab-placeholder h2 {
@@ -24,25 +61,20 @@ styles for box pages
     color: #777;
 }
 
-.tab-vagrant textarea {
+#tab-vagrantfile, #tab-parameters {
+    width: 100%;
+    text-align: center;
+}
+
+#tab-vagrantfile textarea {
     resize: vertical;
     min-height: 400px;
 }
 
-.tab-vagrant input[type="number"] {
+#tab-vagrantfile input[type="number"] {
     width: 200px;
 }
 
-.tab-vagrant .form-inline {
+.tab-pane .form-inline {
     padding: 20px;
-}
-
-.loading {
-    background: rgba(255, 255, 255, 0.5);
-    position: fixed;
-    margin-top: -20px;
-    height: 100%;
-    width: 100%;
-    z-index: 999999;
-    visibility: hidden;
 }

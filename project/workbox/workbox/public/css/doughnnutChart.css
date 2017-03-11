@@ -1,0 +1,83 @@
+/*
+ * doughnnutChart.css
+ *
+ * charts styles
+ */
+
+
+.chart {
+    position: absolute;
+    
+}
+
+.chart-sm {
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    margin: -75px 0 0 -100px;
+}
+
+.chart-lg {
+    width: 250px;
+    height: 250px;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -125px;
+}
+
+.doughnutTip {
+    position: absolute;
+    min-width: 30px;
+    max-width: 300px;
+    padding: 5px 15px;
+    border-radius: 1px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+.doughnutTip::after {
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    content: "";
+    height: 0;
+    margin: 0 0 0 -6px;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.7);
+    line-height: 0;
+}
+
+.doughnutSummary {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    cursor: default;
+}
+
+.doughnutSummaryTitle {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -27%;
+    font-size: 14px;
+}
+
+.doughnutSummaryNumber {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -15%;
+    font-size: 32px;
+}
+
+.chart path:not(.notHoverable):hover {
+    opacity: 0.7;
+}

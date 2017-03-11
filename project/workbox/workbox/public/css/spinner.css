@@ -1,8 +1,8 @@
-/***
-spinner.css
-
-loading spinner style
-***/
+/*!
+ * spinner.css
+ *
+ *loading spinner style
+ */
 
 
 .spinner {
@@ -45,12 +45,12 @@ loading spinner style
 
 @keyframes blur1 {
     to {
-        transform: rotate(-30deg);
+        transform: rotate(-10deg);
     }
 }
 
 @keyframes blur2 {
     to {
-        transform: rotate(-15deg);
+        transform: rotate(-5deg);
     }
 }
