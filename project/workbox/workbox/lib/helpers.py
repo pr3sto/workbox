@@ -16,6 +16,7 @@ def current_year():
 def icon(icon_name):
     return Markup('<i class="glyphicon glyphicon-%s"></i>' % icon_name)
 
+
 try:
     from webhelpers2 import date, html, number, misc, text
 except SyntaxError:
