@@ -9,7 +9,7 @@
         <div class="container inner-center" style="margin-top:20px; margin-bottom:20px;">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
-                    <p class="col-sm-12 col-md-10 col-md-offset-1 login-header" style="font-size:48px;"><b>WorkBox</b></p>
+                    <p class="col-sm-12 col-md-10 col-md-offset-1" id="login-header" style="font-size:48px;"><b>WorkBox</b></p>
                     <form action="${tg.url('/login_handler', params=dict(came_from=came_from))}" method="post" accept-charset="UTF-8">
                         <fieldset>
                             <div class="row" style="padding-top:15px;">
@@ -29,7 +29,8 @@
                                     <div class="form-group">
                                         <input type="submit" class="btn btn-lg btn-primary btn-block" value="Вход" />
                                     </div>
-                                    <p style="font-size: 12px;color:#777;">Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</p>
+
+                                    <p style="font-size:12px; color:#777;">Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</p>
                                 </div>
                             </div>
                         </fieldset>
@@ -38,14 +39,13 @@
             </div>
         </div>
     </div>
-
-    <script src="/js/jquery-3.1.1.min.js"></script>
-    <script src="/js/colorsGenerator.js"></script>
-    <script type="text/javascript">
-        $(function ($) {
-            $('.login-header').css('background', gen5colorsBackground());
-        });
-    </script>
 </body>
+
+<script src="/js/colorsGenerator.js"></script>
+<script type="text/javascript">
+    $(function ($) {
+        $('#login-header').css('background', gen5colorsBackground());
+    });
+</script>
 
 </html>

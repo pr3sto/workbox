@@ -7,8 +7,7 @@
 <body py:block="body" py:strip="True">
     <div class="outer-center">
         <div class="inner-center">
-            <p style="font-size:64px;"><span class="icomoon icon-error_outline" style="color:#f44336;"></span>&nbsp;Ошибка ${code}
-            </p>
+            <p style="font-size:64px;"><span class="icomoon icon-error_outline" style="color:#f44336;"></span>&nbsp;Ошибка ${code}</p>
 
 <?python
 import re
@@ -17,16 +16,15 @@ def fixmessage(message):
     return mf.sub(r'\1noscript', message)
 ?>
 
-                <div style="font-size:24px;">${literal(fixmessage(message))}</div>
+            <div style="font-size:24px;">${literal(fixmessage(message))}</div>
         </div>
     </div>
-
-    <script src="/js/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript">
-        $(function ($) {
-            $('body').css('background-image', "url('/images/graphy.png')");
-        });
-    </script>
 </body>
+
+<script type="text/javascript">
+    $(function ($) {
+        $('body').css('background-image', "url('/images/graphy.png')");
+    });
+</script>
 
 </html>

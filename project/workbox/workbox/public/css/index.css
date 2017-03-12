@@ -15,7 +15,6 @@
     display: block;
     position: relative;
     border-bottom: 2px solid;
-
     background: linear-gradient(
         rgba(255, 255, 255, 0),
         rgba(255, 255, 255, 0),
@@ -52,13 +51,15 @@
 }
 
 .anon-welcome .to-bottom a {
-    font-size: 48px;
+    font-size: 32px;
     outline: none !important;
     border: none !important;
     text-decoration: none !important;
 }
 
 .anon-usage {
+    display: block;
+    position: relative;
     padding: 50px 0;
     background: url('/images/cubes.png');
     border-bottom: 1px solid #e5e5e5;
@@ -81,8 +82,10 @@
 }
 
 .anon-authorize-request {
-    text-align: center;
+    display: block;
+    position: relative;
     padding: 30px 0;
+    text-align: center;
     color: #777;
 }
 
@@ -113,6 +116,8 @@
 /* authorized user */
 
 .auth-welcome {
+    display: block;
+    position: relative;
     padding: 50px 0;
     border-bottom: 1px solid #e5e5e5;
 }
@@ -122,29 +127,33 @@
     font-size: 32px;
 }
 
-.auth-statistics {
+.auth-doughnut-charts {
+    display: block;
+    position: relative;
     padding: 20px 0;
     border-bottom: 1px solid #e5e5e5;
 }
 
-.statistic-block {
+.doughnut-chart {
     text-align: center;
     margin: 10px;
     min-width: 300px;
     height: 300px;
 }
 
-.statistic-block > p {
+.doughnut-chart > p {
     font-family: "RobotoLight"; 
     font-size: 20px;
 }
 
-.auth-chart {
+.auth-line-chart {
+    display: block;
+    position: relative;
     text-align: center;
     padding: 20px;
 }
 
-.auth-chart p {
+.auth-line-chart p {
     font-family: "RobotoLight";    
     font-size: 32px;
     padding-bottom: 20px;

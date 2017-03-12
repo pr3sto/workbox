@@ -12,7 +12,7 @@ html, body {
 }
 
 body {
-    font-family: 'RobotoRegular', Helvetica, Arial, sans-serif!important;
+    font-family: 'RobotoRegular', Helvetica, Arial, sans-serif !important;
 }
 
 .content {
@@ -30,7 +30,7 @@ body {
 /* navbar */
 
 .navbar {
-    background-color: #ffffff;
+    background-color: #fff;
     margin-bottom: 0;
     z-index: 999999;
 }
@@ -60,7 +60,7 @@ body {
 }
 
 .navbar-nav > li.active > a {
-    background: #ffffff !important;
+    background: #fff !important;
     border-bottom: 2px solid #3276b1 !important;
 }
 
@@ -78,7 +78,7 @@ body {
 }
 
 .open a {
-    background: #ffffff !important;
+    background: #fff !important;
 }
 
 .dropdown-menu a {
@@ -106,7 +106,7 @@ body {
 .footer {
     height: 50px;
     margin-top: -50px;
-    background-color: #ffffff;
+    background-color: #fff;
     border-top: 1px solid #e5e5e5;
 }
 
@@ -121,15 +121,15 @@ body {
     line-height: 48px;
 }
 
-.dev-tag {
+.dev {
     position: relative;
 }
 
-.dev-tag:hover .credits {
+.dev:hover .credits {
     visibility: visible;
 }
 
-.dev-tag > span {
+.dev > span {
     color: #e5e5e5;
     font-size: 25px;
     float: left;

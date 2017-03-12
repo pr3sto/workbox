@@ -1,13 +1,12 @@
 /*
- * doughnnutChart.css
+ * doughnnut-chart.css
  *
- * charts styles
+ * doughnut chart style
  */
 
 
 .chart {
     position: absolute;
-    
 }
 
 .chart-sm {

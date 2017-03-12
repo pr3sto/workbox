@@ -1,11 +1,15 @@
 /*!
  * jquery.drawDoughnutChart.js
  *
- * draw charts
+ * draw chart and gauge
  */
 
 
 ; (function ($, undefined) {
+
+  /*
+   * plugin for jQuery to draw chart
+   */
   $.fn.drawDoughnutChart = function (data, options) {
     var $this = this,
       W = $this.width(),
@@ -238,6 +242,9 @@
   };
 
 
+  /*
+   * plugin for jQuery to draw gauge
+   */
   $.fn.drawDoughnutGauge = function (value, options) {
     var $this = this,
       W = $this.width(),

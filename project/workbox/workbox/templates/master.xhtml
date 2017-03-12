@@ -10,8 +10,8 @@
 
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="/css/master.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/fonts.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/master.css" />
 
     <py:block name="head"></py:block>
 </head>
@@ -85,7 +85,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="dev-tag">
+        <div class="dev">
             <span class="icomoon icon-embed"></span>
             <div class="credits">
                 <p>Created with&nbsp;<span class="icomoon icon-heart" />&nbsp;by</p>
@@ -100,7 +100,7 @@
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        $('.dev-tag').on('mouseover mouseout', function () {
+        $('.dev').on('mouseover mouseout', function () {
             var randomColor = '#' + Math.random().toString(16).slice(-6);
             $('.icon-heart').css('color', randomColor);
         });

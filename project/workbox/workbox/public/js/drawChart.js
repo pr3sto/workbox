@@ -1,7 +1,7 @@
 /*!
  * drawChart.js
  *
- * generate colors background
+ * draw line chart 
  */
 
 
