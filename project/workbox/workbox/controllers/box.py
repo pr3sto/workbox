@@ -1,20 +1,13 @@
 # -*- coding: utf-8 -*-
 """Boxes actions controller."""
 
-import os
-import shutil
-import uuid
-import vagrant
-#from bson.objectid import ObjectId
 from tg import expose
 from tg.i18n import lazy_ugettext as l_
 from tg.exceptions import HTTPFound
 from tg.predicates import not_anonymous
 from tg import request, redirect
-from workbox import model
-from workbox.config.app_cfg import base_config
-from datetime import datetime
 
+from workbox.boxengine import BoxEngine
 from workbox.lib.base import BaseController
 
 __all__ = ['BoxController']
@@ -26,46 +19,48 @@ class BoxController(BaseController):
     # The predicate that must be met for all the actions in this controller:
     allow_only = not_anonymous(msg=l_('Only for authorized users'))
 
+    # engine for work with boxes
+    box_engine = BoxEngine()
+
     @expose()
     def index(self):
+        """Not used. Just redirect."""
         redirect('/box/new')
 
     @expose('workbox.templates.box.new')
     def new(self):
+        """Handle the box creation page."""
         return dict(page='new')
-
-    @expose()
-    def create(self):
-        # input_file = request.POST['filebutton'].file
-        # directory = '/tmp/project_bsc/' + str(uuid.uuid4())
-        #
-        # if not os.path.exists(directory):
-        #     os.makedirs(directory)
-        #
-        # file_path = os.path.join(directory, 'Vagrantfile')
-        # temp_file_path = file_path + '~'
-        #
-        # input_file.seek(0)
-        # with open(temp_file_path, 'wb') as output_file:
-        #     shutil.copyfileobj(input_file, output_file)
-        #
-        # os.rename(temp_file_path, file_path)
-        #
-        # c = model.Box()
-        # c.user = base_config.sa_auth.user_class.query.get(user_name=request.identity['repoze.who.userid'])
-        # c.datetime_of_creation = datetime.now()
-        # c.vagrantfile_path = directory
-        # c.status = 'created'
-        # c.port = int(request.POST['textinput'])
-        # model.DBSession.flush()
-        # model.DBSession.clear()
-
-        return HTTPFound(location='/box/new')
 
     @expose('workbox.templates.box.list')
     def list(self):
-        #entries = model.Box.query.find()
-        return dict(page='list')#, entries=entries)
+        """Handle the box list page."""
+        entries = self.box_engine.get_all_boxes()
+        return dict(page='list', entries=entries)
+
+    @expose()
+    def create_from_vagrantfile(self):
+        """Create box from given vagrantfile."""
+        num_of_copies = int(request.POST['num-of-copies'])
+
+        for _ in range(num_of_copies):
+            self.box_engine.create_box_from_vagrantfile(
+                request.identity, str(request.POST['vagrantfile-text'])
+            )
+
+        return HTTPFound(location='/box/list')
+
+    @expose()
+    def create_from_parameters(self):
+        """Create box from given parameters."""
+        num_of_copies = int(request.POST['num-of-copies'])
+
+        for _ in range(num_of_copies):
+            self.box_engine.create_box_from_parameters(
+                request.identity
+            )
+
+        return HTTPFound(location='/box/list')
 
     @expose()
     def start(self, c_id):

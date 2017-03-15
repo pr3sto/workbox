@@ -25,6 +25,10 @@ def bootstrap(command, conf, vars):
     u.groups = [g]
     u.password = 'admin'
 
+    box_id = model.AutoincId()
+    box_id._id = 'box'
+    box_id.uid = 0
+
     model.DBSession.flush()
     model.DBSession.clear()
 

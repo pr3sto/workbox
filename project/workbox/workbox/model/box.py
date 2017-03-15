@@ -24,17 +24,14 @@ class Box(MappedClass):
         name = 'boxes'
 
     _id = FieldProperty(s.ObjectId)
+    box_id = FieldProperty(s.Int)
 
     datetime_of_creation = FieldProperty(s.datetime)
-    datetime_of_launch = FieldProperty(s.datetime)
+    datetime_of_modify = FieldProperty(s.datetime)
 
     _user = ForeignIdProperty(User)
     user = RelationProperty(User)
 
     status = FieldProperty(s.String)
-
-    host = FieldProperty(s.String)
-    host_port = FieldProperty(s.Int)
-    guest_port = FieldProperty(s.Int)
-
+    name = FieldProperty(s.String)
     vagrantfile_path = FieldProperty(s.String)

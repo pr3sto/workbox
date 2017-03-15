@@ -15,7 +15,8 @@ def init_model(engine):
 
 
 from workbox.model.auth import User, Group, Permission
+from workbox.model.autoincrement import AutoincId
 from workbox.model.box import Box
 
 
-__all__ = ('User', 'Group', 'Permission', 'Box')
+__all__ = ('User', 'Group', 'Permission', 'AutoincId', 'Box')
