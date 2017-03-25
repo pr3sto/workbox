@@ -25,30 +25,10 @@
     font-style: normal;
     font-weight: normal;
 }
-/* font-family: "RobotoMedium"; */
-@font-face {
-    font-family: "RobotoMedium";
-    src: url("../fonts/RobotoMedium/RobotoMedium.eot");
-    src: url("../fonts/RobotoMedium/RobotoMedium.eot?#iefix")format("embedded-opentype"),
-    url("../fonts/RobotoMedium/RobotoMedium.woff") format("woff"),
-    url("../fonts/RobotoMedium/RobotoMedium.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}
-/* font-family: "RobotoBold"; */
-@font-face {
-    font-family: "RobotoBold";
-    src: url("../fonts/RobotoBold/RobotoBold.eot");
-    src: url("../fonts/RobotoBold/RobotoBold.eot?#iefix")format("embedded-opentype"),
-    url("../fonts/RobotoBold/RobotoBold.woff") format("woff"),
-    url("../fonts/RobotoBold/RobotoBold.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}
 /* font-family: "AnonymousPro"; */
 @font-face {
     font-family: "AnonymousPro";
-    src: url("../fonts/AnonymousPro/Anonymous Pro B.ttf") format("truetype");
+    src: url("../fonts/AnonymousPro/Anonymous Pro Minus.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
