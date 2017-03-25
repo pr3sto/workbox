@@ -6,7 +6,8 @@ from .session import mainsession, DBSession
 
 
 def init_model(engine):
-    """Call me before using any of the tables or classes in the model."""
+    """Call me before using any of the tables or classes in the model"""
+
     mainsession.bind = engine
     ming.odm.Mapper.compile_all()
 
@@ -15,8 +16,10 @@ def init_model(engine):
 
 
 from workbox.model.auth import User, Group, Permission
-from workbox.model.autoincrement import AutoincId
+from workbox.model.counter import Counter
 from workbox.model.box import Box
+from workbox.model.vagrantfile_template import VagrantfileTemplate
+from workbox.model.history import History 
 
 
-__all__ = ('User', 'Group', 'Permission', 'AutoincId', 'Box')
+__all__ = ['User', 'Group', 'Permission', 'Counter', 'Box', 'VagrantfileTemplate', 'History']

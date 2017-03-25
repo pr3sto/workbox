@@ -6,28 +6,41 @@ from workbox import model
 
 
 def bootstrap(command, conf, vars):
-    """Place any commands to setup workbox here"""
+    """First setup of workbox"""
 
     # <websetup.bootstrap.before.auth>
 
-    g = model.Group()
-    g.group_name = 'managers'
-    g.display_name = 'Managers Group'
+    gm = model.Group()
+    gm.group_name = 'managers'
+    gm.display_name = 'Managers Group'
 
-    p = model.Permission()
-    p.permission_name = 'manage'
-    p.description = 'This permission gives an administrative right'
-    p.groups = [g]
+    gu = model.Group()
+    gu.group_name = 'users'
+    gu.display_name = 'Users Group'
+
+    pm = model.Permission()
+    pm.permission_name = 'manage'
+    pm.description = 'This permission gives an administrative right'
+    pm.groups = [gm]
+
+    pu = model.Permission()
+    pu.permission_name = 'use'
+    pu.description = 'This permission gives basic rights'
+    pu.groups = [gu]
 
     u = model.User()
     u.user_name = 'admin'
     u.display_name = 'Administrator'
-    u.groups = [g]
+    u.groups = [gm]
     u.password = 'admin'
 
-    box_id = model.AutoincId()
-    box_id._id = 'box'
-    box_id.uid = 0
+    box_counter = model.Counter()
+    box_counter._id = 'box'
+    box_counter.uid = 0
+
+    history_counter = model.Counter()
+    history_counter._id = 'history'
+    history_counter.uid = 0
 
     model.DBSession.flush()
     model.DBSession.clear()

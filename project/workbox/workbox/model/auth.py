@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Auth* related model.
+Auth* related model
 
-This is where the models used by the authentication stack are defined.
+This is where the models used by the authentication stack are defined
 
 """
 
@@ -20,11 +20,12 @@ __all__ = ['User', 'Group', 'Permission']
 
 class Group(MappedClass):
     """
-    Group definition.
+    Group definition
     """
+
     class __mongometa__:
         session = DBSession
-        name = 'tg_group'
+        name = 'group'
         unique_indexes = [('group_name',),]
 
     _id = FieldProperty(s.ObjectId)
@@ -36,11 +37,12 @@ class Group(MappedClass):
 
 class Permission(MappedClass):
     """
-    Permission definition.
+    Permission definition
     """
+
     class __mongometa__:
         session = DBSession
-        name = 'tg_permission'
+        name = 'permission'
         unique_indexes = [('permission_name',),]
 
     _id = FieldProperty(s.ObjectId)
@@ -53,15 +55,16 @@ class Permission(MappedClass):
 
 class User(MappedClass):
     """
-    User definition.
+    User definition
 
     This is the user definition used by :mod:`repoze.who`, which requires at
     least the ``user_name`` column.
 
     """
+
     class __mongometa__:
         session = DBSession
-        name = 'tg_user'
+        name = 'user'
         unique_indexes = [('user_name',),]
 
     class PasswordProperty(FieldProperty):
@@ -72,14 +75,10 @@ class User(MappedClass):
             salt = salt.hexdigest()
 
             hash = sha256()
-            # Make sure password is a str because we cannot hash unicode objects
             hash.update((password + salt).encode('utf-8'))
             hash = hash.hexdigest()
 
             password = salt + hash
-
-            # Make sure the hashed password is a unicode object at the end of the
-            # process because SQLAlchemy _wants_ unicode objects for Unicode cols
             password = password.decode('utf-8')
 
             return password
@@ -100,6 +99,8 @@ class User(MappedClass):
 
     @property
     def permissions(self):
+        """Get all user's permissions"""
+
         return Permission.query.find(dict(_groups={'$in': self._groups})).all()
 
     def validate_password(self, password):
@@ -114,6 +115,7 @@ class User(MappedClass):
         :rtype: bool
 
         """
+
         hash = sha256()
         hash.update((password + self.password[:64]).encode('utf-8'))
         return self.password[64:] == hash.hexdigest()
