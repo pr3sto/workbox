@@ -37,13 +37,14 @@ case "$1" in
 
     WSGIProcessGroup dev.workbox
     WSGIDaemonProcess dev.workbox user=www-data group=www-data threads=4 python-path=/opt/venvs/workbox/lib/python2.7/site-packages
-    WSGIScriptAlias / /opt/venvs/workbox/lib/python2.7/site-packages/workbox/wsgiconfig/app.wsgi
+    WSGIScriptAlias / /opt/venvs/workbox/lib/python2.7/site-packages/workbox/appconfig/app.wsgi
 
     #Serve static files directly without TurboGears
     Alias /images /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/images
     Alias /fonts /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/fonts
     Alias /css /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/css
     Alias /js /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/js
+    Alias /local /opt/venvs/workbox/lib/python2.7/site-packages/workbox/public/local
 
     CustomLog \${APACHE_LOG_DIR}/workbox-access_log common
     ErrorLog \${APACHE_LOG_DIR}/workbox-error_log
