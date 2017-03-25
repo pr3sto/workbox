@@ -24,7 +24,7 @@
             <nav class="navbar navbar-default"></nav>
             <!-- Real navbar -->
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-                <div class="container-fluid">
+                <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
                         <span class="sr-only">Toggle navigation</span>
@@ -85,22 +85,25 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="dev">
-            <span class="icomoon icon-embed"></span>
-            <div class="credits">
-                <p>Created with&nbsp;<span class="icomoon icon-heart" />&nbsp;by</p>
-                <p>Alexey Chirukhin</p>
-                <p>&lt;pr3sto1377@gmail.com&gt;</p>
-                <p style="margin-bottom:0px;">LETI 2016-2017</p>
+        <div class="container">
+            <div id="dev">
+                <span class="icomoon icon-embed"></span>
+                <div id="credits">
+                    <p>Created with&nbsp;<span class="icomoon icon-heart" />&nbsp;by</p>
+                    <p>Alexey Chirukhin</p>
+                    <p>&lt;pr3sto1377@gmail.com&gt;</p>
+                    <p style="margin-bottom:0px;">LETI 2016-2017</p>
+                </div>
             </div>
+            <p id="copyright">&copy; ${h.current_year()} WorkBox</p>
         </div>
-        <p class="copyright">&copy; ${h.current_year()} WorkBox</p>
     </footer>
 
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/navbar-shadow.js"></script>
     <script type="text/javascript">
-        $('.dev').on('mouseover mouseout', function () {
+        $('#dev').on('mouseover mouseout', function () {
             var randomColor = '#' + Math.random().toString(16).slice(-6);
             $('.icon-heart').css('color', randomColor);
         });

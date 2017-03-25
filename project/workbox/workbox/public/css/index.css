@@ -7,13 +7,14 @@
 
 /* anonymous user */
 
-.anon-welcome {
-    height: calc(100vh - 50px);
+#welcome {
+    height: calc(100vh - 100px);
     min-height: 750px;
     text-align: center;
     padding: 50px 0;
     display: block;
     position: relative;
+    border-top: 3px solid;
     border-bottom: 2px solid;
     background: linear-gradient(
         rgba(255, 255, 255, 0),
@@ -27,110 +28,39 @@
     background-position: center;
 }
 
-.anon-welcome img {
+#welcome img {
     width: 200px;
     height: 200px;
 }
 
-.anon-welcome h1 {
+#welcome h1 {
     font-size: 72px;
 }
 
-.anon-welcome h2 {
+#welcome h2 {
     font-family: "RobotoLight";
     font-size: 48px;
-}
-
-.anon-welcome .to-bottom {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    bottom: 50px;
-}
-
-.anon-welcome .to-bottom a {
-    font-size: 32px;
-    outline: none !important;
-    border: none !important;
-    text-decoration: none !important;
-}
-
-.anon-usage {
-    display: block;
-    position: relative;
-    padding: 50px 0;
-    background: url('/images/cubes.png');
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.anon-usage h1 {
-    text-align: center;
-    font-size: 48px;
-}
-
-.anon-usage h2 {
-    text-align: left;
-    font-size: 32px;
-}
-
-.anon-usage h3 {
-    font-family: "RobotoLight";
-    text-align: justify;
-    font-size: 20px;
-}
-
-.anon-authorize-request {
-    display: block;
-    position: relative;
-    padding: 30px 0;
-    text-align: center;
-    color: #777;
-}
-
-.anon-authorize-request h1 {
-    font-size: 20px;
-}
-
-.anon-authorize-request h2 {
-    font-size: 12px;
-}
-
-.anon-authorize-request a {
-    color: #3276b1;
-}
-
-.paragraph {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-}
-
-.paragraph span {
-    margin: auto;
-    color: #3276b1;
-    font-size: 100px;
 }
 
 /* authorized user */
 
-.auth-welcome {
+#display-name {
+    background: url('/images/cubes.png');
     display: block;
     position: relative;
-    padding: 50px 0;
+    padding: 100px 0;
     border-bottom: 1px solid #e5e5e5;
 }
 
-.auth-welcome h1 {
+#display-name h1 {
     text-align: center;
     font-size: 32px;
 }
 
-.auth-doughnut-charts {
+#doughnut-charts {
     display: block;
     position: relative;
-    padding: 20px 0;
+    padding: 30px 0;
     border-bottom: 1px solid #e5e5e5;
 }
 
@@ -146,15 +76,18 @@
     font-size: 20px;
 }
 
-.auth-line-chart {
+#line-chart {
     display: block;
     position: relative;
     text-align: center;
-    padding: 20px;
+    padding: 30px 0;
 }
 
-.auth-line-chart p {
-    font-family: "RobotoLight";    
-    font-size: 32px;
+#line-chart p { 
+    font-size: 20px;
     padding-bottom: 20px;
+}
+
+#line-chart canvas {
+    max-width: calc(100vw - 60px);
 }

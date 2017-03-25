@@ -14,10 +14,24 @@
     visibility: hidden;
 }
 
-.new-main-content {
-    height: 100%;
-    padding-top: 20px;
-    padding-bottom: 20px;
+/* 'new' page */
+
+#nav-tabs-wrapper {
+    height: 100px;
+    position: relative;
+    background: url('/images/cubes.png');
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.nav-tabs {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-left: 15px;
+    border: none !important;
 }
 
 .nav-tabs > li > a {
@@ -36,11 +50,22 @@
 
 .nav-tabs > li.active > a {
     background: #ffffff !important;
-    border-top: 2px solid #3276b1 !important;
     border-left: 1px solid #e5e5e5 !important;
     border-right: 1px solid #e5e5e5 !important;   
     outline: none;
     border-radius: 0; 
+    margin-right: 0px;
+}
+
+.nav-tabs > li.active > a::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    height: 2px;
+    background-color: transparent;
+    border-top: 2px solid #3276b1 !important;
 }
 
 .nav-tabs li {
@@ -48,17 +73,23 @@
     text-align: center;
 }
 
-.tab-placeholder {
+.tab-content {
+    height: calc(100% - 70px);
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#tab-placeholder {
     text-align: center;
 }
 
-.tab-placeholder h1 {
+#tab-placeholder h1 {
     font-size: 32px;
 }
 
-.tab-placeholder h2 {
+#tab-placeholder h2 {
+    font-family: "RobotoLight";
     font-size: 20px;
-    color: #777;
 }
 
 #tab-vagrantfile, #tab-parameters {
@@ -71,10 +102,27 @@
     min-height: 400px;
 }
 
-#tab-vagrantfile input[type="number"] {
-    width: 200px;
+.form-group > input {
+    display: inline-block !important;
+    width: 250px !important;
 }
 
-.tab-pane .form-inline {
-    padding: 20px;
+/* 'list' page */
+
+#list-header {
+    height: 100px;
+    position: relative;
+    background: url('/images/cubes.png');
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#list-header h1 {
+    text-align: center;
+    font-size: 20px;
+}
+
+.table-wrapper {
+    height: calc(100% - 70px);
+    padding-top: 30px;
+    padding-bottom: 30px;
 }

@@ -56,7 +56,7 @@ body {
 
 .navbar-fixed-top {
     border-color: #e0d9d9;
-    box-shadow: 0px 0.0625em 0.3125em rgba(0, 0, 0, 0.15);
+    transition-duration: 0.3s;
 }
 
 .navbar-nav > li.active > a {
@@ -96,9 +96,9 @@ body {
 }
 
 .admin-panel {
-    height: calc(100% - 90px);
-    margin-top: 20px;
-    margin-bottom: 20px;
+    height: calc(100% - 150px);
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 /* footer */
@@ -115,21 +115,21 @@ body {
     color: #777;
 }
 
-.copyright {
+#copyright {
     font-size: 12px;
     text-align: center;
     line-height: 48px;
 }
 
-.dev {
+#dev {
     position: relative;
 }
 
-.dev:hover .credits {
+#dev:hover #credits {
     visibility: visible;
 }
 
-.dev > span {
+#dev > span {
     color: #e5e5e5;
     font-size: 25px;
     float: left;
@@ -139,7 +139,7 @@ body {
     cursor: default;
 }
 
-.credits {
+#credits {
     font-family: "AnonymousPro";
     font-size: 14px;
     text-align: right;
@@ -154,11 +154,11 @@ body {
     visibility: hidden;
 }
 
-.credits:focus {
+#credits:focus {
     visibility: visible;
 }
 
-.credits:after, .credits:before {
+#credits:after, #credits:before {
 	top: 100%;
 	left: 6%;
 	border: solid transparent;
@@ -169,13 +169,13 @@ body {
 	pointer-events: none;
 }
 
-.credits:after {
+#credits:after {
 	border-top-color: #fff;
 	border-width: 5px;
 	margin-left: -5px;
 }
 
-.credits:before {
+#credits:before {
 	border-top-color: #777;
 	border-width: 8px;
 	margin-left: -8px;

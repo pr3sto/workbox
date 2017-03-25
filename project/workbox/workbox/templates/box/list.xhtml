@@ -1,48 +1,84 @@
 <html py:extends="master.xhtml" py:strip="True">
+
 <head py:block="head" py:strip="True">
     <title py:block="master_title">Список виртуальных рабочих сред | WorkBox</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/box.css')}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/datatables.min.css"/>
 </head>
 
 <body py:block="body" py:strip="True">
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>container_id</th>
-        <th>datetime_of_creation</th>
-        <th>vagrantfile_path</th>
-        <th>status</th>
-        <th>port</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
+    <section id="list-header">
+        <div class="container outer-center">
+            <h1 class="inner-center">Ваши виртуальные рабочие среды в <b>WorkBox</b></h1>
+        </div>
+    </section>
+    <div class="table-wrapper container">
+        <table id="box-table" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Название</th>
+                    <th>Статус</th>
+                    <th>Автор</th>
+                    <th>Время создания</th>
+                    <th>Время изменения</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
 
-    <tbody>
-    <py:for each="entry in entries">
-        <tr>
-            <td>${entry.container_id}</td>
-            <td>${entry.datetime_of_creation}</td>
-            <td>${entry.vagrantfile_path}</td>
-            <td>${entry.status}</td>
-            <td>${entry.port}</td>
-            <td>
-                <div py:if="entry.status != 'started'">
-                    <form action="start?c_id=${entry._id}" method="post">
-                        <button class="btn btn-success">Start</button>
-                    </form>
-                </div>
-            </td>
-            <td>
-                <div py:if="entry.status not in ['created', 'stopped']">
-                    <form action="stop?c_id=${entry._id}" method="post">
-                        <button class="btn btn-danger">Stop</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-    </py:for>
-    </tbody>
-</table>
+            <tfoot>
+                <tr>
+                    <th>#</th>
+                    <th>Название</th>
+                    <th>Статус</th>
+                    <th>Автор</th>
+                    <th>Время создания</th>
+                    <th>Время изменения</th>
+                    <th>Действия</th>
+                </tr>
+            </tfoot>
+
+            <tbody>
+                <py:for each="entry in entries">
+                    <tr id='${entry.box_id}'>
+                        <td>${entry.box_id}</td>
+                        <td>${entry.name}</td>
+                        <td>${entry.status}</td>
+                        <td>${entry.user.display_name}</td>
+                        <td>${entry.datetime_of_creation}</td>
+                        <td>${entry.datetime_of_modify}</td>
+                        <td>
+                            <div py:if="entry.status != 'started'">
+                                <form action="start?c_id=${entry._id}" method="post">
+                                    <button class="btn btn-success">Start</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </py:for>
+            </tbody>
+        </table>
+    </div>
 </body>
+
+<script src="/js/datatables.min.js"></script>
+<script type="text/javascript">
+    $(function ($) {
+        $('#box-table').dataTable({
+            fixedHeader: {
+                header: true,
+                headerOffset: 50
+            },
+            columnDefs: [ {
+                targets: 6,
+                orderable: false
+            } ],
+            pagingType: "numbers",
+            language: {
+                url: "/local/datatables.ru.lang"
+            }
+        });
+    });
+</script>
+
 </html>

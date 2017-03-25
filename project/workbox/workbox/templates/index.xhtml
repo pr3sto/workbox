@@ -8,76 +8,27 @@
 
 <body py:block="body" py:strip="True">
 
-    <!-- not authorized user -->
     <div py:if="not request.identity">
-        <section class="anon-welcome" id="welcome">
+        <!-- not authorized user -->
+        <section id="welcome">
             <div class="container outer-center">
-                <div class="inner-center" style="padding-bottom:100px;">
+                <div class="inner-center" style="padding-bottom:50px;">
                     <img src="/images/box.png" />
                     <h1><b>WorkBox</b></h1>
                     <h2>Сервис для настройки, запуска и мониторинга виртуальных рабочих сред</h2>
                 </div>
             </div>
-            <div class="to-bottom">
-                <a href="#usage"><span class="icomoon icon-arrow-down"></span></a>
-            </div>
-        </section>
-        <section class="anon-usage" id="usage">
-            <div class="container outer-center">
-                <div class="inner-center">
-                    <h1>Использование <b>WorkBox</b></h1>
-                    <div class="col-xs-10 col-xs-offset-1">
-                        <div class="paragraph">
-                            <span class="icomoon icon-navigate_next"></span>
-                            <div>
-                                <h2>Проведение лабораторных занятий</h2>
-                                <h3>
-                                    Настраивайте и создавайте виртуальные рабочие среды, генерируйте данные для доступа к ним и раздавайте студентам. Благодаря
-                                    тому, что виртуальная среда полностью изолирована, ее использование безопасно, а любые
-                                    ошибки не выйдут за ее пределы.
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="paragraph">
-                            <span class="icomoon icon-navigate_next"></span>
-                            <div>
-                                <h2>Запуск программ</h2>
-                                <h3>
-                                    Необходимо использовать программу один раз, и поэтому не хочется устанавливать ее на свой компьютер? Нет проблем! Запустите
-                                    ее в виртуальной среде всего за несколько минут.
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="paragraph">
-                            <span class="icomoon icon-navigate_next"></span>
-                            <div>
-                                <h2>Больше возможностей</h2>
-                                <h3>
-                                    Использование сервиса не ограничивается приведенными сценариями. Знаете другое применение виртуальной среды? Используйте
-                                    сервис так, как хотите!
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="anon-authorize-request">
-            <div class="container">
-                <h1>Для работы с сервисом необходима <a href="/login/">авторизация</a></h1>
-                <h2>Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</h2>
-            </div>
         </section>
     </div>
 
-    <!-- authorized user -->
     <div py:if="request.identity">
-        <section class="auth-welcome">
+        <!-- authorized user -->
+        <section id="display-name">
             <div class="container">
                 <h1><b>${request.identity['user'].display_name}</b>, добро пожаловать в Ваш <b>WorkBox</b></h1>
             </div>
         </section>
-        <section class="auth-doughnut-charts">
+        <section id="doughnut-charts">
             <div class="container">
                 <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-0 col-md-push-4" style="padding:0">
                     <div class="doughnut-chart">
@@ -101,9 +52,9 @@
                 </div>
             </div>
         </section>
-        <section class="auth-line-chart">
+        <section id="line-chart">
             <div class="container">
-                <p>Средняя загрузка сервиса за последние 7 дней:</p>
+                <p>Средняя загрузка сервиса за последние 7 дней (%)</p>
                 <canvas id="chart" height="100"></canvas>
             </div>
         </section>
@@ -111,32 +62,34 @@
 </body>
 
 <script src="/js/jquery.drawDoughnutChart.js"></script>
-<script src="/js/smoothGotoRefference.js"></script>
 <script src="/js/colorsGenerator.js"></script>
 <script src="/js/Chart.min.js"></script>
 <script src="/js/drawChart.js"></script>
 <script type="text/javascript">
     $(function ($) {
-        $('.anon-welcome').css('border-image', gen10colorsBorder());
-
-        $('#doughnutGauge').drawDoughnutGauge(53);
+        $('#welcome').css('border-image', gen10colorsBorder());
+    });
+</script>
+<script py:if="request.identity" type="text/javascript">
+    $(function ($) {
+        $('#doughnutGauge').drawDoughnutGauge(${load_value});
 
         $('#doughnutChart1').drawDoughnutChart([
-            { title: "Запущенные", value: 5, color: "#00C853" },
-            { title: "Остановленные", value: 10, color: "#f44336" },
-            { title: "Созданные", value: 3, color: "#00BCD4" }
+            { title: "Запущенные", value: ${my_boxes['started']}, color: "#00C853" },
+            { title: "Остановленные", value: ${my_boxes['stopped']}, color: "#f44336" },
+            { title: "Созданные", value: ${my_boxes['created']}, color: "#00BCD4" }
         ]);
 
         $('#doughnutChart2').drawDoughnutChart([
-            { title: "Запущенные", value: 120, color: "#00C853" },
-            { title: "Остановленные", value: 80, color: "#f44336" },
-            { title: "Созданные", value: 2000, color: "#00BCD4" }
+            { title: "Запущенные", value: ${all_boxes['started']}, color: "#00C853" },
+            { title: "Остановленные", value: ${all_boxes['stopped']}, color: "#f44336" },
+            { title: "Созданные", value: ${all_boxes['created']}, color: "#00BCD4" }
         ]);
 
         var chart = document.getElementById('chart').getContext('2d');
         var inputData = {
-            labels: ['Пн', 'Вт', 'Ср', 'Чтв', 'Пт', 'Сб', 'Вск'],
-            data: [65, 59, 56, 44, 38, 5, 5]
+            labels: ${line_chart['labels']},
+            data: ${line_chart['data']}
         }
         drawChart(chart, inputData);
     });

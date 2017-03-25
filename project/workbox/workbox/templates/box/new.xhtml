@@ -2,11 +2,12 @@
 
 <head py:block="head" py:strip="True">
     <title py:block="master_title">Создание виртуальной рабочей среды | WorkBox</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/box.css')}" />
-    <link rel="stylesheet" type="text/css" media="screen" href="${tg.url('/css/spinner.css')}" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/spinner.css" />
 </head>
 
 <body py:block="body" py:strip="True">
+
     <!-- loader -->
     <div class="loading">
         <div class="outer-center">
@@ -15,51 +16,50 @@
     </div>
 
     <!-- content -->
-    <div class="container new-main-content">
-        <div style="height:50px;">
-            <ul class="nav nav-tabs">
-                <li><a data-toggle="tab" href="#tab-vagrantfile">Vagrantfile</a></li>
-                <li><a data-toggle="tab" href="#tab-parameters">Ввод параметров</a></li>
-            </ul>
+    <section id="nav-tabs-wrapper">
+        <ul class="container nav nav-tabs">
+            <li><a data-toggle="tab" href="#tab-vagrantfile">Vagrantfile</a></li>
+            <li><a data-toggle="tab" href="#tab-parameters">Ввод параметров</a></li>
+        </ul>
+    </section>
+    <div class="container tab-content outer-center">
+        <!-- placeholder -->
+        <div id="tab-placeholder" class="inner-center tab-pane fade in active">
+            <h1>Выберите способ создания виртуальной среды:</h1>
+            <h2>'Vagrantfile' - для опытных пользователей, знакомых со структурой файла конфигурации</h2>
+            <h2>'Ввод параметров' - для настройки параметров с помощью формы</h2>
+            <h2><a href="/box/list/">Копировать существующую виртуальную среду</a></h2>
         </div>
-        <div class="tab-content outer-center" style="height:calc(100% - 50px);padding-top:20px;">
-            <!-- placeholder -->
-            <div class="inner-center tab-placeholder tab-pane fade in active">
-                <h1>Выберите способ создания виртуальной среды:</h1>
-                <h2>'Vagrantfile' - для опытных пользователей, знакомых со структурой файла конфигурации</h2>
-                <h2>'Ввод параметров' - для настройки параметров с помощью формы</h2>
-                <h2>&nbsp;</h2>
-                <h2>Вы также можете скопировать существующую виртуальную среду</h2><h2>Для этого найдите ее в <a href="/box/list/">списке</a> и нажмите на кнопку 'Копировать'</h2>
-            </div>
-            <!-- vagrantfile -->
-            <div id="tab-vagrantfile" class="tab-pane fade">
-                <form action="${tg.url('/box/create')}" method="post" accept-charset="UTF-8">
-                    <p style="padding:20px;"><label tabindex="0" class="file-label btn btn-default">Загрузите Vagrantfile<input class="file-input btn btn-default" type="file" style="display:none;"/></label> 
-                    или воспользуйтесь редактором для создания нового файла</p>
-                    <textarea class="form-control" id="vagrantfile-data" required="true"></textarea>
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <input placeholder="Количество копий" class="form-control" type="number" min="1" max="20" required="true" />
-                        </div>
-                        <button type="submit" class="btn btn-primary">Создать</button>
+        <!-- vagrantfile -->
+        <div id="tab-vagrantfile" class="tab-pane fade">
+            <form action="/box/create_from_vagrantfile" method="post" accept-charset="UTF-8">
+                <p style="padding-bottom:10px;"><label tabindex="0" class="file-label btn btn-default">Загрузите Vagrantfile<input class="file-input btn btn-default" type="file" style="display:none;"/></label> 
+                &nbsp;или воспользуйтесь редактором для создания нового файла</p>
+                <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-data" required="true"></textarea>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input name="box-name" placeholder="Название виртуальной среды" class="form-control" required="true" style="margin-top:20px;margin-bottom:20px;" />
+                        <input name="num-of-copies" placeholder="Количество копий" class="form-control" required="true" type="number" min="1" max="20" />
                     </div>
-                </form>
-            </div>
-            <!-- parameters -->
-            <div id="tab-parameters" class="tab-pane fade">
-                <form action="${tg.url('/box/create')}" method="post" accept-charset="UTF-8">
-
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <input placeholder="Количество копий" class="form-control" type="number" min="1" max="20" required="true" />
-                        </div>
-                        <button type="submit" class="btn btn-primary">Создать</button>
+                    <button type="submit" class="btn btn-primary">Создать</button>
+                </div>
+            </form>
+        </div>
+        <!-- parameters -->
+        <div id="tab-parameters" class="tab-pane fade">
+            <form action="/box/create_from_parameters" method="post" accept-charset="UTF-8">
+                <input name="box-name" class="form-control" placeholder="Название виртуальной среды" required="true" style="margin-top:20px;margin-bottom:20px;" />
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input name="box-name" placeholder="Название виртуальной среды" class="form-control" required="true" style="margin-top:20px;margin-bottom:20px;" />
+                        <input name="num-of-copies" placeholder="Количество копий" class="form-control" required="true" type="number" min="1" max="20" />
                     </div>
-                </form>
-            </div>
-
+                    <button type="submit" class="btn btn-primary">Создать</button>
+                </div>
+            </form>
         </div>
     </div>
+
 </body>
 
 <script type="text/javascript">
@@ -78,6 +78,7 @@
         }
     });
 
+    // keyboard fix
     $('.file-label').on('keypress', function(event) {
         if ((event.which || event.keyCode) === 13  ) {
             $('.file-input').click();
