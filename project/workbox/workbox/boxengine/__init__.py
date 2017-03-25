@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Engine for virtual environments (boxes)."""
+"""Engine for working with virtual environments (boxes)"""
 
 from workbox.boxengine.core import BoxEngine
 

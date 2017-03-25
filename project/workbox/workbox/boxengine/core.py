@@ -1,54 +1,127 @@
 # -*- coding: utf-8 -*-
-"""
-Core of box engine package.
-
-"""
+"""Core of box engine package"""
 
 import os
 import uuid
-from datetime import datetime
 
 import vagrant
 
 from workbox import model
-from workbox.config.app_cfg import base_config
 
 
-class BoxEngine():
-    """Helper class for work with boxes."""
+class BoxEngine(object):
+    """Helper class for working with boxes"""
 
     base_vagrantfile_directory = '/tmp/workbox/'
 
-    def get_all_boxes(self):
-        """Get all boxes from db."""
-        return model.Box.query.find()
+    @staticmethod
+    def create_box_from_vagrantfile(box_name, user_name, vagrantfile_data):
+        """
+        Create box from givent Vagrantfile text
 
-    def create_box_from_vagrantfile(self, identity, vagrantfile_data):
-        """Create box from givent Vagrantfile text."""
-        box_name = self._get_box_name_from_vagrantfile(vagrantfile_data)
-        vagrantfile_path = self._create_vagrantfile(vagrantfile_data)
+        Args:
+            box_name (string): name of box
+            user_name (string): author name
+            vagrantfile_data (string): text data of vagrantfile
 
-        # add to db
-        box = model.Box()
-        box.box_id = model.AutoincId.get_next_id('box')
-        box.user = base_config.sa_auth.user_class.query.get(user_name=identity['repoze.who.userid'])
-        box.datetime_of_creation = datetime.now()
-        box.datetime_of_modify = box.datetime_of_creation
-        box.status = 'created'
-        box.name = box_name
-        box.vagrantfile_path = vagrantfile_path
+        """
 
-        model.DBSession.flush()
-        model.DBSession.clear()
+        vagrantfile_path = BoxEngine._create_vagrantfile(vagrantfile_data)
+        model.Box.add_new_box(user_name, box_name, vagrantfile_path)
 
-    def create_box_from_parameters(self, identity):
-        """Create box from givent parameters."""
+    @staticmethod
+    def create_box_from_parameters():
+        """
+        Create box from givent parameters
+
+        Args:
+            box_name (string): name of box
+            user_name (string): author name
+
+        """
+
         pass
 
-    def _create_vagrantfile(self, vagrantfile_data):
-        """Create Vagrantfile and return its path."""
+    @staticmethod
+    def get_service_load_value():
+        """
+        Get service load value
 
-        directory = self.base_vagrantfile_directory + str(uuid.uuid4())
+        Returns:
+            Service load value (int between 0 and 100)
+
+        """
+
+        import random
+        return random.randint(0, 100)
+
+    @staticmethod
+    def get_number_of_user_boxes(user_id):
+        """
+        Get number of all users boxes from db
+
+        Args:
+            user_id (int): user id in db
+
+        Returns:
+            Number of all user's boxes
+
+        """
+
+        my_boxes = {}
+        my_boxes['created'] = model.Box.get_number_of_user_boxes(user_id, 'created')
+        my_boxes['started'] = model.Box.get_number_of_user_boxes(user_id, 'started')
+        my_boxes['stopped'] = model.Box.get_number_of_user_boxes(user_id, 'stopped')
+
+        return my_boxes
+
+    @staticmethod
+    def get_number_of_all_boxes():
+        """
+        Get number of all boxes from db
+
+        Returns:
+            Number of all boxes
+
+        """
+
+        all_boxes = {}
+        all_boxes['created'] = model.Box.get_number_of_all_boxes('created')
+        all_boxes['started'] = model.Box.get_number_of_all_boxes('started')
+        all_boxes['stopped'] = model.Box.get_number_of_all_boxes('stopped')
+
+        return all_boxes
+
+    @staticmethod
+    def get_service_load_chart_data():
+        """
+        Get service load chart data for week
+
+        Returns:
+            Chart data
+
+        """
+
+        chart_data = {}
+        chart_data['labels'] = ['Пн', 'Вт', 'Ср', 'Чтв', 'Пт', 'Сб', 'Вск']
+        chart_data['data'] = [65, 59, 56, 44, 38, 5, 5]
+
+        return chart_data
+
+    @staticmethod
+    def _create_vagrantfile(vagrantfile_data):
+        """
+        Create Vagrantfile and return its path
+
+        Args:
+            vagrantfile_data (string): text data of vagrantfile
+
+        Returns:
+            Path to created vagrantfile
+
+        """
+
+        directory = BoxEngine.base_vagrantfile_directory + str(uuid.uuid4())
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -61,8 +134,3 @@ class BoxEngine():
         os.rename(temp_file_path, file_path)
 
         return file_path
-
-    def _get_box_name_from_vagrantfile(self, vagrantfile_data):
-        """Return box name from Vagrantfile."""
-
-        return ''

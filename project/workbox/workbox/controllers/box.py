@@ -4,11 +4,12 @@
 from tg import expose
 from tg.i18n import lazy_ugettext as l_
 from tg.exceptions import HTTPFound
-from tg.predicates import not_anonymous
+from tg.predicates import not_anonymous, has_permission
 from tg import request, redirect
 
 from workbox.boxengine import BoxEngine
 from workbox.lib.base import BaseController
+from workbox import model
 
 __all__ = ['BoxController']
 
@@ -19,48 +20,56 @@ class BoxController(BaseController):
     # The predicate that must be met for all the actions in this controller:
     allow_only = not_anonymous(msg=l_('Only for authorized users'))
 
-    # engine for work with boxes
-    box_engine = BoxEngine()
-
     @expose()
     def index(self):
         """Not used. Just redirect."""
-        redirect('/box/new')
+
+        redirect('/box/new/')
 
     @expose('workbox.templates.box.new')
     def new(self):
         """Handle the box creation page."""
+
         return dict(page='new')
 
     @expose('workbox.templates.box.list')
     def list(self):
         """Handle the box list page."""
-        entries = self.box_engine.get_all_boxes()
+
+        entries = None
+
+        if has_permission('manage'):
+            entries = model.Box.get_all_boxes()
+        else:
+            entries = model.Box.get_all_user_boxes(request.identity['user']._id)
+
         return dict(page='list', entries=entries)
 
     @expose()
     def create_from_vagrantfile(self):
         """Create box from given vagrantfile."""
+
         num_of_copies = int(request.POST['num-of-copies'])
+        box_name = request.POST['box-name']
 
         for _ in range(num_of_copies):
-            self.box_engine.create_box_from_vagrantfile(
-                request.identity, str(request.POST['vagrantfile-text'])
-            )
+            BoxEngine.create_box_from_vagrantfile(
+                box_name, request.identity['repoze.who.userid'],
+                str(request.POST['vagrantfile-text']))
 
-        return HTTPFound(location='/box/list')
+        return HTTPFound(location='/box/list/')
 
     @expose()
     def create_from_parameters(self):
         """Create box from given parameters."""
+
         num_of_copies = int(request.POST['num-of-copies'])
+        box_name = request.POST['box-name']
 
         for _ in range(num_of_copies):
-            self.box_engine.create_box_from_parameters(
-                request.identity
-            )
+            BoxEngine.create_box_from_parameters()
 
-        return HTTPFound(location='/box/list')
+        return HTTPFound(location='/box/list/')
 
     @expose()
     def start(self, c_id):
@@ -85,7 +94,7 @@ class BoxController(BaseController):
         # model.DBSession.flush()
         # model.DBSession.clear()
 
-        return HTTPFound(location='/containers') # TODO
+        return HTTPFound(location='/containers')
 
     @expose()
     def stop(self, c_id):
@@ -104,4 +113,4 @@ class BoxController(BaseController):
         # c1.status = 'stopped'
         # model.DBSession.flush()
         # model.DBSession.clear()
-        return HTTPFound(location='/containers') # TODO
+        return HTTPFound(location='/containers')
