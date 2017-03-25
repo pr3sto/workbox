@@ -1,4 +1,4 @@
-APP_CONFIG = "/opt/venvs/workbox/lib/python2.7/site-packages/workbox/wsgiconfig/production.ini"
+APP_CONFIG = "/opt/venvs/workbox/lib/python2.7/site-packages/workbox/appconfig/production.ini"
 
 #Setup logging
 import logging.config

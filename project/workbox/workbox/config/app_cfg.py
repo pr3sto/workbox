@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Global configuration file for TG2-specific settings in workbox.
+Global configuration file for TG2-specific settings in workbox
 
-This file complements development/deployment.ini.
+This file complements development/deployment.ini
 
 """
 
