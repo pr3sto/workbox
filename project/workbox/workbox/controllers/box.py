@@ -53,9 +53,12 @@ class BoxController(BaseController):
         box_name = request.POST['box-name']
 
         for _ in range(num_of_copies):
-            BoxEngine.create_box_from_vagrantfile(
+            box_id = BoxEngine.create_box_from_vagrantfile(
                 box_name, request.identity['repoze.who.userid'],
                 str(request.POST['vagrantfile-text']))
+
+            model.History.add_record(request.identity['repoze.who.userid'],
+                                     box_id, 'Создание виртуальной рабочей среды')
 
         return HTTPFound(location='/box/list/')
 

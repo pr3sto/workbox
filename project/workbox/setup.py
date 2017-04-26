@@ -35,7 +35,8 @@ install_requires = [
     "gearbox",
     "tgext.admin >= 0.6.1",
     "WebHelpers2",
-    "python-vagrant >= 0.5.14"
+    "python-vagrant >= 0.5.14",
+    "psutil >= 5.2.2"
 ]
 
 if py_version != (3, 2):

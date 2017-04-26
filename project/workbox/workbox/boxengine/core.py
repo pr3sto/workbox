@@ -3,7 +3,7 @@
 
 import os
 import uuid
-
+import psutil
 import vagrant
 
 from workbox import model
@@ -24,10 +24,14 @@ class BoxEngine(object):
             user_name (string): author name
             vagrantfile_data (string): text data of vagrantfile
 
+        Returns:
+            Id of created box
+
         """
 
         vagrantfile_path = BoxEngine._create_vagrantfile(vagrantfile_data)
-        model.Box.add_new_box(user_name, box_name, vagrantfile_path)
+        box_id = model.Box.add_new_box(user_name, box_name, vagrantfile_path)
+        return box_id
 
     @staticmethod
     def create_box_from_parameters():
@@ -43,17 +47,16 @@ class BoxEngine(object):
         pass
 
     @staticmethod
-    def get_service_load_value():
+    def get_server_load_value():
         """
-        Get service load value
+        Get server load value
 
         Returns:
-            Service load value (int between 0 and 100)
+            Server load value (int between 0 and 100)
 
         """
 
-        import random
-        return random.randint(0, 100)
+        return psutil.virtual_memory().percent
 
     @staticmethod
     def get_number_of_user_boxes(user_id):
@@ -91,22 +94,6 @@ class BoxEngine(object):
         all_boxes['stopped'] = model.Box.get_number_of_all_boxes('stopped')
 
         return all_boxes
-
-    @staticmethod
-    def get_service_load_chart_data():
-        """
-        Get service load chart data for week
-
-        Returns:
-            Chart data
-
-        """
-
-        chart_data = {}
-        chart_data['labels'] = ['Пн', 'Вт', 'Ср', 'Чтв', 'Пт', 'Сб', 'Вск']
-        chart_data['data'] = [65, 59, 56, 44, 38, 5, 5]
-
-        return chart_data
 
     @staticmethod
     def _create_vagrantfile(vagrantfile_data):

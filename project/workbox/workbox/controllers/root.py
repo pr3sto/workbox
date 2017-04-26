@@ -4,6 +4,7 @@
 from tg import expose, lurl
 from tg import request, redirect, tmpl_context
 from tg.exceptions import HTTPFound
+from tg.predicates import has_permission
 from tgext.admin.mongo import BootstrapTGMongoAdminConfig as TGAdminConfig
 from tgext.admin.controller import AdminController
 
@@ -35,14 +36,15 @@ class RootController(BaseController):
         """Handle the front-page"""
 
         if request.identity:
-            load_value = BoxEngine.get_service_load_value()
+            load_value = BoxEngine.get_server_load_value()
             my_boxes = BoxEngine.get_number_of_user_boxes(request.identity['user']._id)
             all_boxes = BoxEngine.get_number_of_all_boxes()
-            line_chart = BoxEngine.get_service_load_chart_data()
+
+            boxes = model.Box.get_all_user_boxes(request.identity['user']._id)
+            boxes = sorted(boxes, key=lambda x: x.datetime_of_modify, reverse=True)
 
             return dict(page='index', load_value=load_value, my_boxes=my_boxes,
-                        all_boxes=all_boxes, line_chart=line_chart)
-
+                        all_boxes=all_boxes, last_ten_worked=boxes[:10])
         else:
             return dict(page='index')
 
@@ -50,13 +52,14 @@ class RootController(BaseController):
     def history(self):
         """Handle the history page"""
 
-        return dict(page='history')
+        entries = None
 
-    @expose('workbox.templates.help')
-    def help(self):
-        """Handle the help page"""
+        if has_permission('manage'):
+            entries = model.History.get_all_records()
+        else:
+            entries = model.History.get_all_user_records(request.identity['user']._id)
 
-        return dict(page='help')
+        return dict(page='history', entries=entries)
 
     @expose('workbox.templates.login')
     def login(self, came_from=lurl('/'), failure=None, login=''):

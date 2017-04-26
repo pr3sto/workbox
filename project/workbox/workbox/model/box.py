@@ -44,7 +44,10 @@ class Box(MappedClass):
         Args:
             user_name (string): name of user
             box_name (string): name of new box
-            vagrantfile_path (string): path to vagrantfile
+            vagrantfile_path (string): path to vagrantfile\
+
+        Returns:
+            Id of created box
 
         """
 
@@ -59,6 +62,8 @@ class Box(MappedClass):
 
         DBSession.flush()
         DBSession.clear()
+
+        return box.box_id
 
     @staticmethod
     def get_all_user_boxes(user_id):

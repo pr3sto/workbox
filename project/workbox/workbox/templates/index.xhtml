@@ -24,15 +24,17 @@
     <div py:if="request.identity">
         <!-- authorized user -->
         <section id="display-name">
-            <div class="container">
-                <h1><b>${request.identity['user'].display_name}</b>, добро пожаловать в Ваш <b>WorkBox</b></h1>
+            <div class="outer-center">
+                <div class="container inner-center">
+                    <h1><b>${request.identity['user'].display_name}</b>, добро пожаловать в Ваш <b>WorkBox</b></h1>
+                </div>
             </div>
         </section>
         <section id="doughnut-charts">
             <div class="container">
                 <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-0 col-md-push-4" style="padding:0">
                     <div class="doughnut-chart">
-                        <p><b>Загрузка сервиса</b></p>
+                        <p><b>Загрузка сервера</b></p>
                         <div id="doughnutGauge" class="chart chart-lg"></div>
                     </div>
                 </div>
@@ -52,10 +54,14 @@
                 </div>
             </div>
         </section>
-        <section id="line-chart">
+        <section id="last-ten-worked">
             <div class="container">
-                <p>Средняя загрузка сервиса за последние 7 дней (%)</p>
-                <canvas id="chart" height="100"></canvas>
+                <h1>Последние 10 виртуальных сред, с которыми Вы работали:</h1>
+                <py:for each="box in last_ten_worked">
+                    <p><a href='/box/${box.box_id}/'>#${box.box_id} - ${box.name} (${box.status})</a>
+                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Дата создания: ${box.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}
+                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Дата последнего изменения: ${box.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</p>
+                </py:for>
             </div>
         </section>
     </div>
@@ -63,8 +69,6 @@
 
 <script src="/js/jquery.drawDoughnutChart.js"></script>
 <script src="/js/colorsGenerator.js"></script>
-<script src="/js/Chart.min.js"></script>
-<script src="/js/drawChart.js"></script>
 <script type="text/javascript">
     $(function ($) {
         $('#welcome').css('border-image', gen10colorsBorder());
@@ -85,13 +89,6 @@
             { title: "Остановленные", value: ${all_boxes['stopped']}, color: "#f44336" },
             { title: "Созданные", value: ${all_boxes['created']}, color: "#00BCD4" }
         ]);
-
-        var chart = document.getElementById('chart').getContext('2d');
-        var inputData = {
-            labels: ${line_chart['labels']},
-            data: ${line_chart['data']}
-        }
-        drawChart(chart, inputData);
     });
 </script>
 

@@ -48,13 +48,13 @@
     background: url('/images/cubes.png');
     display: block;
     position: relative;
-    padding: 100px 0;
+    height: 120px;
     border-bottom: 1px solid #e5e5e5;
 }
 
 #display-name h1 {
     text-align: center;
-    font-size: 32px;
+    font-size: 20px;
 }
 
 #doughnut-charts {
@@ -72,22 +72,22 @@
 }
 
 .doughnut-chart > p {
-    font-family: "RobotoLight"; 
     font-size: 20px;
 }
 
-#line-chart {
+#last-ten-worked {
     display: block;
     position: relative;
-    text-align: center;
     padding: 30px 0;
 }
 
-#line-chart p { 
-    font-size: 20px;
-    padding-bottom: 20px;
+#last-ten-worked h1 {
+    text-align: left;
+    padding-bottom: 10px;
+    font-size: 14px;
 }
 
-#line-chart canvas {
-    max-width: calc(100vw - 60px);
+#last-ten-worked p {
+    text-align: left;
+    font-size: 12px;
 }

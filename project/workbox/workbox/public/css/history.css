@@ -1,0 +1,24 @@
+/*
+ * history.css
+ *
+ * styles for history pages
+ */
+
+
+#history-header {
+    height: 120px;
+    position: relative;
+    background: url('/images/cubes.png');
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#history-header h1 {
+    text-align: center;
+    font-size: 20px;
+}
+
+.table-wrapper {
+    height: calc(100% - 70px);
+    padding-top: 30px;
+    padding-bottom: 30px;
+}

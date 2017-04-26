@@ -56,9 +56,6 @@
                             <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history')]}">
                                 <a href="/history/">Журнал</a>
                             </li>
-                            <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/help')]}">
-                                <a href="/help/">Справка</a>
-                            </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li py:if="tg.predicates.has_permission('manage')" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/admin')]}">
