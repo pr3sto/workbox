@@ -46,7 +46,7 @@ if py_version != (3, 2):
 setup(
     name='workbox',
     version='0.1',
-    description='Service for creating virtual working environments',
+    description='Service for creating virtual environments',
     maintainer='Chirukhin Alexey',
     maintainer_email='pr3sto1377@gmail.com',
     author='Chirukhin Alexey',

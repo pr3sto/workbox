@@ -15,7 +15,7 @@
                 <div class="inner-center" style="padding-bottom:50px;">
                     <img src="/images/box.png" />
                     <h1><b>WorkBox</b></h1>
-                    <h2>Сервис для настройки, запуска и мониторинга виртуальных рабочих сред</h2>
+                    <h2>Сервис для настройки, запуска и мониторинга виртуальных сред</h2>
                 </div>
             </div>
         </section>
@@ -25,9 +25,7 @@
         <!-- authorized user -->
         <section id="display-name">
             <div class="outer-center">
-                <div class="container inner-center">
-                    <h1><b>${request.identity['user'].display_name}</b>, добро пожаловать в Ваш <b>WorkBox</b></h1>
-                </div>
+                <h1 class="inner-center"><b>${request.identity['user'].display_name}</b>, добро пожаловать в Ваш <b>WorkBox</b></h1>
             </div>
         </section>
         <section id="doughnut-charts">
@@ -56,12 +54,25 @@
         </section>
         <section id="last-ten-worked">
             <div class="container">
-                <h1>Последние 10 виртуальных сред, с которыми Вы работали:</h1>
-                <py:for each="box in last_ten_worked">
-                    <p><a href='/box/${box.box_id}/'>#${box.box_id} - ${box.name} (${box.status})</a>
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Дата создания: ${box.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}
-                    &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Дата последнего изменения: ${box.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</p>
-                </py:for>
+                <!-- no boxes -->
+                <div py:if="len(last_ten_worked)==0" id="empty-placeholder">
+                    <a href="/box/new/">Создайте свою первую виртуальную среду</a>
+                </div>
+                <!-- last ten boxes -->
+                <div py:if="len(last_ten_worked)!=0">
+                    <h1>Последние виртуальные среды, с которыми Вы работали:</h1>
+                    <table id="last-worked-table" class="table">
+                        <tbody>
+                            <py:for each="box in last_ten_worked">
+                                <tr>
+                                    <td><a href='/box/${box.box_id}/'>#${box.box_id} - ${box.name} (${box.status})</a></td>
+                                    <td>Дата создания: ${box.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}</td>
+                                    <td>Дата последнего изменения: ${box.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</td>
+                                </tr>
+                            </py:for>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </div>

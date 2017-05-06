@@ -75,6 +75,18 @@
     font-size: 20px;
 }
 
+#empty-placeholder img {
+    width: 30px;
+    height: 30px;
+    filter: opacity(.5) drop-shadow(0 0 0 #e5e5e5);
+}
+
+#empty-placeholder a {
+    font-family: "RobotoLight";
+    font-size: 20px;
+    color: #777;
+}
+
 #last-ten-worked {
     display: block;
     position: relative;
@@ -83,11 +95,20 @@
 
 #last-ten-worked h1 {
     text-align: left;
-    padding-bottom: 10px;
-    font-size: 14px;
+    padding-bottom: 20px;
+    font-size: 20px;
 }
 
 #last-ten-worked p {
     text-align: left;
+    
+}
+
+#last-worked-table {
+    width: auto !important;
     font-size: 12px;
+}
+
+#last-worked-table td, #last-worked-table th {
+    border: none;
 }

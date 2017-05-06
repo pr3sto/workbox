@@ -27,11 +27,11 @@
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
                         <a class="navbar-brand" href="/"><img id="brand-img" src="/images/favicon.ico" />
                             <span class="bubble-tag">DEV</span>
                         </a>
@@ -39,19 +39,11 @@
 
                     <div class="collapse navbar-collapse" id="navbar-content">
                         <ul class="nav navbar-nav">
-
-                            <li py:if="request.identity" class="dropdown ${('', 'active')[request.environ['PATH_INFO'].startswith('/box')]}">
-                                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                Виртуальная рабочая среда<span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="/box/new/">Создать новую виртуальную среду</a>
-                                    </li>
-                                    <li>
-                                        <a href="/box/list/">Список виртуальных сред</a>
-                                    </li>
-                                </ul>
+                            <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/new')]}">
+                                <a href="/box/new/">Создание виртуальной среды</a>
+                            </li>
+                            <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/list')]}">
+                                <a href="/box/list/">Список виртуальных сред</a>
                             </li>
                             <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history')]}">
                                 <a href="/history/">Журнал</a>

@@ -90,7 +90,7 @@ class RootController(BaseController):
         if not request.identity:
             redirect('/login', params=dict(came_from=came_from))
 
-        model.History.add_record(request.identity['repoze.who.userid'], None, 'Авторизация')
+        model.History.add_record(request.identity['repoze.who.userid'], None, 'Вход в аккаунт')
 
         return HTTPFound(location=came_from)
 
