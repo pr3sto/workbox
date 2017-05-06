@@ -133,6 +133,24 @@
     padding-bottom: 30px;
 }
 
+#box-table > tbody > tr > td > button {
+    width: 110px;
+}
+
+#empty-placeholder {
+    height: calc(100% - 120px);
+}
+
+#empty-placeholder img {
+    filter: opacity(.25) drop-shadow(0 0 0 #e5e5e5);
+}
+
+#empty-placeholder a {
+    font-family: "RobotoLight";
+    font-size: 20px;
+    color: #777;
+}
+
 /* table row hover color */
 .table tbody tr:hover td, .table tbody tr:hover th {
     background-color: #e5e5e5;

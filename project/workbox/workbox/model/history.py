@@ -42,7 +42,7 @@ class History(MappedClass):
         Add new history record to db
 
         Args:
-            user_name (string): name of user
+            user_name (string): user name
             box_id (id): related box id in db
             info (string): info
 

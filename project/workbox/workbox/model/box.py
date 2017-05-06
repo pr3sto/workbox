@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Virtual working environment (box) related model"""
+"""Virtual environment (box) related model"""
 
 from datetime import datetime
 
@@ -42,7 +42,7 @@ class Box(MappedClass):
         Add new box to db
 
         Args:
-            user_name (string): name of user
+            user_name (string): user name
             box_name (string): name of new box
             vagrantfile_path (string): path to vagrantfile\
 
@@ -64,6 +64,40 @@ class Box(MappedClass):
         DBSession.clear()
 
         return box.box_id
+
+    @staticmethod
+    def is_author(user_name, box_id):
+        """
+        Detect is user author of box
+
+        Args:
+            user_name (string): user name
+
+        Returns:
+            True if user is author, otherwise - False
+
+        """
+
+        box = Box.get_by_box_id(box_id)
+        if box.user == User.query.get(user_name=user_name):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def get_by_box_id(box_id):
+        """
+        Get box with given box_id
+
+        Args:
+            box_id (int): box_id in db
+
+        Returns:
+            Box
+
+        """
+
+        return Box.query.get(box_id=box_id)
 
     @staticmethod
     def get_all_user_boxes(user_id):
@@ -113,10 +147,30 @@ class Box(MappedClass):
         """
         Get number of all boxes with given status from db
 
+        Args:
+            status (string): box's status
+
         Returns:
             Number of all boxes
-            status (string): box's status
 
         """
 
         return Box.query.find({'status': status}).count()
+
+    @staticmethod
+    def change_status(box_id, status):
+        """
+        Change status of box
+
+        Args:
+            box_id (int): box_id in db
+            status (string): box's new status
+
+        """
+
+        box = Box.get_by_box_id(box_id)
+        box.status = status
+        box.datetime_of_modify = datetime.now()
+
+        DBSession.flush()
+        DBSession.clear()

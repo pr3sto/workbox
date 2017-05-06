@@ -5,14 +5,13 @@ import os
 import uuid
 import psutil
 import vagrant
+import tg
 
 from workbox import model
 
 
 class BoxEngine(object):
-    """Helper class for working with boxes"""
-
-    base_vagrantfile_directory = '/tmp/workbox/'
+    """Helper class for work with boxes"""
 
     @staticmethod
     def create_box_from_vagrantfile(box_name, user_name, vagrantfile_data):
@@ -21,7 +20,7 @@ class BoxEngine(object):
 
         Args:
             box_name (string): name of box
-            user_name (string): author name
+            user_name (string): user name
             vagrantfile_data (string): text data of vagrantfile
 
         Returns:
@@ -40,11 +39,61 @@ class BoxEngine(object):
 
         Args:
             box_name (string): name of box
-            user_name (string): author name
+            user_name (string): user name
 
         """
 
         pass
+
+    @staticmethod
+    def copy_box(user_name, copied_box_id):
+        """
+        Copy box from box with given box_id
+
+        Args:
+            user_name (string): user name
+            copied_box_id (int): id of copied box
+
+        Returns:
+            Id of created box
+
+        """
+
+        copied_box = model.Box.get_by_box_id(copied_box_id)
+        box_id = model.Box.add_new_box(user_name, copied_box.name, copied_box.vagrantfile_path)
+        return box_id
+
+    @staticmethod
+    def start_box(user_name, box_id):
+        """
+        Start box
+
+        Args:
+            user_name (string): user name
+            box_id (int): id of box
+
+        """
+
+        box = model.Box.get_by_box_id(box_id)
+        v = vagrant.Vagrant(box.vagrantfile_path)
+        v.up()
+        model.Box.change_status(box_id, 'started')
+
+    @staticmethod
+    def stop_box(user_name, box_id):
+        """
+        Stop box
+
+        Args:
+            user_name (string): user name
+            box_id (int): id of box
+
+        """
+
+        box = model.Box.get_by_box_id(box_id)
+        v = vagrant.Vagrant(box.vagrantfile_path)
+        v.destroy()
+        model.Box.change_status(box_id, 'stopped')
 
     @staticmethod
     def get_server_load_value():
@@ -108,7 +157,7 @@ class BoxEngine(object):
 
         """
 
-        directory = BoxEngine.base_vagrantfile_directory + str(uuid.uuid4())
+        directory = str(tg.config.get('vagrantfile.folder')) + str(uuid.uuid4())
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -120,4 +169,4 @@ class BoxEngine(object):
 
         os.rename(temp_file_path, file_path)
 
-        return file_path
+        return directory

@@ -3,7 +3,7 @@
 
 from tg import expose
 from tg.i18n import lazy_ugettext as l_
-from tg.exceptions import HTTPFound
+from tg.exceptions import HTTPFound, HTTPForbidden
 from tg.predicates import not_anonymous, has_permission
 from tg import request, redirect
 
@@ -58,7 +58,7 @@ class BoxController(BaseController):
                 str(request.POST['vagrantfile-text']))
 
             model.History.add_record(request.identity['repoze.who.userid'],
-                                     box_id, 'Создание виртуальной рабочей среды')
+                                     box_id, 'Создание виртуальной среды')
 
         return HTTPFound(location='/box/list/')
 
@@ -75,45 +75,52 @@ class BoxController(BaseController):
         return HTTPFound(location='/box/list/')
 
     @expose()
-    def start(self, c_id):
-        # c = model.Box.query.get(_id=ObjectId(c_id))
-        #
-        # v = vagrant.Vagrant(c.vagrantfile_path)
-        # v.up()
-        #
-        # with lcd(c.vagrantfile_path):
-        #     str_id = local('vagrant docker-exec default -- cat /etc/hostname', capture=True)
-        # print(str_id)
-        # c_id = str_id.split(':')[1].strip()
-        #
-        # c1 = model.Box()
-        # c1.container_id = c_id
-        # c1.user = base_config.sa_auth.user_class.query.get(user_name=request.identity['repoze.who.userid'])
-        # c1.datetime_of_creation = c.datetime_of_creation
-        # c1.datetime_of_launch = datetime.now()
-        # c1.vagrantfile_path = c.vagrantfile_path
-        # c1.port = int(c.port)
-        # c1.status = 'started'
-        # model.DBSession.flush()
-        # model.DBSession.clear()
+    def start(self):
+        """Start box."""
 
-        return HTTPFound(location='/containers')
+        box_id = int(request.POST['box_id'])
+
+        if not has_permission('manage'):
+            if not model.Box.is_author(request.identity['repoze.who.userid'], box_id):
+                return HTTPForbidden(
+                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+
+        BoxEngine.start_box(request.identity['repoze.who.userid'], box_id)
+        model.History.add_record(request.identity['repoze.who.userid'],
+                                 box_id, 'Запуск виртуальной среды')
+
+        return HTTPFound(location='/box/list/')
 
     @expose()
-    def stop(self, c_id):
-        # c = model.Box.query.get(_id=ObjectId(c_id))
-        #
-        # v = vagrant.Vagrant(c.vagrantfile_path)
-        # v.destroy()
-        #
-        # c1 = model.Box()
-        # c1.container_id = c.container_id
-        # c1.user = base_config.sa_auth.user_class.query.get(user_name=request.identity['repoze.who.userid'])
-        # c1.datetime_of_creation = c.datetime_of_creation
-        # c1.datetime_of_launch = c1.datetime_of_launch
-        # c1.vagrantfile_path = c.vagrantfile_path
-        # c1.port = int(c.port)
-        # c1.status = 'stopped'
-        # model.DBSession.flush()
-        # model.DBSession.clear()
-        return HTTPFound(location='/containers')
+    def stop(self):
+        """Stop box."""
+
+        box_id = int(request.POST['box_id'])
+
+        if not has_permission('manage'):
+            if not model.Box.is_author(request.identity['repoze.who.userid'], box_id):
+                return HTTPForbidden(
+                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+
+        BoxEngine.stop_box(request.identity['repoze.who.userid'], box_id)
+        model.History.add_record(request.identity['repoze.who.userid'],
+                                 box_id, 'Остановка виртуальной среды')
+
+        return HTTPFound(location='/box/list/')
+
+    @expose()
+    def copy(self):
+        """Copy box."""
+
+        copied_box_id = int(request.POST['box_id'])
+
+        if not has_permission('manage'):
+            if not model.Box.is_author(request.identity['repoze.who.userid'], copied_box_id):
+                return HTTPForbidden(
+                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+
+        box_id = BoxEngine.copy_box(request.identity['repoze.who.userid'], copied_box_id)
+        model.History.add_record(request.identity['repoze.who.userid'],
+                                 box_id, 'Копирование виртуальной среды #' + str(copied_box_id))
+
+        return HTTPFound(location='/box/list/')

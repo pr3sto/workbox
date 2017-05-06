@@ -1,7 +1,7 @@
 <html py:extends="master.xhtml" py:strip="True">
 
 <head py:block="head" py:strip="True">
-    <title py:block="master_title">Создание виртуальной рабочей среды | WorkBox</title>
+    <title py:block="master_title">Создание виртуальной среды | WorkBox</title>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/spinner.css" />
 </head>
@@ -18,7 +18,7 @@
     <!-- content -->
     <section id="nav-tabs-wrapper">
         <div class="container">
-            <h1>Создание новой виртуальной рабочей среды в <b>WorkBox</b></h1>
+            <h1>Создание новой виртуальной среды в <b>WorkBox</b></h1>
         </div>
         <ul class="container nav nav-tabs">
             <li><a data-toggle="tab" href="#tab-vagrantfile">Vagrantfile</a></li>
@@ -27,7 +27,7 @@
     </section>
     <div class="container tab-content outer-center">
         <!-- placeholder -->
-        <div id="tab-placeholder" class="inner-center tab-pane fade in active">
+        <div id="tab-placeholder" class="inner-center tab-pane fade in active" style="padding-bottom:50px;">
             <h1>Выберите способ создания виртуальной среды:</h1>
             <h2>'Vagrantfile' - для опытных пользователей, знакомых со структурой файла конфигурации</h2>
             <h2>'Ввод параметров' - для настройки параметров с помощью формы</h2>
