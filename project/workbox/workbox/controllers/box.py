@@ -58,7 +58,7 @@ class BoxController(BaseController):
                 str(request.POST['vagrantfile-text']))
 
             model.History.add_record(request.identity['repoze.who.userid'],
-                                     box_id, 'Создание виртуальной среды')
+                                     box_id, 'Создание виртуальной среды #' + str(box_id))
 
         return HTTPFound(location='/box/list/')
 
@@ -85,9 +85,9 @@ class BoxController(BaseController):
                 return HTTPForbidden(
                     'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
 
-        BoxEngine.start_box(request.identity['repoze.who.userid'], box_id)
+        BoxEngine.start_box(box_id)
         model.History.add_record(request.identity['repoze.who.userid'],
-                                 box_id, 'Запуск виртуальной среды')
+                                 box_id, 'Запуск виртуальной среды #' + str(box_id))
 
         return HTTPFound(location='/box/list/')
 
@@ -102,9 +102,9 @@ class BoxController(BaseController):
                 return HTTPForbidden(
                     'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
 
-        BoxEngine.stop_box(request.identity['repoze.who.userid'], box_id)
+        BoxEngine.stop_box(box_id)
         model.History.add_record(request.identity['repoze.who.userid'],
-                                 box_id, 'Остановка виртуальной среды')
+                                 box_id, 'Остановка виртуальной среды #' + str(box_id))
 
         return HTTPFound(location='/box/list/')
 
@@ -121,6 +121,24 @@ class BoxController(BaseController):
 
         box_id = BoxEngine.copy_box(request.identity['repoze.who.userid'], copied_box_id)
         model.History.add_record(request.identity['repoze.who.userid'],
-                                 box_id, 'Копирование виртуальной среды #' + str(copied_box_id))
+                                 box_id, 'Копирование виртуальной среды #' +
+                                 str(copied_box_id) + ' (создана #' + str(box_id) + ')')
+
+        return HTTPFound(location='/box/list/')
+
+    @expose()
+    def delete(self):
+        """Delete box."""
+
+        box_id = int(request.POST['box_id'])
+
+        if not has_permission('manage'):
+            if not model.Box.is_author(request.identity['repoze.who.userid'], box_id):
+                return HTTPForbidden(
+                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+
+        BoxEngine.delete_box(box_id)
+        model.History.add_record(request.identity['repoze.who.userid'],
+                                 None, 'Удаление виртуальной среды #' + str(box_id))
 
         return HTTPFound(location='/box/list/')

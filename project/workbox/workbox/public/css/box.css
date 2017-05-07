@@ -142,10 +142,10 @@
 }
 
 #empty-placeholder img {
-    filter: opacity(.25) drop-shadow(0 0 0 #e5e5e5);
+    filter: opacity(.3) drop-shadow(0 0 0 #e5e5e5);
 }
 
-#empty-placeholder a {
+#empty-placeholder h1 {
     font-family: "RobotoLight";
     font-size: 20px;
     color: #777;

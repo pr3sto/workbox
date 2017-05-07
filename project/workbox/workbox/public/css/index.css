@@ -75,16 +75,14 @@
     font-size: 20px;
 }
 
-#empty-placeholder img {
-    width: 30px;
-    height: 30px;
-    filter: opacity(.5) drop-shadow(0 0 0 #e5e5e5);
-}
-
-#empty-placeholder a {
-    font-family: "RobotoLight";
+#empty-placeholder a, 
+#empty-placeholder a:hover, 
+#empty-placeholder a:active, 
+#empty-placeholder a:focus {
     font-size: 20px;
-    color: #777;
+    outline: none;
+    border: none;
+    text-decoration: none;
 }
 
 #last-ten-worked {

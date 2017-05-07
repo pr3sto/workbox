@@ -18,7 +18,7 @@
         <div class="inner-center" style="padding-bottom:50px;">
             <img src="/images/boxes.png" />
             <br />
-            <a href="/box/new/">Создайте свою первую виртуальную среду</a>
+            <h1>Ни одной витруальной среды еще не создано</h1>
         </div>
     </div>
     <!-- table -->
@@ -45,22 +45,47 @@
                         <td>${entry.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}</td>
                         <td>${entry.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</td>
                         <td>
-                            <button py:if="entry.status != 'started'" form="start-form" name="box_id" value="${entry.box_id}" class="btn btn-success">Запустить</button>
-                            <button py:if="entry.status == 'started'" form="stop-form"  name="box_id" value="${entry.box_id}" class="btn btn-danger">Остановить</button>
-                            <button form="copy-form" name="box_id" value="${entry.box_id}" class="btn btn-default">Копировать</button>
-
-                            <form id="start-form" action="/box/start/" method="post" />
-                            <form id="stop-form" action="/box/stop/" method="post" />
-                            <form id="copy-form" action="/box/copy/" method="post" />
+                            <button py:if="entry.status != 'started'" data-toggle="confirmation" name="start-form" value="${entry.box_id}" class="btn btn-success">Запустить</button>
+                            <button py:if="entry.status == 'started'" data-toggle="confirmation" name="stop-form" value="${entry.box_id}" class="btn btn-warning">Остановить</button>
+                            <button data-toggle="confirmation" name="copy-form" value="${entry.box_id}" class="btn btn-default">Копировать</button>
+                            <button data-toggle="confirmation" name="delete-form" value="${entry.box_id}" class="btn btn-danger" style="width:auto;"><span class="glyphicon glyphicon-trash"/></button>
                         </td>
                     </tr>
                 </py:for>
             </tbody>
         </table>
     </div>
+
+    <!-- actions -->
+    <form id="start-form" action="/box/start/" method="post" />
+    <form id="stop-form" action="/box/stop/" method="post" />
+    <form id="copy-form" action="/box/copy/" method="post" />
+    <form id="delete-form" action="/box/delete/" method="post" />
 </body>
 
-<script src="/js/datatables.min.js"></script>
+<script type="text/javascript" src="/js/datatables.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-confirmation.min.js"></script>
+<script type="text/javascript">
+    $(function ($) {
+        $('[data-toggle="confirmation"]').confirmation({
+            rootSelector: '[data-toggle=confirmation]',
+            copyAttributes: 'name value',
+            singleton:true,
+            popout:true,
+            placement:'top',
+            title:'Вы уверены?',
+            btnOkClass:'btn-primary',
+            btnCancelClass:'btn-default',
+            btnOkLabel:'Да',
+            btnCancelLabel:'Нет',
+            onConfirm: function() {
+                var form_name = '#' + $(this).attr('name');
+                $(form_name).append('&lt;input type="hidden" name="box_id" value="' + $(this).attr('value') + '" /&gt;');
+                $(form_name).submit();
+            }
+        });
+    });  
+</script>
 <script py:if="not tg.predicates.has_permission('manage')" type="text/javascript">
     $(function ($) {
         var boxTable = $('#box-table').dataTable({

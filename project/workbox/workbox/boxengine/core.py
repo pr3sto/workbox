@@ -46,6 +46,36 @@ class BoxEngine(object):
         pass
 
     @staticmethod
+    def start_box(box_id):
+        """
+        Start box
+
+        Args:
+            box_id (int): id of box
+
+        """
+
+        box = model.Box.get_by_box_id(box_id)
+        vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
+        vagrant_box.up()
+        model.Box.change_status(box_id, 'started')
+
+    @staticmethod
+    def stop_box(box_id):
+        """
+        Stop box
+
+        Args:
+            box_id (int): id of box
+
+        """
+
+        box = model.Box.get_by_box_id(box_id)
+        vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
+        vagrant_box.destroy()
+        model.Box.change_status(box_id, 'stopped')
+
+    @staticmethod
     def copy_box(user_name, copied_box_id):
         """
         Copy box from box with given box_id
@@ -60,40 +90,30 @@ class BoxEngine(object):
         """
 
         copied_box = model.Box.get_by_box_id(copied_box_id)
-        box_id = model.Box.add_new_box(user_name, copied_box.name, copied_box.vagrantfile_path)
+
+        file_path = os.path.join(copied_box.vagrantfile_path, 'Vagrantfile')
+        v_file = open(file_path, 'r')
+
+        vagrantfile_path = BoxEngine._create_vagrantfile(v_file.read())
+        box_id = model.Box.add_new_box(user_name, copied_box.name, vagrantfile_path)
         return box_id
 
     @staticmethod
-    def start_box(user_name, box_id):
+    def delete_box(box_id):
         """
-        Start box
+        Delete box with given box_id
 
         Args:
-            user_name (string): user name
             box_id (int): id of box
 
         """
 
         box = model.Box.get_by_box_id(box_id)
-        v = vagrant.Vagrant(box.vagrantfile_path)
-        v.up()
-        model.Box.change_status(box_id, 'started')
 
-    @staticmethod
-    def stop_box(user_name, box_id):
-        """
-        Stop box
+        if box.status == 'started':
+            BoxEngine.stop_box(box_id)
 
-        Args:
-            user_name (string): user name
-            box_id (int): id of box
-
-        """
-
-        box = model.Box.get_by_box_id(box_id)
-        v = vagrant.Vagrant(box.vagrantfile_path)
-        v.destroy()
-        model.Box.change_status(box_id, 'stopped')
+        model.Box.delete_box(box_id)
 
     @staticmethod
     def get_server_load_value():

@@ -55,8 +55,8 @@
         <section id="last-ten-worked">
             <div class="container">
                 <!-- no boxes -->
-                <div py:if="len(last_ten_worked)==0" id="empty-placeholder">
-                    <a href="/box/new/">Создайте свою первую виртуальную среду</a>
+                <div py:if="len(last_ten_worked)==0" id="empty-placeholder" class="inner-center">
+                    <a href="/box/new/"><span class="icomoon icon-box" /></a>
                 </div>
                 <!-- last ten boxes -->
                 <div py:if="len(last_ten_worked)!=0">
@@ -100,6 +100,11 @@
             { title: "Остановленные", value: ${all_boxes['stopped']}, color: "#f44336" },
             { title: "Созданные", value: ${all_boxes['created']}, color: "#00BCD4" }
         ]);
+
+        $('.icon-box').on('mouseover mouseout', function () {
+            var randomColor = '#' + Math.random().toString(16).slice(-6);
+            $('.icon-box').css('color', randomColor);
+        });
     });
 </script>
 

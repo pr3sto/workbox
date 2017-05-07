@@ -174,3 +174,18 @@ class Box(MappedClass):
 
         DBSession.flush()
         DBSession.clear()
+
+    @staticmethod
+    def delete_box(box_id):
+        """
+        Delete box with given box_id
+
+        Args:
+            box_id (int): id of box
+
+        """
+
+        Box.query.remove({'box_id': box_id})
+
+        DBSession.flush()
+        DBSession.clear()
