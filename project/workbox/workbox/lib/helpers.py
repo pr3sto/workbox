@@ -2,20 +2,27 @@
 """Template Helpers used in workbox"""
 
 import logging
-from markupsafe import Markup
 from datetime import datetime
+from markupsafe import Markup
+import psutil
 
 log = logging.getLogger(__name__)
 
 
 def current_year():
+    """ Return current year. """
+
     now = datetime.now()
     return now.strftime('%Y')
 
+def is_docker_enabled():
+    """ Detect if docker service is started. """
 
-def icon(icon_name):
-    return Markup('<i class="glyphicon glyphicon-%s"></i>' % icon_name)
-
+    for proc in psutil.process_iter():
+        if 'docker' in proc.name():
+            return True
+    return False
+    
 
 try:
     from webhelpers2 import date, html, number, misc, text

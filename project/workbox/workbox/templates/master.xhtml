@@ -75,6 +75,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
+            <!-- dev popup -->
             <div id="dev">
                 <span class="icomoon icon-embed"></span>
                 <div id="credits">
@@ -84,6 +85,25 @@
                     <p style="margin-bottom:0px;">LETI 2016-2017</p>
                 </div>
             </div>
+            <!-- docker started -->            
+            <div py:if="h.is_docker_enabled()" id="docker-status">
+                <p id="docker">Docker:&nbsp;</p>
+                <p class="text-success"><b>OK</b></p>
+                <div id="what-is-docker-status">
+                    <p>Сервис Docker</p>
+                    <p class="text-success">запущен</p>
+                </div>
+            </div>
+            <!-- docker stopped -->            
+            <div py:if="not h.is_docker_enabled()" id="docker-status">
+                <p id="docker">Docker:&nbsp;</p>
+                <p class="text-danger"><b>FAIL</b></p>
+                <div id="what-is-docker-status">
+                    <p>Сервис Docker</p>
+                    <p class="text-danger">остановлен</p>
+                </div>
+            </div>
+            <!-- copyright -->            
             <p id="copyright">&copy; ${h.current_year()} WorkBox</p>
         </div>
     </footer>
