@@ -105,6 +105,9 @@
         $('#box-table tbody').on( 'click', 'tr', function () {
             window.location.href = '/box/' + boxTable.fnGetData(this)[0] + '/';
         });
+        $('#box-table button').click(function(e) {
+            e.stopPropagation();
+        });
     });    
 </script>
 <script py:if="tg.predicates.has_permission('manage')" type="text/javascript">
@@ -125,6 +128,9 @@
         });
         $('#box-table tbody').on( 'click', 'tr', function () {
             window.location.href = '/box/' + boxTable.fnGetData(this)[0] + '/';
+        });
+        $('#box-table button').click(function(e) {
+            e.stopPropagation();
         });
     });    
 </script>
