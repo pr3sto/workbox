@@ -2,6 +2,7 @@
 """Core of box engine package"""
 
 import os
+import shutil
 import uuid
 import psutil
 import vagrant
@@ -92,11 +93,11 @@ class BoxEngine(object):
         copied_box = model.Box.get_by_box_id(copied_box_id)
 
         file_path = os.path.join(copied_box.vagrantfile_path, 'Vagrantfile')
-        v_file = open(file_path, 'r')
 
-        vagrantfile_path = BoxEngine._create_vagrantfile(v_file.read())
-        box_id = model.Box.add_new_box(user_name, copied_box.name, vagrantfile_path)
-        return box_id
+        with open(file_path, 'r') as v_file:
+            vagrantfile_path = BoxEngine._create_vagrantfile(v_file.read())
+            box_id = model.Box.add_new_box(user_name, copied_box.name, vagrantfile_path)
+            return box_id
 
     @staticmethod
     def delete_box(box_id):
@@ -113,7 +114,10 @@ class BoxEngine(object):
         if box.status == 'started':
             BoxEngine.stop_box(box_id)
 
+        vagrantfile_path = box.vagrantfile_path
+
         model.Box.delete_box(box_id)
+        BoxEngine._delete_vagrantfile(vagrantfile_path)
 
     @staticmethod
     def get_server_load_value():
@@ -190,3 +194,15 @@ class BoxEngine(object):
         os.rename(temp_file_path, file_path)
 
         return directory
+
+    @staticmethod
+    def _delete_vagrantfile(vagrantfile_dir):
+        """
+        Delete Vagrantfile from disk
+
+        Args:
+            vagrantfile_dir (string): path to vagrantfile
+
+        """
+
+        shutil.rmtree(vagrantfile_dir)
