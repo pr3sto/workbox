@@ -203,10 +203,6 @@ body {
     visibility: visible;
 }
 
-#docker {
-    color: #777;
-}
-
 #what-is-docker-status {
     font-family: 'RobotoLight';
     font-size: 14px;
