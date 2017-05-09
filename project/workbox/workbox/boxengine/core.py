@@ -34,17 +34,18 @@ class BoxEngine(object):
         return box_id
 
     @staticmethod
-    def create_box_from_parameters():
+    def create_box_from_parameters(box_name, user_name, vagrantfile_data):
         """
         Create box from givent parameters
 
         Args:
             box_name (string): name of box
             user_name (string): user name
+            vagrantfile_data (string): text data of vagrantfile
 
         """
 
-        pass
+        return BoxEngine.create_box_from_vagrantfile(box_name, user_name, vagrantfile_data)
 
     @staticmethod
     def start_box(box_id):

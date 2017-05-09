@@ -103,9 +103,16 @@
     text-align: center;
 }
 
-#tab-vagrantfile textarea {
+#tab-vagrantfile textarea, #tab-parameters textarea {
+    margin-bottom: 0px !important;
+    background-color: #fff;
     resize: vertical;
     min-height: 400px;
+}
+
+#tab-vagrantfile .form-control, #tab-parameters .form-control,
+#tab-vagrantfile button, #tab-parameters button {
+    margin-bottom: 20px;
 }
 
 .form-group > input {

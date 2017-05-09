@@ -30,7 +30,9 @@ class BoxController(BaseController):
     def new(self):
         """Handle the box creation page."""
 
-        return dict(page='new')
+        templates = model.VagrantfileTemplate.get_all()
+
+        return dict(page='new', templates=templates)
 
     @expose('workbox.templates.box.list')
     def list(self):
@@ -51,11 +53,11 @@ class BoxController(BaseController):
 
         num_of_copies = int(request.POST['num-of-copies'])
         box_name = request.POST['box-name']
+        vagrantfile = request.POST['vagrantfile-text']
 
         for _ in range(num_of_copies):
             box_id = BoxEngine.create_box_from_vagrantfile(
-                box_name, request.identity['repoze.who.userid'],
-                str(request.POST['vagrantfile-text']))
+                box_name, request.identity['repoze.who.userid'], str(vagrantfile))
 
             model.History.add_record(request.identity['repoze.who.userid'],
                                      box_id, 'Создание виртуальной среды #' + str(box_id))
@@ -68,9 +70,14 @@ class BoxController(BaseController):
 
         num_of_copies = int(request.POST['num-of-copies'])
         box_name = request.POST['box-name']
+        vagrantfile = request.POST['vagrantfile-text']
 
         for _ in range(num_of_copies):
-            BoxEngine.create_box_from_parameters()
+            box_id = BoxEngine.create_box_from_parameters(
+                box_name, request.identity['repoze.who.userid'], str(vagrantfile))
+
+            model.History.add_record(request.identity['repoze.who.userid'],
+                                     box_id, 'Создание виртуальной среды #' + str(box_id))
 
         return HTTPFound(location='/box/list/')
 
