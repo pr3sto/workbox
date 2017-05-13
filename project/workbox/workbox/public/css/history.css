@@ -17,7 +17,7 @@
     font-size: 20px;
 }
 
-.table-wrapper {
+#table-wrapper {
     height: calc(100% - 70px);
     padding-top: 30px;
     padding-bottom: 30px;

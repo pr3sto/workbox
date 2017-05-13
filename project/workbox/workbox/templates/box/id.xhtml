@@ -6,7 +6,7 @@
 </head>
 
 <body py:block="body" py:strip="True">
-    <section id="list-id-header">
+    <section id="id-header">
         <div class="container outer-center">
             <div class="input-group inner-center">
                 <!-- hidden elements for centering label -->
@@ -26,63 +26,66 @@
             </div>
         </div>
     </section>
-
-    <div id="id-data" class="container">
-        <div id="id-data-tables">
-            <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading inner-center">Данные виртуальной среды</div>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td><b>Название</b></td>
-                                <td>${box.name}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Статус</b></td>
-                                <td>${box.status}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Автор</b></td>
-                                <td>${box.user.display_name}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Дата создания</b></td>
-                                <td>${box.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Дата изменения</b></td>
-                                <td>${box.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <section id="id-content">
+        <div class="container">
+            <div id="id-content-tables">
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading inner-center">Данные виртуальной среды</div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><b>Название</b></td>
+                                    <td>${box.name}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Статус</b></td>
+                                    <td>${box.status}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Автор</b></td>
+                                    <td>${box.user.display_name}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Дата создания</b></td>
+                                    <td>${box.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Дата изменения</b></td>
+                                    <td>${box.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading inner-center">Данные для подключения</div>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <td><b>Хост</b></td>
-                                <td>${host}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Порт</b></td>
-                                <td>${box.port}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading inner-center">Данные для подключения</div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><b>Хост</b></td>
+                                    <td>${host}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Порт</b></td>
+                                    <td>${box.port}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="id-vagrantfile" class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading inner-center">Vagrantfile</div>
-            <textarea name="vagrantfile-text" class="form-control" readonly="true">${vagrantfile}</textarea>
+        <div class="container">
+            <div id="id-content-vagrantfile">
+                <div class="panel panel-default">
+                    <div class="panel-heading inner-center">Vagrantfile</div>
+                    <textarea name="vagrantfile-text" class="form-control" readonly="true">${vagrantfile}</textarea>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
     <!-- actions -->
     <form id="start-form" action="/box/start/" method="post" />

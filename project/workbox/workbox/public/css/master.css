@@ -77,18 +77,6 @@ body {
     right: 10px;
 }
 
-.open a {
-    background: #fff !important;
-}
-
-.dropdown-menu a {
-    border: 0px !important;
-}
-
-.crud-sidebar .active {
-    border-left: none !important;
-}
-
 /* content */
 
 .main-content {
@@ -100,6 +88,11 @@ body {
     margin-top: 30px;
     margin-bottom: 30px;
 }
+
+/* for admin page */
+.crud-sidebar .active {
+    border-left: none !important;
+}   
 
 /* footer */
 

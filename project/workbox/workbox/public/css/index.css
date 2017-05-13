@@ -93,20 +93,21 @@
 
 #last-ten-worked h1 {
     text-align: left;
+    margin-top: 0px;
     padding-bottom: 20px;
     font-size: 20px;
 }
 
 #last-ten-worked p {
     text-align: left;
-    
 }
 
-#last-worked-table {
+#last-ten-worked table {
     width: auto !important;
     font-size: 12px;
+    margin-bottom: 0px;
 }
 
-#last-worked-table td, #last-worked-table th {
+#last-ten-worked table td, #last-ten-worked table th {
     border: none;
 }

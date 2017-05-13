@@ -22,62 +22,63 @@
         </div>
         <ul class="container nav nav-tabs">
             <li><a data-toggle="tab" href="#tab-vagrantfile">Vagrantfile</a></li>
-            <li><a data-toggle="tab" href="#tab-parameters">Ввод параметров</a></li>
+            <li><a data-toggle="tab" href="#tab-parameters">Готовая виртуальная среда</a></li>
         </ul>
     </section>
-    <div class="container tab-content outer-center">
-        <!-- placeholder -->
-        <div id="tab-placeholder" class="inner-center tab-pane fade in active" style="padding-bottom:50px;">
-            <h1>Выберите способ создания виртуальной среды:</h1>
-            <h2>'Vagrantfile' - для опытных пользователей, знакомых со структурой файла конфигурации</h2>
-            <h2>'Ввод параметров' - для настройки параметров с помощью формы</h2>
-            <h2><a href="/box/list/">Копировать существующую виртуальную среду</a></h2>
-        </div>
-        <!-- vagrantfile -->
-        <div id="tab-vagrantfile" class="tab-pane fade">
-            <form action="/box/create_from_vagrantfile" method="post" accept-charset="UTF-8">
-                <p style="padding-bottom:10px;"><label tabindex="0" class="file-label btn btn-default">Загрузите Vagrantfile<input class="file-input btn btn-default" type="file" style="display:none;"/></label> 
-                &nbsp;или воспользуйтесь редактором для создания нового файла</p>
-                <div class="alert alert-info">
-                    Для подстановки номера свободного порта введите <b>#FPRT#</b> (например: config.vm.network "forwarded_port", guest: 8080, host: #FPRT#)
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Vagrantfile</div>
-                    <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-data" required="true"></textarea>
-                </div>
-                <div class="form-inline">
-                    <div class="form-group">
-                        <input name="box-name" placeholder="Название виртуальной среды" class="form-control" required="true" />
-                        <input name="num-of-copies" placeholder="Количество копий" class="form-control" required="true" type="number" min="1" max="20" />
+    <section id="tabs-content">
+        <div class="container tab-content outer-center">
+            <!-- placeholder -->
+            <div id="tab-placeholder" class="inner-center tab-pane fade in active" style="padding-bottom:50px;">
+                <h1>Выберите способ создания виртуальной среды:</h1>
+                <h2>'Vagrantfile' - загрузка или создание Vagrantfile'a вручную</h2>
+                <h2>'Готовая виртуальная среда' - выбор из списка готовых сред</h2>
+                <h2><a href="/box/list/">Копировать существующую виртуальную среду</a></h2>
+            </div>
+            <!-- vagrantfile -->
+            <div id="tab-vagrantfile" class="tab-pane fade">
+                <form action="/box/create_from_vagrantfile" method="post" accept-charset="UTF-8">
+                    <p style="padding-bottom:10px;"><label tabindex="0" class="file-label btn btn-default">Загрузите Vagrantfile<input class="file-input btn btn-default" type="file" style="display:none;"/></label> 
+                    &nbsp;или воспользуйтесь редактором для создания нового файла</p>
+                    <div class="alert alert-info">
+                        Для подстановки номера свободного порта введите <b>#FPRT#</b> (например: config.vm.network "forwarded_port", guest: 8080, host: #FPRT#)
                     </div>
-                    <button type="submit" class="btn btn-primary">Создать</button>
-                </div>
-            </form>
-        </div>
-        <!-- parameters -->
-        <div id="tab-parameters" class="tab-pane fade">
-            <form action="/box/create_from_parameters" method="post" accept-charset="UTF-8">
-                <select class="form-control" name="size" required="true">
-                    <option selected="true" disabled="true">Выберите Vagrant box</option>
-                    <py:for each="entry in templates">
-                        <option value="${entry.template}">${entry.name}</option>
-                    </py:for>
-                </select>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Vagrantfile</div>
-                    <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-template-data" readonly="true"></textarea>
-                </div>
-                <div class="form-inline">
-                    <div class="form-group">
-                        <input name="box-name" placeholder="Название виртуальной среды" class="form-control" required="true" />
-                        <input name="num-of-copies" placeholder="Количество копий" class="form-control" required="true" type="number" min="1" max="20" />
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Vagrantfile</div>
+                        <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-data" required="true"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Создать</button>
-                </div>
-            </form>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <input name="box-name" placeholder="Название виртуальной среды" class="form-control" required="true" />
+                            <input name="num-of-copies" placeholder="Количество копий" class="form-control" required="true" type="number" min="1" max="20" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Создать</button>
+                    </div>
+                </form>
+            </div>
+            <!-- parameters -->
+            <div id="tab-parameters" class="tab-pane fade">
+                <form action="/box/create_from_parameters" method="post" accept-charset="UTF-8">
+                    <select class="form-control" name="size" required="true">
+                        <option selected="true" disabled="true">Выберите Vagrant box</option>
+                        <py:for each="entry in templates">
+                            <option value="${entry.template}">${entry.name}</option>
+                        </py:for>
+                    </select>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Vagrantfile</div>
+                        <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-template-data" readonly="true"></textarea>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <input name="box-name" placeholder="Название виртуальной среды" class="form-control" required="true" />
+                            <input name="num-of-copies" placeholder="Количество копий" class="form-control" required="true" type="number" min="1" max="20" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Создать</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-
+    </section>
 </body>
 
 <script type="text/javascript">

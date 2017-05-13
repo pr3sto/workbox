@@ -12,31 +12,33 @@
             <h1 class="inner-center">Журнал действий в <b>WorkBox</b></h1>
         </div>
     </section>
-    <div class="table-wrapper container">
-        <table id="history-table" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th py:if="tg.predicates.has_permission('manage')">Пользователь</th>
-                    <th>Виртуальная среда</th>
-                    <th>Дата</th>
-                    <th>Действие</th>
-                </tr>
-            </thead>
-            <tbody>
-                <py:for each="entry in entries">
+    <section id="table-wrapper">
+        <div class="container">
+            <table id="history-table" class="table table-striped">
+                <thead>
                     <tr>
-                        <td>${entry.history_id}</td>
-                        <td py:if="tg.predicates.has_permission('manage')">${entry.user.display_name}</td>
-                        <td py:if="entry.box"><a href="/box/id/${entry.box.box_id}">#${entry.box.box_id}</a></td>
-                        <td py:if="not entry.box">-</td>                        
-                        <td>${entry.datetime.strftime("%Y-%m-%d %H:%M")}</td>
-                        <td>${entry.info}</td>
+                        <th>#</th>
+                        <th py:if="tg.predicates.has_permission('manage')">Пользователь</th>
+                        <th>Виртуальная среда</th>
+                        <th>Дата</th>
+                        <th>Действие</th>
                     </tr>
-                </py:for>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    <py:for each="entry in entries">
+                        <tr>
+                            <td>${entry.history_id}</td>
+                            <td py:if="tg.predicates.has_permission('manage')">${entry.user.display_name}</td>
+                            <td py:if="entry.box"><a href="/box/id/${entry.box.box_id}">#${entry.box.box_id}</a></td>
+                            <td py:if="not entry.box">-</td>                        
+                            <td>${entry.datetime.strftime("%Y-%m-%d %H:%M")}</td>
+                            <td>${entry.info}</td>
+                        </tr>
+                    </py:for>
+                </tbody>
+            </table>
+        </div>
+    </section>
 </body>
 
 <script src="/js/datatables.min.js"></script>

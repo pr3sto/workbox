@@ -79,8 +79,8 @@
     text-align: center;
 }
 
-.tab-content {
-    height: calc(100% - 70px);
+#tabs-content {
+    height: calc(100% - 120px);
     padding-top: 30px;
     padding-bottom: 30px;
 }
@@ -103,7 +103,7 @@
     text-align: center;
 }
 
-#tab-vagrantfile textarea, #tab-parameters textarea, #id-vagrantfile textarea {
+#tab-vagrantfile textarea, #tab-parameters textarea, #id-content-vagrantfile textarea {
     margin-bottom: 0px !important;
     background-color: #fff;
     resize: vertical;
@@ -122,21 +122,21 @@
 
 /* 'list' page */
 
-#list-id-header {
+#list-header {
     height: 120px;
     position: relative;
     background: url('/images/cubes.png');
     border-bottom: 1px solid #e5e5e5;
 }
 
-#list-id-header h1, label {
+#list-header h1 {
     font-weight: normal;
     text-align: center;
     font-size: 20px;
 }
 
-.table-wrapper {
-    height: calc(100% - 70px);
+#list-content {
+    height: calc(100% - 120px);
     padding-top: 30px;
     padding-bottom: 30px;
 }
@@ -149,15 +149,11 @@
     background-color: #e5e5e5;
 }
 
-#empty-placeholder {
-    height: calc(100% - 120px);
-}
-
-#empty-placeholder img {
+#list-content-empty img {
     filter: opacity(.3) drop-shadow(0 0 0 #e5e5e5);
 }
 
-#empty-placeholder h1 {
+#list-content-empty h1 {
     font-family: "RobotoLight";
     font-size: 20px;
     color: #777;
@@ -165,19 +161,32 @@
 
 /* 'id' page */
 
-#id-data {
-    padding-top: 30px;
-    padding-bottom: 20px;
+#id-header {
+    height: 120px;
+    position: relative;
+    background: url('/images/cubes.png');
+    border-bottom: 1px solid #e5e5e5;
 }
 
-#id-data-tables div:first-child {
+#id-header label {
+    font-weight: normal;
+    text-align: center;
+    font-size: 20px;
+}
+
+#id-content {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#id-content-tables div:first-child {
     padding-left: 0px;
 }
 
-#id-data-tables div:last-child {
+#id-content-tables div:last-child {
     padding-right: 0px;
 }
 
-#id-vagrantfile {
-    padding-bottom: 30px;
+#id-content-vagrantfile .panel {
+    margin-bottom: 0px;
 }

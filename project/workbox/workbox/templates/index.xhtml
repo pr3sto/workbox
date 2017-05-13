@@ -7,7 +7,6 @@
 </head>
 
 <body py:block="body" py:strip="True">
-
     <div py:if="not request.identity">
         <!-- not authorized user -->
         <section id="welcome">
@@ -20,7 +19,6 @@
             </div>
         </section>
     </div>
-
     <div py:if="request.identity">
         <!-- authorized user -->
         <section id="display-name">
@@ -61,7 +59,7 @@
                 <!-- last ten boxes -->
                 <div py:if="len(last_ten_worked)!=0">
                     <h1>Последние виртуальные среды, с которыми Вы работали:</h1>
-                    <table id="last-worked-table" class="table">
+                    <table class="table">
                         <tbody>
                             <py:for each="box in last_ten_worked">
                                 <tr>

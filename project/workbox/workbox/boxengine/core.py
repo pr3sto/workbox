@@ -144,6 +144,7 @@ class BoxEngine(object):
 
         box = model.Box.get_by_box_id(box_id)
         file_path = os.path.join(box.vagrantfile_path, 'Vagrantfile')
+
         with open(file_path, 'r') as v_file:
             return v_file.read()
 
@@ -233,4 +234,5 @@ class BoxEngine(object):
 
         """
 
-        shutil.rmtree(vagrantfile_dir)
+        if os.path.exists(vagrantfile_dir)
+            shutil.rmtree(vagrantfile_dir)
