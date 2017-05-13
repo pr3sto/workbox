@@ -1,0 +1,118 @@
+<html py:extends="master.xhtml" py:strip="True">
+
+<head py:block="head" py:strip="True">
+    <title py:block="master_title">Виртуальная среда #${box.box_id} | WorkBox</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css" />
+</head>
+
+<body py:block="body" py:strip="True">
+    <section id="list-id-header">
+        <div class="container outer-center">
+            <div class="input-group inner-center">
+                <!-- hidden elements for centering label -->
+                <div class="input-group-btn" style="visibility: hidden;">
+                    <button py:if="box.status != 'started'" class="btn btn-success">Запустить</button>
+                    <button py:if="box.status == 'started'" class="btn btn-warning">Остановить</button>
+                    <button class="btn btn-default">Копировать</button>
+                    <button class="btn btn-danger"><span class="glyphicon glyphicon-trash"/></button>
+                </div>
+                <label for="" class="control-label">Виртуальная среда #${box.box_id} в <b>WorkBox</b></label>
+                <div class="input-group-btn">
+                    <button py:if="box.status != 'started'" data-toggle="confirmation" name="start-form" value="${box.box_id}" class="btn btn-success">Запустить</button>
+                    <button py:if="box.status == 'started'" data-toggle="confirmation" name="stop-form" value="${box.box_id}" class="btn btn-warning">Остановить</button>
+                    <button data-toggle="confirmation" name="copy-form" value="${box.box_id}" class="btn btn-default">Копировать</button>
+                    <button data-toggle="confirmation" name="delete-form" value="${box.box_id}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"/></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="id-data" class="container">
+        <div id="id-data-tables">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading inner-center">Данные виртуальной среды</div>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td><b>Название</b></td>
+                                <td>${box.name}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Статус</b></td>
+                                <td>${box.status}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Автор</b></td>
+                                <td>${box.user.display_name}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Дата создания</b></td>
+                                <td>${box.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Дата изменения</b></td>
+                                <td>${box.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading inner-center">Данные для подключения</div>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td><b>Хост</b></td>
+                                <td>${host}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Порт</b></td>
+                                <td>${box.status}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="id-vagrantfile" class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading inner-center">Vagrantfile</div>
+            <textarea name="vagrantfile-text" class="form-control" readonly="true">${vagrantfile}</textarea>
+        </div>
+    </div>
+
+    <!-- actions -->
+    <form id="start-form" action="/box/start/" method="post" />
+    <form id="stop-form" action="/box/stop/" method="post" />
+    <form id="copy-form" action="/box/copy/" method="post" />
+    <form id="delete-form" action="/box/delete/" method="post" />
+</body>
+
+<script type="text/javascript" src="/js/bootstrap-confirmation.min.js"></script>
+<script type="text/javascript">
+    $(function ($) {
+        $('[data-toggle="confirmation"]').confirmation({
+            rootSelector: '[data-toggle=confirmation]',
+            copyAttributes: 'name value',
+            singleton: true,
+            popout: true,
+            placement: 'left',
+            title: 'Вы уверены?',
+            btnOkClass: 'btn-primary',
+            btnCancelClass: 'btn-default',
+            btnOkLabel: 'Да',
+            btnCancelLabel: 'Нет',
+            onConfirm: function () {
+                var form_name = '#' + $(this).attr('name');
+                $(form_name).append('&lt;input type="hidden" name="box_id" value="' + $(this).attr('value') + '" /&gt;');
+                $(form_name).submit();
+            }
+        });
+    });
+
+</script>
+
+</html>

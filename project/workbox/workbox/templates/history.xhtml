@@ -28,7 +28,7 @@
                     <tr>
                         <td>${entry.history_id}</td>
                         <td py:if="tg.predicates.has_permission('manage')">${entry.user.display_name}</td>
-                        <td py:if="entry.box"><a href="/box/${entry.box.box_id}/">#${entry.box.box_id}</a></td>
+                        <td py:if="entry.box"><a href="/box/id/${entry.box.box_id}">#${entry.box.box_id}</a></td>
                         <td py:if="not entry.box">-</td>                        
                         <td>${entry.datetime.strftime("%Y-%m-%d %H:%M")}</td>
                         <td>${entry.info}</td>

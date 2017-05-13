@@ -2,9 +2,11 @@
 """Template Helpers used in workbox"""
 
 import logging
+import socket
 from datetime import datetime
 from markupsafe import Markup
 import psutil
+import tg
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +24,25 @@ def is_docker_enabled():
         if 'docker' in proc.name():
             return True
     return False
-    
+
+def get_free_port():
+    """ Find and returns free port number. """
+
+    soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    soc.bind(("", 0))
+    free_port = soc.getsockname()[1]
+    soc.close()
+    return free_port
+
+def get_vagrantfiles_base_folder():
+    """ Return base folder for vagrantfiles. """
+
+    return tg.config.get('workbox.vagrantfiles.basefolder')
+
+def get_hostname():
+    """ Return hostname. """
+
+    return tg.config.get('workbox.hostname')
 
 try:
     from webhelpers2 import date, html, number, misc, text

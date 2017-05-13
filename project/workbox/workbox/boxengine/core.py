@@ -9,6 +9,7 @@ import vagrant
 import tg
 
 from workbox import model
+from workbox.lib.helpers import get_vagrantfiles_base_folder
 
 
 class BoxEngine(object):
@@ -121,6 +122,24 @@ class BoxEngine(object):
         BoxEngine._delete_vagrantfile(vagrantfile_path)
 
     @staticmethod
+    def get_vagrantfile_data(box_id):
+        """
+        Return vagrantfile data of box
+
+        Args:
+            box_id (int): id of box
+
+        Returns:
+            Vagrantfile data
+
+        """
+
+        box = model.Box.get_by_box_id(box_id)
+        file_path = os.path.join(box.vagrantfile_path, 'Vagrantfile')
+        with open(file_path, 'r') as v_file:
+            return v_file.read()
+
+    @staticmethod
     def get_server_load_value():
         """
         Get server load value
@@ -182,7 +201,7 @@ class BoxEngine(object):
 
         """
 
-        directory = str(tg.config.get('vagrantfile.folder')) + str(uuid.uuid4())
+        directory = str(get_vagrantfiles_base_folder()) + str(uuid.uuid4())
         if not os.path.exists(directory):
             os.makedirs(directory)
 

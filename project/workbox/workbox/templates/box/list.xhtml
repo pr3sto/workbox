@@ -7,7 +7,7 @@
 </head>
 
 <body py:block="body" py:strip="True">
-    <section id="list-header">
+    <section id="list-id-header">
         <div class="container outer-center">
             <h1 py:if="tg.predicates.has_permission('manage')" class="inner-center">Все виртуальные среды в <b>WorkBox</b></h1>
             <h1 py:if="not tg.predicates.has_permission('manage')" class="inner-center">Ваши виртуальные среды в <b>WorkBox</b></h1>
@@ -23,7 +23,7 @@
     </div>
     <!-- table -->
     <div py:if="entries.count()!=0" class="table-wrapper container">
-        <table id="box-table" class="table table-striped ">
+        <table id="box-table" class="table table-striped">
             <thead>
                 <tr>
                     <th>#</th>
@@ -103,7 +103,7 @@
             }
         });
         $('#box-table tbody').on( 'click', 'tr', function () {
-            window.location.href = '/box/' + boxTable.fnGetData(this)[0] + '/';
+            window.location.href = '/box/id/' + boxTable.fnGetData(this)[0];
         });
         $('#box-table button').click(function(e) {
             e.stopPropagation();
@@ -127,7 +127,7 @@
             }
         });
         $('#box-table tbody').on( 'click', 'tr', function () {
-            window.location.href = '/box/' + boxTable.fnGetData(this)[0] + '/';
+            window.location.href = '/box/id/' + boxTable.fnGetData(this)[0];
         });
         $('#box-table button').click(function(e) {
             e.stopPropagation();

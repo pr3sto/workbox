@@ -7,9 +7,10 @@ from tg.exceptions import HTTPFound, HTTPForbidden
 from tg.predicates import not_anonymous, has_permission
 from tg import request, redirect
 
+from workbox import model
 from workbox.boxengine import BoxEngine
 from workbox.lib.base import BaseController
-from workbox import model
+from workbox.lib.helpers import get_hostname
 
 __all__ = ['BoxController']
 
@@ -46,6 +47,23 @@ class BoxController(BaseController):
             entries = model.Box.get_all_user_boxes(request.identity['user']._id)
 
         return dict(page='list', entries=entries)
+
+    @expose('workbox.templates.box.id')
+    def id(self, box_id):
+        """Handle the box page."""
+
+        box_id = int(box_id)
+
+        if not has_permission('manage'):
+            if not model.Box.is_author(request.identity['repoze.who.userid'], box_id):
+                return HTTPForbidden(
+                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+
+        box = model.Box.get_by_box_id(box_id)
+        vagrantfile = BoxEngine.get_vagrantfile_data(box_id)
+        host = get_hostname()
+
+        return dict(page='id', box=box, vagrantfile=vagrantfile, host=host)
 
     @expose()
     def create_from_vagrantfile(self):

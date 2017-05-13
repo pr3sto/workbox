@@ -65,7 +65,7 @@
                         <tbody>
                             <py:for each="box in last_ten_worked">
                                 <tr>
-                                    <td><a href='/box/${box.box_id}/'>#${box.box_id} - ${box.name} (${box.status})</a></td>
+                                    <td><a href='/box/id/${box.box_id}'>#${box.box_id} - ${box.name} (${box.status})</a></td>
                                     <td>Дата создания: ${box.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}</td>
                                     <td>Дата последнего изменения: ${box.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</td>
                                 </tr>
