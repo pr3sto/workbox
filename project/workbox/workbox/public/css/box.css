@@ -111,8 +111,7 @@
     border: 0px;
 }
 
-#tab-vagrantfile .form-control, #tab-parameters .form-control,
-#tab-vagrantfile button, #tab-parameters button {
+#tab-vagrantfile panel, #tab-parameters select {
     margin-bottom: 20px;
 }
 

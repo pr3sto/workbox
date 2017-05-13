@@ -38,6 +38,9 @@
             <form action="/box/create_from_vagrantfile" method="post" accept-charset="UTF-8">
                 <p style="padding-bottom:10px;"><label tabindex="0" class="file-label btn btn-default">Загрузите Vagrantfile<input class="file-input btn btn-default" type="file" style="display:none;"/></label> 
                 &nbsp;или воспользуйтесь редактором для создания нового файла</p>
+                <div class="alert alert-info">
+                    Для подстановки номера свободного порта введите <b>#FPRT#</b> (например: config.vm.network "forwarded_port", guest: 8080, host: #FPRT#)
+                </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">Vagrantfile</div>
                     <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-data" required="true"></textarea>

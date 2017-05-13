@@ -32,12 +32,13 @@ class Box(MappedClass):
     _user_id = ForeignIdProperty(User)
     user = RelationProperty(User)
 
+    port = FieldProperty(s.Int)
     status = FieldProperty(s.String)
     name = FieldProperty(s.String)
     vagrantfile_path = FieldProperty(s.String)
 
     @staticmethod
-    def add_new_box(user_name, box_name, vagrantfile_path):
+    def add_new_box(user_name, box_name, port, vagrantfile_path):
         """
         Add new box to db
 
@@ -58,6 +59,7 @@ class Box(MappedClass):
         box.datetime_of_modify = box.datetime_of_creation
         box.status = 'created'
         box.name = box_name
+        box.port = port
         box.vagrantfile_path = vagrantfile_path
 
         DBSession.flush()
@@ -90,6 +92,21 @@ class Box(MappedClass):
             return True
         else:
             return False
+
+    @staticmethod
+    def is_port_free(port):
+        """
+        Detect is given port free
+
+        Args:
+            port (int): port number
+
+        Returns:
+            True if port is free, otherwise - False
+
+        """
+
+        return Box.query.get(port=port) == None
 
     @staticmethod
     def get_by_box_id(box_id):

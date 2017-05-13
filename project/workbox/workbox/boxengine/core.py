@@ -6,10 +6,10 @@ import shutil
 import uuid
 import psutil
 import vagrant
-import tg
+import string
 
 from workbox import model
-from workbox.lib.helpers import get_vagrantfiles_base_folder
+from workbox.lib.helpers import get_vagrantfiles_base_folder, get_free_port
 
 
 class BoxEngine(object):
@@ -30,8 +30,16 @@ class BoxEngine(object):
 
         """
 
+        port = None
+        if '#FPRT#' in vagrantfile_data:
+            while True:
+                port = get_free_port()
+                if model.Box.is_port_free(port):
+                    vagrantfile_data = string.replace(vagrantfile_data, '#FPRT#', str(port))
+                    break
+
         vagrantfile_path = BoxEngine._create_vagrantfile(vagrantfile_data)
-        box_id = model.Box.add_new_box(user_name, box_name, vagrantfile_path)
+        box_id = model.Box.add_new_box(user_name, box_name, port, vagrantfile_path)
         return box_id
 
     @staticmethod
