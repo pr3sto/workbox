@@ -10,7 +10,7 @@ then
   # setup workbox
   . /opt/venvs/workbox/bin/activate
   cd /opt/venvs/workbox
-  /opt/venvs/workbox/bin/gearbox setup-app -c /opt/venvs/workbox/lib/python2.7/site-packages/workbox/appconfig/production.ini
+  /opt/venvs/workbox/bin/gearbox setup-app -c /opt/venvs/workbox/lib/python2.7/site-packages/workbox/appconfig/configuration.ini
   deactivate
 
 else
