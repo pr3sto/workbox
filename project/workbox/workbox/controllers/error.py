@@ -33,14 +33,14 @@ class ErrorController(BaseController):
 
         if not message:
             if resp_code == 403:
-                message = "<p>У Вас нет прав доступа для просмотра этой страницы</p>"
+                message = "У Вас нет прав доступа для просмотра этой страницы"
             elif resp_code == 404:
-                message = "<p>Запрашиваемая страница не найдена</p>"
+                message = "Запрашиваемая страница не найдена"
             elif resp_code == 500:
-                message = "<p>Внутренняя ошибка сервера</p>"
+                message = "Внутренняя ошибка сервера"
             # add more codes
             else:
-                message = "<p>Извините, мы не может обработать запрос</p>"
+                message = "Извините, мы не может обработать запрос"
 
         values = dict(prefix=request.environ.get('SCRIPT_NAME', ''),
                       code=resp_code,

@@ -4,9 +4,10 @@
 import os
 import shutil
 import uuid
+import string
+from subprocess import CalledProcessError
 import psutil
 import vagrant
-import string
 
 from workbox import model
 from workbox.lib.helpers import get_vagrantfiles_base_folder, get_free_port
@@ -14,6 +15,69 @@ from workbox.lib.helpers import get_vagrantfiles_base_folder, get_free_port
 
 class BoxEngine(object):
     """Helper class for work with boxes"""
+
+    @staticmethod
+    def get_all_boxes():
+        """
+        Get all boxes from db
+
+        Returns:
+            Collection of all boxes
+
+        """
+
+        return model.Box.get_all_boxes()
+
+    @staticmethod
+    def get_all_user_boxes(user_id):
+        """
+        Get all user boxes from db
+
+        Args:
+            user_id (int): user id in db
+
+        Returns:
+            Collection of all boxes
+
+        """
+
+        return model.Box.get_all_user_boxes(user_id)
+
+    @staticmethod
+    def get_box_by_id(box_id):
+        """
+        Get box with given box_id
+
+        Args:
+            box_id (int): box_id in db
+
+        Returns:
+            Box
+
+        """
+
+        return model.Box.get_by_box_id(box_id)
+
+    @staticmethod
+    def is_author(user_name, box_id):
+        """
+        Detect is user author of box
+
+        Args:
+            user_name (string): user name
+
+        Raises:
+            IndexError: no box with given box_id
+
+        Returns:
+            True if user is author, otherwise - False
+
+        """
+
+        try:
+            return model.Box.is_author(user_name, box_id)
+        except IndexError:
+            raise
 
     @staticmethod
     def create_box_from_vagrantfile(box_name, user_name, vagrantfile_data):
@@ -64,11 +128,22 @@ class BoxEngine(object):
         Args:
             box_id (int): id of box
 
+        Raises:
+            EnvironmentError: vagrant failed
+
         """
 
         box = model.Box.get_by_box_id(box_id)
-        vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
-        vagrant_box.up()
+
+        try:
+            vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
+            vagrant_box.up()
+        except CalledProcessError:
+            raise EnvironmentError("Не удалось выполнить 'vagrant up'")
+        except OSError:
+            raise EnvironmentError(
+                "Не удалось выполнить 'vagrant up' (проблема с доступом к Vagrantfile)")
+
         model.Box.change_status(box_id, 'started')
 
     @staticmethod
@@ -79,11 +154,22 @@ class BoxEngine(object):
         Args:
             box_id (int): id of box
 
+        Raises:
+            EnvironmentError: vagrant failed
+
         """
 
         box = model.Box.get_by_box_id(box_id)
-        vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
-        vagrant_box.destroy()
+
+        try:
+            vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
+            vagrant_box.destroy()
+        except CalledProcessError:
+            raise EnvironmentError("Не удалось выполнить 'vagrant destroy'")
+        except OSError:
+            raise EnvironmentError(
+                "Не удалось выполнить 'vagrant up' (проблема с доступом к Vagrantfile)")
+
         model.Box.change_status(box_id, 'stopped')
 
     @staticmethod
@@ -98,11 +184,17 @@ class BoxEngine(object):
         Returns:
             Id of created box
 
+        Raises:
+            EnvironmentError: vagrantfile was removed
+
         """
 
         copied_box = model.Box.get_by_box_id(copied_box_id)
 
         file_path = os.path.join(copied_box.vagrantfile_path, 'Vagrantfile')
+
+        if not os.path.exists(file_path):
+            raise EnvironmentError("Vagrantfile был удален")
 
         with open(file_path, 'r') as v_file:
             vagrantfile_path = BoxEngine._create_vagrantfile(v_file.read())
@@ -140,10 +232,16 @@ class BoxEngine(object):
         Returns:
             Vagrantfile data
 
+        Raises:
+            EnvironmentError: vagrantfile was removed
+
         """
 
         box = model.Box.get_by_box_id(box_id)
         file_path = os.path.join(box.vagrantfile_path, 'Vagrantfile')
+
+        if not os.path.exists(file_path):
+            raise EnvironmentError("Vagrantfile был удален")
 
         with open(file_path, 'r') as v_file:
             return v_file.read()
@@ -234,5 +332,5 @@ class BoxEngine(object):
 
         """
 
-        if os.path.exists(vagrantfile_dir)
+        if os.path.exists(vagrantfile_dir):
             shutil.rmtree(vagrantfile_dir)

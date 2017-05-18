@@ -40,7 +40,7 @@ class RootController(BaseController):
             my_boxes = BoxEngine.get_number_of_user_boxes(request.identity['user']._id)
             all_boxes = BoxEngine.get_number_of_all_boxes()
 
-            boxes = model.Box.get_all_user_boxes(request.identity['user']._id)
+            boxes = BoxEngine.get_all_user_boxes(request.identity['user']._id)
             boxes = sorted(boxes, key=lambda x: x.datetime_of_modify, reverse=True)
 
             return dict(page='index', load_value=load_value, my_boxes=my_boxes,

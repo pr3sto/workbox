@@ -3,7 +3,7 @@
 
 from tg import expose
 from tg.i18n import lazy_ugettext as l_
-from tg.exceptions import HTTPFound, HTTPForbidden
+from tg.exceptions import HTTPFound, HTTPForbidden, HTTPServerError
 from tg.predicates import not_anonymous, has_permission
 from tg import request, redirect
 
@@ -42,9 +42,9 @@ class BoxController(BaseController):
         entries = None
 
         if has_permission('manage'):
-            entries = model.Box.get_all_boxes()
+            entries = BoxEngine.get_all_boxes()
         else:
-            entries = model.Box.get_all_user_boxes(request.identity['user']._id)
+            entries = BoxEngine.get_all_user_boxes(request.identity['user']._id)
 
         return dict(page='list', entries=entries)
 
@@ -54,14 +54,17 @@ class BoxController(BaseController):
 
         box_id = int(box_id)
 
-        if not has_permission('manage'):
-            if not model.Box.is_author(request.identity['repoze.who.userid'], box_id):
-                return HTTPForbidden(
-                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+        try:
+            if not has_permission('manage'):
+                if not BoxEngine.is_author(request.identity['repoze.who.userid'], box_id):
+                    return HTTPForbidden(
+                        'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
 
-        box = model.Box.get_by_box_id(box_id)
-        vagrantfile = BoxEngine.get_vagrantfile_data(box_id)
-        host = get_hostname()
+            box = BoxEngine.get_box_by_id(box_id)
+            vagrantfile = BoxEngine.get_vagrantfile_data(box_id)
+            host = get_hostname()
+        except Exception as ex:
+            return HTTPServerError(ex.message)
 
         return dict(page='id', box=box, vagrantfile=vagrantfile, host=host)
 
@@ -105,14 +108,17 @@ class BoxController(BaseController):
 
         box_id = int(request.POST['box_id'])
 
-        if not has_permission('manage'):
-            if not model.Box.is_author(request.identity['repoze.who.userid'], box_id):
-                return HTTPForbidden(
-                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+        try:
+            if not has_permission('manage'):
+                if not BoxEngine.is_author(request.identity['repoze.who.userid'], box_id):
+                    return HTTPForbidden(
+                        'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
 
-        BoxEngine.start_box(box_id)
-        model.History.add_record(request.identity['repoze.who.userid'],
-                                 box_id, 'Запуск виртуальной среды #' + str(box_id))
+            BoxEngine.start_box(box_id)
+            model.History.add_record(request.identity['repoze.who.userid'],
+                                     box_id, 'Запуск виртуальной среды #' + str(box_id))
+        except Exception as ex:
+            return HTTPServerError(ex.message)
 
         return HTTPFound(location='/box/list/')
 
@@ -122,14 +128,17 @@ class BoxController(BaseController):
 
         box_id = int(request.POST['box_id'])
 
-        if not has_permission('manage'):
-            if not model.Box.is_author(request.identity['repoze.who.userid'], box_id):
-                return HTTPForbidden(
-                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+        try:
+            if not has_permission('manage'):
+                if not BoxEngine.is_author(request.identity['repoze.who.userid'], box_id):
+                    return HTTPForbidden(
+                        'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
 
-        BoxEngine.stop_box(box_id)
-        model.History.add_record(request.identity['repoze.who.userid'],
-                                 box_id, 'Остановка виртуальной среды #' + str(box_id))
+            BoxEngine.stop_box(box_id)
+            model.History.add_record(request.identity['repoze.who.userid'],
+                                     box_id, 'Остановка виртуальной среды #' + str(box_id))
+        except Exception as ex:
+            return HTTPServerError(ex.message)
 
         return HTTPFound(location='/box/list/')
 
@@ -139,15 +148,18 @@ class BoxController(BaseController):
 
         copied_box_id = int(request.POST['box_id'])
 
-        if not has_permission('manage'):
-            if not model.Box.is_author(request.identity['repoze.who.userid'], copied_box_id):
-                return HTTPForbidden(
-                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+        try:
+            if not has_permission('manage'):
+                if not BoxEngine.is_author(request.identity['repoze.who.userid'], copied_box_id):
+                    return HTTPForbidden(
+                        'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
 
-        box_id = BoxEngine.copy_box(request.identity['repoze.who.userid'], copied_box_id)
-        model.History.add_record(request.identity['repoze.who.userid'],
-                                 box_id, 'Копирование виртуальной среды #' +
-                                 str(copied_box_id) + ' (создана #' + str(box_id) + ')')
+            box_id = BoxEngine.copy_box(request.identity['repoze.who.userid'], copied_box_id)
+            model.History.add_record(request.identity['repoze.who.userid'],
+                                     box_id, 'Копирование виртуальной среды #' +
+                                     str(copied_box_id) + ' (создана #' + str(box_id) + ')')
+        except Exception as ex:
+            return HTTPServerError(ex.message)
 
         return HTTPFound(location='/box/list/')
 
@@ -157,13 +169,16 @@ class BoxController(BaseController):
 
         box_id = int(request.POST['box_id'])
 
-        if not has_permission('manage'):
-            if not model.Box.is_author(request.identity['repoze.who.userid'], box_id):
-                return HTTPForbidden(
-                    'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+        try:
+            if not has_permission('manage'):
+                if not BoxEngine.is_author(request.identity['repoze.who.userid'], box_id):
+                    return HTTPForbidden(
+                        'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
 
-        BoxEngine.delete_box(box_id)
-        model.History.add_record(request.identity['repoze.who.userid'],
-                                 None, 'Удаление виртуальной среды #' + str(box_id))
+            BoxEngine.delete_box(box_id)
+            model.History.add_record(request.identity['repoze.who.userid'],
+                                     None, 'Удаление виртуальной среды #' + str(box_id))
+        except Exception as ex:
+            return HTTPServerError(ex.message)
 
         return HTTPFound(location='/box/list/')
