@@ -69,6 +69,28 @@ class BoxController(BaseController):
         return dict(page='id', box=box, vagrantfile=vagrantfile, host=host)
 
     @expose()
+    def update_vagrantfile(self):
+        """Update vagrantfile."""
+
+        box_id = int(request.POST['box_id'])
+        vagrantfile = request.POST['vagrantfile-text']
+
+        try:
+            if not has_permission('manage'):
+                if not BoxEngine.is_author(request.identity['repoze.who.userid'], box_id):
+                    return HTTPForbidden(
+                        'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+
+            BoxEngine.update_vagrantfile(box_id, vagrantfile)
+            model.History.add_record(request.identity['repoze.who.userid'],
+                                     box_id,
+                                     'Изменение Vagrantfile виртуальной среды #' + str(box_id))
+        except Exception as ex:
+            return HTTPServerError(ex.message)
+
+        return HTTPFound(location='/box/id/' + str(box_id))
+
+    @expose()
     def create_from_vagrantfile(self):
         """Create box from given vagrantfile."""
 

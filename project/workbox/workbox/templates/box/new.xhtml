@@ -3,6 +3,8 @@
 <head py:block="head" py:strip="True">
     <title py:block="master_title">Создание виртуальной среды | WorkBox</title>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/codemirror.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/neat.css" /> 
     <link rel="stylesheet" type="text/css" media="screen" href="/css/spinner.css" />
 </head>
 
@@ -44,14 +46,14 @@
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">Vagrantfile</div>
-                        <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-data" required="true"></textarea>
+                        <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-data"></textarea>
                     </div>
                     <div class="form-inline">
                         <div class="form-group">
                             <input name="box-name" placeholder="Название виртуальной среды" class="form-control" required="true" />
                             <input name="num-of-copies" placeholder="Количество копий" class="form-control" required="true" type="number" min="1" max="20" />
                         </div>
-                        <button type="submit" class="btn btn-primary">Создать</button>
+                        <button disabled="disabled" type="submit" class="btn btn-primary" id="create-button-1">Создать</button>
                     </div>
                 </form>
             </div>
@@ -59,21 +61,21 @@
             <div id="tab-parameters" class="tab-pane fade">
                 <form action="/box/create_from_parameters" method="post" accept-charset="UTF-8">
                     <select class="form-control" name="size" required="true">
-                        <option selected="true" disabled="true">Выберите Vagrant box</option>
+                        <option selected="true" disabled="true">Выберите виртуальную среду</option>
                         <py:for each="entry in templates">
                             <option value="${entry.template}">${entry.name}</option>
                         </py:for>
                     </select>
                     <div class="panel panel-default">
                         <div class="panel-heading">Vagrantfile</div>
-                        <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-template-data" readonly="true"></textarea>
+                        <textarea name="vagrantfile-text" class="form-control" id="vagrantfile-template-data"></textarea>
                     </div>
                     <div class="form-inline">
                         <div class="form-group">
                             <input name="box-name" placeholder="Название виртуальной среды" class="form-control" required="true" />
                             <input name="num-of-copies" placeholder="Количество копий" class="form-control" required="true" type="number" min="1" max="20" />
                         </div>
-                        <button type="submit" class="btn btn-primary">Создать</button>
+                        <button disabled="disabled" type="submit" class="btn btn-primary" id="create-button-2">Создать</button>
                     </div>
                 </form>
             </div>
@@ -81,34 +83,78 @@
     </section>
 </body>
 
+<script type="text/javascript" src="/js/codemirror/codemirror.js"></script>
+<script type="text/javascript" src="/js/codemirror/ruby.js"></script>
+<script type="text/javascript" src="/js/codemirror/matchbrackets.js"></script>
+<script type="text/javascript" src="/js/codemirror/active-line.js"></script>
 <script type="text/javascript">
-    $(':file').on('change', function () {
-        $('.loading').css('visibility', 'visible');
-        var fr = new FileReader();
-        fr.onload = showFile;
-        fr.readAsText(this.files[0]);
+    $(function ($) {
+        var vagrantfileEditor = CodeMirror.fromTextArea(document.getElementById('vagrantfile-data'), {
+            mode: 'text/x-ruby',
+            theme: 'neat',
+            matchBrackets: true,
+            indentUnit: 2,
+            lineNumbers: true,
+            styleActiveLine: true
+        });
+        var templateEditor = CodeMirror.fromTextArea(document.getElementById('vagrantfile-template-data'), {
+            mode: 'text/x-ruby',
+            theme: 'neat',
+            matchBrackets: true,
+            indentUnit: 2,
+            lineNumbers: true,
+            readOnly: true
+        });
 
-        function showFile() {
-            $('#vagrantfile-data').val(fr.result);
-            $('.loading').fadeTo(500, 0, function () {
-                $('.loading').css('visibility', 'hidden');
-                $('.loading').css('opacity', 1);
-            });
-        }
+        vagrantfileEditor.on("change", function(editor, change) {
+            if (editor.getValue() !== '')
+                document.getElementById('create-button-1').disabled = "";
+            else
+                document.getElementById('create-button-1').disabled = "";
+
+            document.getElementById('vagrantfile-data').value = editor.getValue(); 
+        });
+        templateEditor.on("change", function(editor, change) {
+            if (editor.getValue() !== '')
+                document.getElementById('create-button-2').disabled = "";
+            else
+                document.getElementById('create-button-2').disabled = "";
+
+            document.getElementById('vagrantfile-template-data').value = editor.getValue(); 
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            vagrantfileEditor.refresh();
+            templateEditor.refresh();
+        });
+
+        $(':file').on('change', function () {
+            $('.loading').css('visibility', 'visible');
+            var fr = new FileReader();
+            fr.onload = showFile;
+            fr.readAsText(this.files[0]);
+
+            function showFile() {
+                vagrantfileEditor.setValue(fr.result);
+                $('.loading').fadeTo(500, 0, function () {
+                    $('.loading').css('visibility', 'hidden');
+                    $('.loading').css('opacity', 1);
+                });
+            }
+        });
+
+        $('select').on('change', function() {
+            templateEditor.setValue(this.value);
+        });
+
+        // keyboard fix
+        $('.file-label').on('keypress', function(event) {
+            if ((event.which || event.keyCode) === 13  ) {
+                $('.file-input').click();
+                event.preventDefault();
+            }
+        });
     });
-
-    $('select').on('change', function() {
-        $('#vagrantfile-template-data').val(this.value);
-    });
-
-    // keyboard fix
-    $('.file-label').on('keypress', function(event) {
-        if ((event.which || event.keyCode) === 13  ) {
-            $('.file-input').click();
-            event.preventDefault();
-        }
-    });
-
 </script>
 
 </html>

@@ -80,6 +80,31 @@ class BoxEngine(object):
             raise
 
     @staticmethod
+    def update_vagrantfile(box_id, vagrantfile_data):
+        """
+        Update Vagrantfile of box with given box_id
+
+        Args:
+            box_id (int): id of box
+            vagrantfile_data (string): text data of vagrantfile
+
+        Raises:
+            EnvironmentError: vagrantfile was removed
+
+        """
+
+        box = model.Box.get_by_box_id(box_id)
+        file_path = os.path.join(box.vagrantfile_path, 'Vagrantfile')
+
+        if not os.path.exists(file_path):
+            raise EnvironmentError("Vagrantfile был удален")
+
+        with open(file_path, 'wb') as v_file:
+            v_file.write(vagrantfile_data)
+
+        model.Box.update_datetime_of_modify(box_id)
+
+    @staticmethod
     def create_box_from_vagrantfile(box_name, user_name, vagrantfile_data):
         """
         Create box from givent Vagrantfile text

@@ -201,8 +201,30 @@ class Box(MappedClass):
             raise IndexError("Виртуальная среда не найдена")
 
         box.status = status
-        box.datetime_of_modify = datetime.now()
+        DBSession.flush()
+        DBSession.clear()
 
+        Box.update_datetime_of_modify(box_id)
+
+    @staticmethod
+    def update_datetime_of_modify(box_id):
+        """
+        Change datetime of modify of box
+
+        Args:
+            box_id (int): box_id in db
+
+        Raises:
+            IndexError: no box with given box_id
+
+        """
+
+        box = Box.get_by_box_id(box_id)
+
+        if box is None:
+            raise IndexError("Виртуальная среда не найдена")
+
+        box.datetime_of_modify = datetime.now()
         DBSession.flush()
         DBSession.clear()
 

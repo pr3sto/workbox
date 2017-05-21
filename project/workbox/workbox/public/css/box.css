@@ -103,15 +103,15 @@
     text-align: center;
 }
 
-#tab-vagrantfile textarea, #tab-parameters textarea, #id-content-vagrantfile textarea {
-    margin-bottom: 0px !important;
-    background-color: #fff;
-    resize: vertical;
-    min-height: 400px;
-    border: 0px;
+#tab-vagrantfile .panel, #tab-parameters .panel {
+    text-align: left;
 }
 
-#tab-vagrantfile panel, #tab-parameters select {
+#tab-vagrantfile .panel-heading, #tab-parameters .panel-heading {
+    text-align: center;
+}
+
+#tab-vagrantfile .panel, #tab-parameters select {
     margin-bottom: 20px;
 }
 
@@ -189,4 +189,21 @@
 
 #id-content-vagrantfile .panel {
     margin-bottom: 0px;
+}
+
+#id-content-vagrantfile .panel form {
+    position: relative;
+}
+
+#id-content-vagrantfile .panel form button{
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    z-index: 999;
+}
+
+/* code editor styling */
+
+.CodeMirror {
+    height: 300px !important;
 }

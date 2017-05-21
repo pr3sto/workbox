@@ -3,6 +3,8 @@
 <head py:block="head" py:strip="True">
     <title py:block="master_title">Виртуальная среда #${box.box_id} | WorkBox</title>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/codemirror.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/neat.css" /> 
 </head>
 
 <body py:block="body" py:strip="True">
@@ -81,7 +83,11 @@
             <div id="id-content-vagrantfile">
                 <div class="panel panel-default">
                     <div class="panel-heading inner-center">Vagrantfile</div>
-                    <textarea name="vagrantfile-text" class="form-control" readonly="true">${vagrantfile}</textarea>
+                    <form action="/box/update_vagrantfile" method="post" accept-charset="UTF-8">
+                        <textarea name="vagrantfile-text" id="vagrantfile-data" class="form-control" required="true">${vagrantfile}</textarea>
+                        <input type="hidden" name="box_id" value="${box.box_id}" />   
+                        <button style="visibility: hidden;" type="submit" class="btn btn-default" id="update-button">Обновить</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -94,6 +100,10 @@
     <form id="delete-form" action="/box/delete/" method="post" />
 </body>
 
+<script type="text/javascript" src="/js/codemirror/codemirror.js"></script>
+<script type="text/javascript" src="/js/codemirror/ruby.js"></script>
+<script type="text/javascript" src="/js/codemirror/matchbrackets.js"></script>
+<script type="text/javascript" src="/js/codemirror/active-line.js"></script>
 <script type="text/javascript" src="/js/bootstrap-confirmation.min.js"></script>
 <script type="text/javascript">
     $(function ($) {
@@ -113,6 +123,24 @@
                 $(form_name).append('&lt;input type="hidden" name="box_id" value="' + $(this).attr('value') + '" /&gt;');
                 $(form_name).submit();
             }
+        });
+
+        var vagrantfileEditor = CodeMirror.fromTextArea(document.getElementById('vagrantfile-data'), {
+            mode: 'text/x-ruby',
+            theme: 'neat',
+            matchBrackets: true,
+            indentUnit: 2,
+            lineNumbers: true,
+            styleActiveLine: true
+        });
+
+        vagrantfileEditor.on("change", function(editor, change) {
+            if (editor.getValue() !== '')
+                document.getElementById('update-button').style.visibility = 'visible';
+            else
+                document.getElementById('update-button').style.visibility = 'hidden';
+
+            document.getElementById('vagrantfile-data').value = editor.getValue(); 
         });
     });
 
