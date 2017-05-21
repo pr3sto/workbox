@@ -110,7 +110,7 @@
             if (editor.getValue() !== '')
                 document.getElementById('create-button-1').disabled = "";
             else
-                document.getElementById('create-button-1').disabled = "";
+                document.getElementById('create-button-1').disabled = "disabled";
 
             document.getElementById('vagrantfile-data').value = editor.getValue(); 
         });
@@ -118,7 +118,7 @@
             if (editor.getValue() !== '')
                 document.getElementById('create-button-2').disabled = "";
             else
-                document.getElementById('create-button-2').disabled = "";
+                document.getElementById('create-button-2').disabled = "disabled";
 
             document.getElementById('vagrantfile-template-data').value = editor.getValue(); 
         });
