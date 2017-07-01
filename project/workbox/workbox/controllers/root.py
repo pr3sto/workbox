@@ -32,7 +32,13 @@ class RootController(BaseController):
         tmpl_context.project_name = "workbox"
 
     @expose('workbox.templates.index')
-    def index(self):
+    def login(self, came_from=lurl('/'), failure=None, login=''):
+        """ Handle login. """
+
+        redirect('/index', params=dict(came_from=came_from))
+
+    @expose('workbox.templates.index')
+    def index(self, came_from=lurl('/'), failure=None, login=''):
         """Handle the front-page"""
 
         if request.identity:
@@ -46,7 +52,16 @@ class RootController(BaseController):
             return dict(page='index', load_value=load_value, my_boxes=my_boxes,
                         all_boxes=all_boxes, last_ten_worked=boxes[:10])
         else:
-            return dict(page='index')
+            error_msg = None
+            if failure is not None:
+                if failure == 'user-not-found':
+                    error_msg = 'Пользователь не найден'.decode("utf8")
+                elif failure == 'invalid-password':
+                    error_msg = 'Некорректный пароль'.decode("utf8")
+                else:
+                    error_msg = 'Ошибка авторизации'.decode("utf8")
+
+            return dict(page='index', came_from=came_from, login=login, error_msg=error_msg)
 
     @expose('workbox.templates.history')
     def history(self):
@@ -61,24 +76,6 @@ class RootController(BaseController):
 
         return dict(page='history', entries=entries)
 
-    @expose('workbox.templates.login')
-    def login(self, came_from=lurl('/'), failure=None, login=''):
-        """Start the user login"""
-
-        if request.identity:
-            return HTTPFound(location='/')
-
-        error_msg = None
-        if failure is not None:
-            if failure == 'user-not-found':
-                error_msg = 'Пользователь не найден'.decode("utf8")
-            elif failure == 'invalid-password':
-                error_msg = 'Некорректный пароль'.decode("utf8")
-            else:
-                error_msg = 'Ошибка авторизации'.decode("utf8")
-
-        return dict(page='login', came_from=came_from, login=login, error_msg=error_msg)
-
     @expose()
     def post_login(self, came_from=lurl('/')):
         """
@@ -88,7 +85,7 @@ class RootController(BaseController):
         """
 
         if not request.identity:
-            redirect('/login', params=dict(came_from=came_from))
+            redirect('/index', params=dict(came_from=came_from))
 
         model.History.add_record(request.identity['repoze.who.userid'], None, 'Вход в аккаунт')
 

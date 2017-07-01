@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <div class="content">
+    <div py:if="request.identity or (request.environ['PATH_INFO'] != '/' and not request.environ['PATH_INFO'].startswith('/index'))" class="content">
         <div class="content-inside">
 
             <!-- Dummy navbar -->
@@ -53,9 +53,6 @@
                             <li py:if="tg.predicates.has_permission('manage')" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/admin')]}">
                                 <a href="/admin/">Панель администратора</a>
                             </li>
-                            <li py:if="not request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/login')]}">
-                                <a href="/login/">Вход</a>
-                            </li>
                             <li py:if="request.identity">
                                 <a href="/logout_handler">Выход</a>
                             </li>
@@ -73,10 +70,10 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer py:if="request.identity or (request.environ['PATH_INFO'] != '/' and not request.environ['PATH_INFO'].startswith('/index'))" class="footer">
         <div class="container">
             <!-- dev popup -->
-            <div id="dev">
+            <div py:if="request.identity" id="dev">
                 <span class="icomoon icon-embed"></span>
                 <div id="credits">
                     <p>Created with&nbsp;<span class="icomoon icon-heart" />&nbsp;by</p>
@@ -105,6 +102,12 @@
             <p id="copyright">&copy; ${h.current_year()} WorkBox</p>
         </div>
     </footer>
+
+    <!-- welcome page -->
+    <div py:if="(not request.identity) and (request.environ['PATH_INFO'] == '/' or request.environ['PATH_INFO'].startswith('/index'))">
+        <!-- Main included content -->
+        <py:block name="body"></py:block>
+    </div>
 
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
