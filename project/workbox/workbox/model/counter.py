@@ -14,16 +14,14 @@ class Counter(MappedClass):
     """
     Counter definition
 
-    _id (string): name if collection of ids
-    uid (int): autoincremented id
-
     """
 
     class __mongometa__:
         session = DBSession
         name = 'counter'
 
-    _id = FieldProperty(s.String)
+    _id = FieldProperty(s.ObjectId)
+    name = FieldProperty(s.String)
     uid = FieldProperty(s.Int)
 
     @staticmethod
@@ -40,4 +38,4 @@ class Counter(MappedClass):
         """
 
         return Counter.query.find_and_modify(
-            query={'_id': name}, update={'$inc': {'uid': 1}}, new=True).uid
+            query={'name': name}, update={'$inc': {'uid': 1}}, new=True).uid

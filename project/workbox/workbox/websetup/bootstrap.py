@@ -35,11 +35,11 @@ def bootstrap(command, conf, vars):
     u.password = 'admin'
 
     box_counter = model.Counter()
-    box_counter._id = 'box'
+    box_counter.name = 'box'
     box_counter.uid = 0
 
     history_counter = model.Counter()
-    history_counter._id = 'history'
+    history_counter.name = 'history'
     history_counter.uid = 0
 
     model.DBSession.flush()

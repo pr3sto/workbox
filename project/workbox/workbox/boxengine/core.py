@@ -215,6 +215,13 @@ class BoxEngine(object):
         """
 
         copied_box = model.Box.get_by_box_id(copied_box_id)
+        
+        port = None
+        if copied_box.port != None:
+            while True:
+                port = get_free_port()
+                if model.Box.is_port_free(port):
+                    break
 
         file_path = os.path.join(copied_box.vagrantfile_path, 'Vagrantfile')
 
@@ -223,7 +230,7 @@ class BoxEngine(object):
 
         with open(file_path, 'r') as v_file:
             vagrantfile_path = BoxEngine._create_vagrantfile(v_file.read())
-            box_id = model.Box.add_new_box(user_name, copied_box.name, vagrantfile_path)
+            box_id = model.Box.add_new_box(user_name, copied_box.name, port, vagrantfile_path)
             return box_id
 
     @staticmethod
