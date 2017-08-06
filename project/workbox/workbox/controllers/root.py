@@ -32,6 +32,12 @@ class RootController(BaseController):
         tmpl_context.project_name = "workbox"
 
     @expose('workbox.templates.index')
+    def login(self, came_from=lurl('/'), failure=None, login=''):
+        """ Handle login. """
+        
+        redirect('/index', params=dict(came_from=came_from))
+
+    @expose('workbox.templates.index')
     def index(self, came_from=lurl('/'), failure=None, login=''):
         """Handle the front-page"""
 
