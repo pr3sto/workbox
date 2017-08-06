@@ -24,7 +24,12 @@
             <nav class="navbar navbar-default"></nav>
             <!-- Real navbar -->
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-                <div class="container">
+                <!-- navbar anon user -->
+                <div py:if="not request.identity" class="container outer-center">
+                    <a class="inner-center" style="height:50px;" href="/"><img id="brand-img" style="padding:15px; height:100%;" src="/images/favicon.ico" /></a>
+                </div>
+                <!-- navbar auth user -->
+                <div py:if="request.identity" class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-content">
                             <span class="sr-only">Toggle navigation</span>
@@ -33,19 +38,19 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="/"><img id="brand-img" src="/images/favicon.ico" />
-                            <span class="bubble-tag">DEV</span>
+                            <span class="bubble-tag">BETA</span>
                         </a>
                     </div>
 
                     <div class="collapse navbar-collapse" id="navbar-content">
                         <ul class="nav navbar-nav">
-                            <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/new')]}">
+                            <li class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/new')]}">
                                 <a href="/box/new/">Создание виртуальной среды</a>
                             </li>
-                            <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/list')]}">
+                            <li class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/list')]}">
                                 <a href="/box/list/">Список виртуальных сред</a>
                             </li>
-                            <li py:if="request.identity" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history')]}">
+                            <li class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history')]}">
                                 <a href="/history/">Журнал</a>
                             </li>
                         </ul>
@@ -53,7 +58,7 @@
                             <li py:if="tg.predicates.has_permission('manage')" class="${('', 'active')[request.environ['PATH_INFO'].startswith('/admin')]}">
                                 <a href="/admin/">Панель администратора</a>
                             </li>
-                            <li py:if="request.identity">
+                            <li>
                                 <a href="/logout_handler">Выход</a>
                             </li>
                         </ul>

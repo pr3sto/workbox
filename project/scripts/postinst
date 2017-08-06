@@ -15,7 +15,7 @@ case "$1" in
   configure)
     # bind ip address
     if ! /bin/grep -q -P '127.0.0.1\tworkbox' /etc/hosts ; then
-      /usr/bin/printf "\n# WorkBox service by Chirukhin Alexey\n127.0.0.1\tworkbox\n127.0.0.1\tdev.workbox\n" >> /etc/hosts
+      /usr/bin/printf "\n# WorkBox service by Chirukhin Alexey\n127.0.0.1\tworkbox\n127.0.0.1\tbeta.workbox\n" >> /etc/hosts
     fi
 
     # disable if site exists
@@ -29,14 +29,14 @@ case "$1" in
     # Set up our config for apache
     /usr/bin/printf "<VirtualHost *:80>
     ServerName workbox
-    RedirectMatch permanent ^/(.*)$ http://dev.workbox/\$1
+    RedirectMatch permanent ^/(.*)$ http://beta.workbox/\$1
 </VirtualHost>
 
 <VirtualHost *:80>
-    ServerName dev.workbox
+    ServerName beta.workbox
 
-    WSGIProcessGroup dev.workbox
-    WSGIDaemonProcess dev.workbox user=www-data group=www-data threads=4 python-path=/opt/venvs/workbox/lib/python2.7/site-packages
+    WSGIProcessGroup beta.workbox
+    WSGIDaemonProcess beta.workbox user=www-data group=www-data threads=4 python-path=/opt/venvs/workbox/lib/python2.7/site-packages
     WSGIScriptAlias / /opt/venvs/workbox/lib/python2.7/site-packages/workbox/appconfig/app.wsgi
 
     #Serve static files directly without TurboGears
