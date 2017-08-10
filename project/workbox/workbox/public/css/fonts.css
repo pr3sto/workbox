@@ -25,10 +25,31 @@
     font-style: normal;
     font-weight: normal;
 }
-/* font-family: "AnonymousPro"; */
+  /* font-family: "RobotoMonoBold"; */
 @font-face {
-    font-family: "AnonymousPro";
-    src: url("../fonts/AnonymousPro/Anonymous Pro Minus.ttf") format("truetype");
+    font-family: "RobotoMonoBold";
+    src: url("../fonts/RobotoMono/RobotoMono-Bold.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+/* font-family: "RobotoMonoRegular"; */
+@font-face {
+    font-family: "RobotoMonoRegular";
+    src: url("../fonts/RobotoMono/RobotoMono-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+/* font-family: "RobotoMonoLight"; */
+@font-face {
+    font-family: "RobotoMonoLight";
+    src: url("../fonts/RobotoMono/RobotoMono-Light.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+  /* font-family: "RobotoMonoThin"; */
+@font-face {
+    font-family: "RobotoMonoThin";
+    src: url("../fonts/RobotoMono/RobotoMono-Thin.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }

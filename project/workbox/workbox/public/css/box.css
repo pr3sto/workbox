@@ -17,7 +17,7 @@
 /* 'new' page */
 
 #nav-tabs-wrapper {
-    height: 120px;
+    height: 140px;
     padding-top: 10px;
     position: relative;
     background: url('/images/cubes.png');
@@ -25,8 +25,9 @@
 }
 
 #nav-tabs-wrapper h1 {
+    padding-top: 10px;
     text-align: center;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .nav-tabs {
@@ -80,7 +81,7 @@
 }
 
 #tabs-content {
-    height: calc(100% - 120px);
+    height: calc(100% - 140px);
     padding-top: 30px;
     padding-bottom: 30px;
 }
@@ -94,7 +95,6 @@
 }
 
 #tab-placeholder h2 {
-    font-family: "RobotoLight";
     font-size: 20px;
 }
 
@@ -123,7 +123,7 @@
 /* 'list' page */
 
 #list-header {
-    height: 120px;
+    height: 140px;
     position: relative;
     background: url('/images/cubes.png');
     border-bottom: 1px solid #e5e5e5;
@@ -132,11 +132,11 @@
 #list-header h1 {
     font-weight: normal;
     text-align: center;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 #list-content {
-    height: calc(100% - 120px);
+    height: calc(100% - 140px);
     padding-top: 30px;
     padding-bottom: 30px;
 }
@@ -154,7 +154,6 @@
 }
 
 #list-content-empty h1 {
-    font-family: "RobotoLight";
     font-size: 20px;
     color: #777;
 }
@@ -162,7 +161,7 @@
 /* 'id' page */
 
 #id-header {
-    height: 120px;
+    height: 140px;
     position: relative;
     background: url('/images/cubes.png');
     border-bottom: 1px solid #e5e5e5;
@@ -171,7 +170,7 @@
 #id-header label {
     font-weight: normal;
     text-align: center;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 #id-content {
