@@ -5,12 +5,11 @@ import os
 import shutil
 import uuid
 import string
-from subprocess import CalledProcessError
-import psutil
+from subprocess import CalledProcessError 
 import vagrant
 
 from workbox import model
-from workbox.lib.helpers import get_vagrantfiles_base_folder, get_free_port
+from workbox.lib.helpers import get_vagrantfiles_base_folder, get_free_port, get_server_load_value
 
 
 class BoxEngine(object):
@@ -288,7 +287,7 @@ class BoxEngine(object):
 
         """
 
-        return psutil.virtual_memory().percent
+        return get_server_load_value()
 
     @staticmethod
     def get_number_of_user_boxes(user_id):

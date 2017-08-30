@@ -12,13 +12,13 @@ html, body {
     font-family: 'RobotoMonoRegular', Helvetica, Arial, sans-serif !important;
 }
 
-.content {
+#content {
     display: table;
     height: inherit;
     width: 100%;
 }
 
-.content-inside {
+#content-inside {
     display: table-cell;
     height: 100%;
     padding-bottom: 50px;
@@ -61,7 +61,7 @@ html, body {
     border-bottom: 2px solid #3276b1 !important;
 }
 
- .bubble-tag {
+.bubble-tag {
     font-size: 10px;
     font-weight: 700;
     color: #fff;
@@ -170,7 +170,7 @@ html, body {
 	margin-left: -8px;
 }
 
-.icon-heart {
+#credits .icon-heart {
     font-size: 18px;
 }
 

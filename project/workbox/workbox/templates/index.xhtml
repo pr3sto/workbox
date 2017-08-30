@@ -13,11 +13,14 @@
             <div class="container outer-center">
                 <div class="inner-center">
                     <div class="row equal outer-center">
-                        <div class="col-md-7">
+                        <div class="col-md-8">
                             <img src="/images/box.png" />
                             <h1>WorkBox</h1>
+                            <div class="row">
+                                <h2>Сервис для настройки, запуска и мониторинга виртуальных сред</h2>
+                            </div>
                         </div>
-                        <div class="col-md-5 inner-center">
+                        <div class="col-md-4 inner-center">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <form action="${tg.url('/login_handler', params=dict(came_from=came_from))}" method="post" accept-charset="UTF-8">
@@ -40,7 +43,7 @@
                                                         <input type="submit" class="btn btn-lg btn-primary btn-block" value="Вход" />
                                                     </div>
 
-                                                    <p style="font-size:12px; color:#777;">Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</p>
+                                                    <p id="contact-admin">Если у Вас нет аккаунта, пожалуйста, свяжитесь с администратором</p>
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -48,9 +51,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <h2>Сервис для настройки, запуска и мониторинга виртуальных сред</h2>
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
             <div class="container">
                 <!-- no boxes -->
                 <div py:if="len(last_ten_worked)==0" id="empty-placeholder" class="inner-center">
-                    <a href="/box/new/"><span class="icomoon icon-box" /></a>
+                    <a href="/box/new/">Создать первую виртуальную среду</a>
                 </div>
                 <!-- last ten boxes -->
                 <div py:if="len(last_ten_worked)!=0">

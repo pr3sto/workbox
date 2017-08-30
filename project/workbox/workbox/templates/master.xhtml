@@ -17,8 +17,8 @@
 </head>
 
 <body>
-    <div py:if="request.identity or (request.environ['PATH_INFO'] != '/' and not request.environ['PATH_INFO'].startswith('/index'))" class="content">
-        <div class="content-inside">
+    <div py:if="request.identity or (request.environ['PATH_INFO'] != '/' and not request.environ['PATH_INFO'].startswith('/index'))" id="content">
+        <div id="content-inside">
 
             <!-- Dummy navbar -->
             <nav class="navbar navbar-default"></nav>
@@ -26,7 +26,7 @@
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <!-- navbar anon user -->
                 <div py:if="not request.identity" class="container outer-center">
-                    <a class="inner-center" style="height:50px;" href="/"><img id="brand-img" style="padding:15px; height:100%;" src="/images/favicon.ico" /></a>
+                    <a class="inner-center" href="/"><img id="brand-img" style="padding:15px; height:50px;" src="/images/favicon.ico" /></a>
                 </div>
                 <!-- navbar auth user -->
                 <div py:if="request.identity" class="container">
@@ -48,7 +48,7 @@
                                 <a href="/box/new/">Создание виртуальной среды</a>
                             </li>
                             <li class="${('', 'active')[request.environ['PATH_INFO'].startswith('/box/list')]}">
-                                <a href="/box/list/">Список виртуальных сред</a>
+                                <a href="/box/list/">Виртуальные среды</a>
                             </li>
                             <li class="${('', 'active')[request.environ['PATH_INFO'].startswith('/history')]}">
                                 <a href="/history/">Журнал</a>
@@ -84,7 +84,7 @@
                     <p>Created with&nbsp;<span class="icomoon icon-heart" />&nbsp;by</p>
                     <p>Alexey Chirukhin</p>
                     <p>&lt;pr3sto1377@gmail.com&gt;</p>
-                    <p style="margin-bottom:0px;">LETI 2016-2017</p>
+                    <p>LETI 2016-2017</p>
                 </div>
             </div>
             <!-- docker started -->            

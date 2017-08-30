@@ -45,6 +45,11 @@
     font-family: "RobotoMonoLight";
 }
 
+#contact-admin {
+    font-size:12px; 
+    color:#777;
+}
+
 /* authorized user */
 
 #display-name {
@@ -69,7 +74,6 @@
 
 .doughnut-chart {
     text-align: center;
-    margin: 10px;
     min-width: 300px;
     height: 300px;
 }
@@ -78,14 +82,8 @@
     font-size: 20px;
 }
 
-#empty-placeholder a, 
-#empty-placeholder a:hover, 
-#empty-placeholder a:active, 
-#empty-placeholder a:focus {
+#empty-placeholder {
     font-size: 20px;
-    outline: none;
-    border: none;
-    text-decoration: none;
 }
 
 #last-ten-worked {

@@ -25,6 +25,11 @@ def is_docker_enabled():
             return True
     return False
 
+def get_server_load_value():
+    """ Get server load value. """
+
+    return psutil.virtual_memory().percent
+
 def get_free_port():
     """ Find and returns free port number. """
 
