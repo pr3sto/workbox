@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Boxes actions controller."""
 
+import json
+
 from tg import expose
 from tg.i18n import lazy_ugettext as l_
 from tg.exceptions import HTTPFound, HTTPForbidden, HTTPServerError
@@ -39,14 +41,20 @@ class BoxController(BaseController):
     def list(self):
         """Handle the box list page."""
 
-        entries = None
+        has_boxes = False
 
         if has_permission('manage'):
-            entries = BoxEngine.get_all_boxes()
+            all_boxes = BoxEngine.get_number_of_all_boxes()
+            if all_boxes['created'] > 0 or all_boxes['stopped'] or all_boxes['started']:
+                has_boxes = True
         else:
-            entries = BoxEngine.get_all_user_boxes(request.identity['user']._id)
+            my_boxes = BoxEngine.get_number_of_user_boxes(request.identity['user']._id)
+            if my_boxes['created'] > 0 or my_boxes['stopped'] or my_boxes['started']:
+                has_boxes = True
 
-        return dict(page='list', entries=entries)
+        print has_boxes
+
+        return dict(page='list', has_boxes=has_boxes)
 
     @expose('workbox.templates.box.id')
     def id(self, box_id):
@@ -67,28 +75,6 @@ class BoxController(BaseController):
             return HTTPServerError(ex.message)
 
         return dict(page='id', box=box, vagrantfile=vagrantfile, host=host)
-
-    @expose()
-    def update_vagrantfile(self):
-        """Update vagrantfile."""
-
-        box_id = int(request.POST['box_id'])
-        vagrantfile = request.POST['vagrantfile-text']
-
-        try:
-            if not has_permission('manage'):
-                if not BoxEngine.is_author(request.identity['repoze.who.userid'], box_id):
-                    return HTTPForbidden(
-                        'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
-
-            BoxEngine.update_vagrantfile(box_id, vagrantfile)
-            model.History.add_record(request.identity['repoze.who.userid'],
-                                     box_id,
-                                     'Изменение Vagrantfile виртуальной среды #' + str(box_id))
-        except Exception as ex:
-            return HTTPServerError(ex.message)
-
-        return HTTPFound(location='/box/id/' + str(box_id))
 
     @expose()
     def create_from_vagrantfile(self):
@@ -125,10 +111,47 @@ class BoxController(BaseController):
         return HTTPFound(location='/box/list/')
 
     @expose()
-    def start(self):
+    def get(self):
+        """Returns boxes data."""
+
+        entries = None
+        data = []
+
+        if has_permission('manage'):
+            entries = BoxEngine.get_all_boxes()
+
+            for entry in entries:
+                box = []
+                box.append(entry.box_id)
+                box.append(entry.name)
+                box.append(entry.status)
+                box.append(entry.user.display_name)
+                box.append(entry.datetime_of_creation.strftime("%Y-%m-%d %H:%M"))
+                box.append(entry.datetime_of_modify.strftime("%Y-%m-%d %H:%M"))
+                box.append(None)
+                data.append(box)
+        else:
+            entries = BoxEngine.get_all_user_boxes(request.identity['user']._id)
+
+            for entry in entries:
+                box = []
+                box.append(entry.box_id)
+                box.append(entry.name)
+                box.append(entry.status)
+                box.append(entry.datetime_of_creation.strftime("%Y-%m-%d %H:%M"))
+                box.append(entry.datetime_of_modify.strftime("%Y-%m-%d %H:%M"))
+                box.append(None)
+                data.append(box)
+
+        json_entries = {}
+        json_entries['data'] = data
+        return json.dumps(json_entries)
+
+    @expose()
+    def start(self, box_id):
         """Start box."""
 
-        box_id = int(request.POST['box_id'])
+        box_id = int(box_id)
 
         try:
             if not has_permission('manage'):
@@ -142,13 +165,11 @@ class BoxController(BaseController):
         except Exception as ex:
             return HTTPServerError(ex.message)
 
-        return HTTPFound(location='/box/list/')
-
     @expose()
-    def stop(self):
+    def stop(self, box_id):
         """Stop box."""
-
-        box_id = int(request.POST['box_id'])
+        
+        box_id = int(box_id)
 
         try:
             if not has_permission('manage'):
@@ -162,13 +183,11 @@ class BoxController(BaseController):
         except Exception as ex:
             return HTTPServerError(ex.message)
 
-        return HTTPFound(location='/box/list/')
-
     @expose()
-    def copy(self):
+    def copy(self, copied_box_id):
         """Copy box."""
 
-        copied_box_id = int(request.POST['box_id'])
+        copied_box_id = int(copied_box_id)
 
         try:
             if not has_permission('manage'):
@@ -183,13 +202,11 @@ class BoxController(BaseController):
         except Exception as ex:
             return HTTPServerError(ex.message)
 
-        return HTTPFound(location='/box/list/')
-
     @expose()
-    def delete(self):
+    def delete(self, box_id):
         """Delete box."""
 
-        box_id = int(request.POST['box_id'])
+        box_id = int(box_id)
 
         try:
             if not has_permission('manage'):
@@ -203,4 +220,24 @@ class BoxController(BaseController):
         except Exception as ex:
             return HTTPServerError(ex.message)
 
-        return HTTPFound(location='/box/list/')
+    @expose()
+    def update_vagrantfile(self, box_id, vagrantfile_text):
+        """Update vagrantfile."""
+
+        box_id = int(box_id)
+
+        try:
+            if not has_permission('manage'):
+                if not BoxEngine.is_author(request.identity['repoze.who.userid'], box_id):
+                    return HTTPForbidden(
+                        'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
+
+            BoxEngine.update_vagrantfile(box_id, vagrantfile_text)
+            model.History.add_record(request.identity['repoze.who.userid'],
+                                     box_id,
+                                     'Изменение Vagrantfile виртуальной среды #' + str(box_id))
+
+            return BoxEngine.get_vagrantfile_data(box_id)
+
+        except Exception as ex:
+            return HTTPServerError(ex.message)

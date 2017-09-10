@@ -4,10 +4,19 @@
     <title py:block="master_title">Виртуальная среда #${box.box_id} | WorkBox</title>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/codemirror.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/neat.css" /> 
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/neat.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/spinner.css" />
 </head>
 
 <body py:block="body" py:strip="True">
+
+    <!-- loader -->
+    <div class="loading">
+        <div class="outer-center">
+            <div class="spinner inner-center"></div>
+        </div>
+    </div>
+
     <section id="id-header">
         <div class="container outer-center">
             <div class="input-group inner-center">
@@ -20,10 +29,10 @@
                 </div>
                 <label for="" class="control-label">Виртуальная среда #${box.box_id} в <b>WorkBox</b></label>
                 <div class="input-group-btn">
-                    <button py:if="box.status != 'started'" data-toggle="confirmation" name="start-form" value="${box.box_id}" class="btn btn-success">Запустить</button>
-                    <button py:if="box.status == 'started'" data-toggle="confirmation" name="stop-form" value="${box.box_id}" class="btn btn-warning">Остановить</button>
-                    <button data-toggle="confirmation" name="copy-form" value="${box.box_id}" class="btn btn-default">Копировать</button>
-                    <button data-toggle="confirmation" name="delete-form" value="${box.box_id}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"/></button>
+                    <button py:if="box.status != 'started'" data-toggle="confirmation" name="start_box" value="${box.box_id}" class="btn btn-success">Запустить</button>
+                    <button py:if="box.status == 'started'" data-toggle="confirmation" name="stop_box" value="${box.box_id}" class="btn btn-warning">Остановить</button>
+                    <button data-toggle="confirmation" name="copy_box" value="${box.box_id}" class="btn btn-default">Копировать</button>
+                    <button data-toggle="confirmation" name="delete_box" value="${box.box_id}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"/></button>
                 </div>
             </div>
         </div>
@@ -83,8 +92,8 @@
             <div id="id-content-vagrantfile">
                 <div class="panel panel-default">
                     <div class="panel-heading inner-center">Vagrantfile</div>
-                    <form action="/box/update_vagrantfile" method="post" accept-charset="UTF-8">
-                        <textarea name="vagrantfile-text" id="vagrantfile-data" class="form-control" required="true">${vagrantfile}</textarea>
+                    <form id="update_vagrantfile" accept-charset="UTF-8">
+                        <textarea name="vagrantfile_text" id="vagrantfile-data" class="form-control" required="true">${vagrantfile}</textarea>
                         <input type="hidden" name="box_id" value="${box.box_id}" />   
                         <button style="visibility: hidden;" type="submit" class="btn btn-default" id="update-button">Обновить</button>
                     </form>
@@ -93,11 +102,6 @@
         </div>
     </section>
 
-    <!-- actions -->
-    <form id="start-form" action="/box/start/" method="post" />
-    <form id="stop-form" action="/box/stop/" method="post" />
-    <form id="copy-form" action="/box/copy/" method="post" />
-    <form id="delete-form" action="/box/delete/" method="post" />
 </body>
 
 <script type="text/javascript" src="/js/codemirror/codemirror.js"></script>
@@ -116,12 +120,11 @@
             title: 'Вы уверены?',
             btnOkClass: 'btn-primary',
             btnCancelClass: 'btn-default',
-            btnOkLabel: 'Да',
-            btnCancelLabel: 'Нет',
-            onConfirm: function () {
-                var form_name = '#' + $(this).attr('name');
-                $(form_name).append('&lt;input type="hidden" name="box_id" value="' + $(this).attr('value') + '" /&gt;');
-                $(form_name).submit();
+            btnOkLabel: '',
+            btnCancelLabel: '',
+            onConfirm: function() {
+                console.log($(this).attr('name'));
+                window[$(this).attr('name')]($(this).attr('value'));
             }
         });
 
@@ -142,8 +145,65 @@
 
             document.getElementById('vagrantfile-data').value = editor.getValue(); 
         });
+
+        $("#update_vagrantfile").submit(function() {
+            var form = $(this);
+            var data = form.serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/box/update_vagrantfile/',
+                data: data,
+                beforeSend: function(data) {
+                    $('.loading').css('visibility', 'visible');
+		        },
+                success: function(response){ 
+                    vagrantfileEditor.setValue(response);
+                    document.getElementById('update-button').style.visibility = 'hidden';
+                    $('.loading').fadeTo(500, 0, function () {
+                        $('.loading').css('visibility', 'hidden');
+                        $('.loading').css('opacity', 1);
+                    });
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    document.write(XMLHttpRequest.responseText);
+                }
+            });
+            return false;
+        });
     });
 
+    function action_box_ajax(url) {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            beforeSend: function(data) {
+                $('.loading').css('visibility', 'visible');
+            },
+            success: function(response){ 
+                $('.loading').fadeTo(500, 0, function () {
+                    $('.loading').css('visibility', 'hidden');
+                    $('.loading').css('opacity', 1);
+                });
+                window.location.href = '/box/list/';
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                document.write(XMLHttpRequest.responseText);
+            }
+        });
+        return false;
+    }
+    function start_box(value) {
+        action_box_ajax('/box/start/' + value);
+    }
+    function stop_box(value) {
+        action_box_ajax('/box/stop/' + value);
+    }
+    function copy_box(value) {
+        action_box_ajax('/box/copy/' + value);
+    }
+    function delete_box(value) {
+        action_box_ajax('/box/delete/' + value);
+    }
 </script>
 
 </html>

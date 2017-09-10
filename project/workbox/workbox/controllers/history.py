@@ -3,6 +3,7 @@
 
 import json
 
+from tg import request
 from tg import expose
 from tg.i18n import lazy_ugettext as l_
 from tg.predicates import not_anonymous, has_permission

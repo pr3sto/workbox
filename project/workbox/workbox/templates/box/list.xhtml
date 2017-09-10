@@ -4,18 +4,39 @@
     <title py:block="master_title">Список виртуальных сред | WorkBox</title>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/spinner.css" />
 </head>
 
 <body py:block="body" py:strip="True">
+
+    <!-- loader -->
+    <div class="loading">
+        <div class="outer-center">
+            <div class="spinner inner-center"></div>
+        </div>
+    </div>
+
     <section id="list-header">
         <div class="container outer-center">
-            <h1 py:if="tg.predicates.has_permission('manage')" class="inner-center">Все виртуальные среды в <b>WorkBox</b></h1>
-            <h1 py:if="not tg.predicates.has_permission('manage')" class="inner-center">Ваши виртуальные среды в <b>WorkBox</b></h1>
+            <div class="input-group inner-center">
+                <!-- hidden elements for centering label -->
+                <div class="input-group-btn" style="visibility: hidden;">
+                    <button class="btn btn-default"></button>
+                    <button class="btn btn-default">Обновить статус</button>
+                </div>
+                <label py:if="tg.predicates.has_permission('manage')" for="" class="control-label">Все виртуальные среды в <b>WorkBox</b></label>
+                <label py:if="not tg.predicates.has_permission('manage')" for="" class="control-label">Ваши виртуальные среды в <b>WorkBox</b></label>
+                <div class="input-group-btn">
+                    <button style="visibility: hidden;" data-toggle="confirmation" name="refresh_boxes" value="" class="btn btn-default"></button>
+                    <button data-toggle="confirmation" name="update_status" value="" class="btn btn-default">Обновить статус</button>
+                    
+                </div>
+            </div>
         </div>
     </section>
     <section id="list-content">
         <!-- empty placeholder -->
-        <div py:if="entries.count()==0" class="container outer-center">
+        <div py:if="not has_boxes" class="container outer-center">
             <div id="list-content-empty" class="inner-center">
                 <img src="/images/opened_box.png" />
                 <br />
@@ -23,7 +44,7 @@
             </div>
         </div>
         <!-- table -->
-        <div py:if="entries.count()!=0" class="container">
+        <div py:if="has_boxes" class="container">
             <table id="box-table" class="table table-striped">
                 <thead>
                     <tr>
@@ -35,58 +56,73 @@
                         <th>Дата изменения</th>
                         <th>Действия</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <py:for each="entry in entries">
-                        <tr>
-                            <td>${entry.box_id}</td>
-                            <td>${entry.name}</td>
-                            <td>${entry.status}</td>
-                            <td py:if="tg.predicates.has_permission('manage')">${entry.user.display_name}</td>
-                            <td>${entry.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}</td>
-                            <td>${entry.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</td>
-                            <td>
-                                <button py:if="entry.status != 'started'" data-toggle="confirmation" name="start-form" value="${entry.box_id}" class="btn btn-success">Запустить</button>
-                                <button py:if="entry.status == 'started'" data-toggle="confirmation" name="stop-form" value="${entry.box_id}" class="btn btn-warning">Остановить</button>
-                                <button data-toggle="confirmation" name="copy-form" value="${entry.box_id}" class="btn btn-default">Копировать</button>
-                                <button data-toggle="confirmation" name="delete-form" value="${entry.box_id}" class="btn btn-danger" style="width:auto;"><span class="glyphicon glyphicon-trash"/></button>
-                            </td>
-                        </tr>
-                    </py:for>
-                </tbody>
+                </thead>               
             </table>
         </div>
     </section>
 
-    <!-- actions -->
-    <form id="start-form" action="/box/start/" method="post" />
-    <form id="stop-form" action="/box/stop/" method="post" />
-    <form id="copy-form" action="/box/copy/" method="post" />
-    <form id="delete-form" action="/box/delete/" method="post" />
 </body>
 
 <script type="text/javascript" src="/js/datatables.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap-confirmation.min.js"></script>
 <script type="text/javascript">
-    $(function ($) {
+    function onInitComplete(settings, json) {
+        $('#box-table tbody button').click(function(e) {
+            e.stopPropagation();
+        });
         $('[data-toggle="confirmation"]').confirmation({
             rootSelector: '[data-toggle=confirmation]',
             copyAttributes: 'name value',
             singleton:true,
             popout:true,
-            placement:'top',
+            placement:'left',
             title:'Вы уверены?',
             btnOkClass:'btn-primary',
             btnCancelClass:'btn-default',
-            btnOkLabel:'Да',
-            btnCancelLabel:'Нет',
+            btnOkLabel:'',
+            btnCancelLabel:'',
             onConfirm: function() {
-                var form_name = '#' + $(this).attr('name');
-                $(form_name).append('&lt;input type="hidden" name="box_id" value="' + $(this).attr('value') + '" /&gt;');
-                $(form_name).submit();
+                window[$(this).attr('name')]($(this).attr('value'));
             }
         });
-    });  
+    }
+
+    function action_box_ajax(url) {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            beforeSend: function(data) {
+                $('.loading').css('visibility', 'visible');
+            },
+            success: function(response){ 
+                $('.loading').fadeTo(500, 0, function () {
+                    $('.loading').css('visibility', 'hidden');
+                    $('.loading').css('opacity', 1);
+                });
+                var boxTable = $('#box-table').dataTable();
+                boxTable.api().ajax.reload(onInitComplete);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                document.write(XMLHttpRequest.responseText);
+            }
+        });
+        return false;
+    }
+    function start_box(value) {
+        action_box_ajax('/box/start/' + value);
+    }
+    function stop_box(value) {
+        action_box_ajax('/box/stop/' + value);
+    }
+    function copy_box(value) {
+        action_box_ajax('/box/copy/' + value);
+    }
+    function delete_box(value) {
+        action_box_ajax('/box/delete/' + value);
+    }
+    function update_status() {
+        // action_box_ajax('/box/update_status/');
+    }
 </script>
 <script py:if="not tg.predicates.has_permission('manage')" type="text/javascript">
     $(function ($) {
@@ -102,15 +138,35 @@
             pagingType: "numbers",
             language: {
                 url: "/local/datatables.ru.lang"
-            }
+            },
+            ajax: "/box/get",
+            columns : [
+                {'data':'0'},
+                {'data':'1'},
+                {'data':'2'},
+                {'data':'3'},
+                {'data':'4'},
+                {
+                    'render': function (data, type, full, meta) {
+                        cell_code = '';
+                        if (full[2] != 'started') {
+                            cell_code += '&lt;button data-toggle="confirmation" name="start_box" value="' + full[0] + '" class="btn btn-success"&gt;Запустить&lt;/button&gt;';
+                        } else if (full[2] == 'started') {
+                            cell_code += '&lt;button data-toggle="confirmation" name="stop_box" value="' + full[0] + '" class="btn btn-warning"&gt;Остановить&lt;/button&gt;'
+                        }
+                        cell_code += '&lt;button data-toggle="confirmation" name="copy_box" value="' + full[0] + '" class="btn btn-default"&gt;Копировать&lt;/button&gt;'
+                        cell_code += '&lt;button data-toggle="confirmation" name="delete_box" value="' + full[0] + '" class="btn btn-danger" style="width:auto;"&gt;&lt;span class="glyphicon glyphicon-trash"/&gt;&lt;/button&lt;'
+                        return cell_code;
+                    }
+                }
+            ],
+            initComplete: onInitComplete
         });
+
         $('#box-table tbody').on( 'click', 'tr', function () {
             window.location.href = '/box/id/' + boxTable.fnGetData(this)[0];
-        });
-        $('#box-table button').click(function(e) {
-            e.stopPropagation();
-        });
-    });    
+        }); 
+    });
 </script>
 <script py:if="tg.predicates.has_permission('manage')" type="text/javascript">
     $(function ($) {
@@ -126,13 +182,34 @@
             pagingType: "numbers",
             language: {
                 url: "/local/datatables.ru.lang"
-            }
+            },
+            ajax: "/box/get",
+            columns : [
+                {'data':'0'},
+                {'data':'1'},
+                {'data':'2'},
+                {'data':'3'},
+                {'data':'4'},
+                {'data':'5'},
+                {
+                    'render': function (data, type, full, meta) {
+                        cell_code = '';
+                        if (full[2] != 'started') {
+                            cell_code += '&lt;button data-toggle="confirmation" name="start_box" value="' + full[0] + '" class="btn btn-success"&gt;Запустить&lt;/button&gt;';
+                        } else if (full[2] == 'started') {
+                            cell_code += '&lt;button data-toggle="confirmation" name="stop_box" value="' + full[0] + '" class="btn btn-warning"&gt;Остановить&lt;/button&gt;'
+                        }
+                        cell_code += '&lt;button data-toggle="confirmation" name="copy_box" value="' + full[0] + '" class="btn btn-default"&gt;Копировать&lt;/button&gt;'
+                        cell_code += '&lt;button data-toggle="confirmation" name="delete_box" value="' + full[0] + '" class="btn btn-danger" style="width:auto;"&gt;&lt;span class="glyphicon glyphicon-trash"/&gt;&lt;/button&lt;'
+                        return cell_code;
+                     }
+                }
+            ],
+            initComplete: onInitComplete
         });
+
         $('#box-table tbody').on( 'click', 'tr', function () {
             window.location.href = '/box/id/' + boxTable.fnGetData(this)[0];
-        });
-        $('#box-table button').click(function(e) {
-            e.stopPropagation();
         });
     });    
 </script>
