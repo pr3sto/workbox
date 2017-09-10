@@ -24,24 +24,12 @@
                         <th>Действие</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <py:for each="entry in entries">
-                        <tr>
-                            <td>${entry.history_id}</td>
-                            <td py:if="tg.predicates.has_permission('manage')">${entry.user.display_name}</td>
-                            <td py:if="entry.box"><a href="/box/id/${entry.box.box_id}">#${entry.box.box_id}</a></td>
-                            <td py:if="not entry.box">-</td>                        
-                            <td>${entry.datetime.strftime("%Y-%m-%d %H:%M")}</td>
-                            <td>${entry.info}</td>
-                        </tr>
-                    </py:for>
-                </tbody>
             </table>
         </div>
     </section>
 </body>
 
-<script src="/js/datatables.min.js"></script>
+<script type="text/javascript" src="/js/datatables.min.js"></script>
 <script type="text/javascript">
     $(function ($) {
         $('#history-table').dataTable({
@@ -49,10 +37,11 @@
                 header: true,
                 headerOffset: 50
             },
-            pagingType: "numbers",
+            pagingType: 'numbers',
             language: {
-                url: "/local/datatables.ru.lang"
-            }
+                url: '/local/datatables.ru.lang'
+            },
+            ajax: '/history/get/'
         });
     });
 </script>
