@@ -12,8 +12,8 @@ from workbox import model
 from workbox.lib.base import BaseController
 from workbox.controllers.error import ErrorController
 from workbox.controllers.box import BoxController
+from workbox.controllers.history import HistoryController
 from workbox.boxengine import BoxEngine
-
 
 __all__ = ['RootController']
 
@@ -21,10 +21,11 @@ __all__ = ['RootController']
 class RootController(BaseController):
     """The root controller for the workbox application"""
 
-    #controllers
+    # controllers
     box = BoxController()
     admin = AdminController(model, None, config_type=TGAdminConfig)
     error = ErrorController()
+    history = HistoryController()
 
     def _before(self, *args, **kw):
         """Executed before running any method of Controller"""
@@ -62,19 +63,6 @@ class RootController(BaseController):
                     error_msg = 'Ошибка авторизации'.decode("utf8")
 
             return dict(page='index', came_from=came_from, login=login, error_msg=error_msg)
-
-    @expose('workbox.templates.history')
-    def history(self):
-        """Handle the history page"""
-
-        entries = None
-
-        if has_permission('manage'):
-            entries = model.History.get_all_records()
-        else:
-            entries = model.History.get_all_user_records(request.identity['user']._id)
-
-        return dict(page='history', entries=entries)
 
     @expose()
     def post_login(self, came_from=lurl('/')):
