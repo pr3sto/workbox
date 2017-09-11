@@ -69,6 +69,9 @@ class BoxController(BaseController):
                         'У Вас нет прав доступа для выполнения действий с этой виртуальной средой')
 
             box = BoxEngine.get_box_by_id(box_id)
+            if box is None:
+                raise IndexError("Виртуальная среда не найдена")
+
             vagrantfile = BoxEngine.get_vagrantfile_data(box_id)
             host = get_hostname()
         except Exception as ex:
@@ -146,6 +149,12 @@ class BoxController(BaseController):
         json_entries = {}
         json_entries['data'] = data
         return json.dumps(json_entries)
+
+    @expose()
+    def update_status(self):
+        """Update status of boxes."""
+
+        pass
 
     @expose()
     def start(self, box_id):
