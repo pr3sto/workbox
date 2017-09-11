@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/codemirror.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/codemirror/neat.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/spinner.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/animate.css" />    
 </head>
 
 <body py:block="body" py:strip="True">
@@ -109,6 +110,7 @@
 <script type="text/javascript" src="/js/codemirror/matchbrackets.js"></script>
 <script type="text/javascript" src="/js/codemirror/active-line.js"></script>
 <script type="text/javascript" src="/js/bootstrap-confirmation.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-notify.min.js"></script>
 <script type="text/javascript">
     $(function ($) {
         $('[data-toggle="confirmation"]').confirmation({
@@ -172,7 +174,7 @@
         });
     });
 
-    function action_box_ajax(url) {
+    function action_call_ajax(url, action) {
         $.ajax({
             type: 'POST',
             url: url,
@@ -184,7 +186,7 @@
                     $('.loading').css('visibility', 'hidden');
                     $('.loading').css('opacity', 1);
                 });
-                window.location.href = '/box/list/';
+                action();
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) { 
                 document.write(XMLHttpRequest.responseText);
@@ -193,16 +195,40 @@
         return false;
     }
     function start_box(value) {
-        action_box_ajax('/box/start/' + value);
+        action_call_ajax('/box/start/' + value, function() {
+            location.reload();
+        });
     }
     function stop_box(value) {
-        action_box_ajax('/box/stop/' + value);
+        action_call_ajax('/box/stop/' + value, function() {
+            location.reload();
+        });
     }
     function copy_box(value) {
-        action_box_ajax('/box/copy/' + value);
+        action_call_ajax('/box/copy/' + value, function() {
+            $.notify({
+                title: '&lt;b&gt;WorkBox:&lt;/b&gt;',
+                message: 'Виртуальная среда успешно скопирована'
+            },{
+                type: 'success',
+                newest_on_top: 'true',
+                element: 'body',
+                placement: {
+                    from: 'bottom',
+                    align: 'right'
+                },
+                mouse_over: 'pause',
+                animate: {
+                    enter: 'animated fadeInDown',
+                    exit: 'animated fadeOutDown'
+                }
+            });
+        });
     }
     function delete_box(value) {
-        action_box_ajax('/box/delete/' + value);
+        action_call_ajax('/box/delete/' + value, function() { 
+            window.location.href = '/box/list/';
+        });
     }
 </script>
 

@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/css/box.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/spinner.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/animate.css" />    
 </head>
 
 <body py:block="body" py:strip="True">
@@ -28,7 +29,7 @@
                 <label py:if="not tg.predicates.has_permission('manage')" for="" class="control-label">Ваши виртуальные среды в <b>WorkBox</b></label>
                 <div class="input-group-btn">
                     <button style="visibility: hidden;" data-toggle="confirmation" name="refresh_boxes" value="" class="btn btn-default"></button>
-                    <button data-toggle="confirmation" name="update_status" value="" class="btn btn-default">Обновить статус</button>
+                    <button data-toggle="confirmation" name="update_status" id="update_status_button" value="" class="btn btn-default">Обновить статус</button>
                     
                 </div>
             </div>
@@ -65,8 +66,63 @@
 
 <script type="text/javascript" src="/js/datatables.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap-confirmation.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-notify.min.js"></script>
+<script py:if="tg.predicates.has_permission('manage')" type="text/javascript">
+    var table_columns = [
+        {'data':'0'},
+        {'data':'1'},
+        {'data':'2'},
+        {'data':'3'},
+        {'data':'4'},
+        {'data':'5'}
+    ];
+</script>
+<script py:if="not tg.predicates.has_permission('manage')" type="text/javascript">
+    var table_columns = [
+        {'data':'0'},
+        {'data':'1'},
+        {'data':'2'},
+        {'data':'3'},
+        {'data':'4'}
+    ];
+</script>
 <script type="text/javascript">
-    function onInitComplete(settings, json) {
+    // box table
+    $(function ($) {
+        table_columns.push({
+            'render': function (data, type, full, meta) {
+                row_html = '';
+                if (full[2] != 'started') {
+                    row_html += '&lt;button data-toggle="confirmation" name="start_box" value="' + full[0] + '" class="btn btn-success"&gt;Запустить&lt;/button&gt;';
+                } else if (full[2] == 'started') {
+                    row_html += '&lt;button data-toggle="confirmation" name="stop_box" value="' + full[0] + '" class="btn btn-warning"&gt;Остановить&lt;/button&gt;'
+                }
+                row_html += '&lt;button data-toggle="confirmation" name="copy_box" value="' + full[0] + '" class="btn btn-default"&gt;Копировать&lt;/button&gt;'
+                row_html += '&lt;button data-toggle="confirmation" name="delete_box" value="' + full[0] + '" class="btn btn-danger" style="width:auto;"&gt;&lt;span class="glyphicon glyphicon-trash"/&gt;&lt;/button&lt;'
+                return row_html;
+            },
+            'orderable': false
+        });
+        var boxTable = $('#box-table').dataTable({
+            fixedHeader: {
+                header: true,
+                headerOffset: 50
+            },
+            pagingType: "numbers",
+            language: {
+                url: "/local/datatables.ru.lang"
+            },
+            ajax: "/box/get",
+            columns : table_columns,
+            fnDrawCallback: onDrawComplete
+        });
+        $('#box-table tbody').on( 'click', 'tr', function () {
+            window.location.href = '/box/id/' + boxTable.fnGetData(this)[0];
+        });
+    });
+
+    // update table
+    function onDrawComplete(settings, json) {
         $('#box-table tbody button').click(function(e) {
             e.stopPropagation();
         });
@@ -87,7 +143,8 @@
         });
     }
 
-    function action_box_ajax(url) {
+    // actions
+    function action_call_ajax(url, notification) {
         $.ajax({
             type: 'POST',
             url: url,
@@ -100,118 +157,79 @@
                     $('.loading').css('opacity', 1);
                 });
                 var boxTable = $('#box-table').dataTable();
-                boxTable.api().ajax.reload(onInitComplete);
+                boxTable.api().ajax.reload(null, false);
+                $.notify({
+                    title: '&lt;b&gt;WorkBox:&lt;/b&gt;',
+                    message: notification
+                },{
+                    type: 'success',
+                    newest_on_top: 'true',
+                    element: 'body',
+                    placement: {
+                        from: 'bottom',
+                        align: 'right'
+                    },
+                    mouse_over: 'pause',
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutDown'
+                    }
+                });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                document.write(XMLHttpRequest.responseText);
+            }
+        });
+    }
+    function start_box(value) {
+        action_call_ajax('/box/start/' + value, 'Виртуальная среда успешно запущена');
+    }
+    function stop_box(value) {
+        action_call_ajax('/box/stop/' + value, 'Виртуальная среда успешно остановлена');
+    }
+    function copy_box(value) {
+        action_call_ajax('/box/copy/' + value, 'Виртуальная среда успешно скопирована');
+    }
+    function delete_box(value) {
+        action_call_ajax('/box/delete/' + value, 'Виртуальная среда успешно удалена');
+    }
+    function update_status() {
+        $.ajax({
+            type: 'POST',
+            url: '/box/update_status',
+            beforeSend: function(data) {
+                $('#update_status_button').prop('disabled', true);
+            },
+            success: function(response){ 
+                $.notify({
+                    title: '&lt;b&gt;WorkBox:&lt;/b&gt;',
+                    message: 'Статус обновлен. Закройте это уведомление для обновления таблицы'
+                },{
+                    type: 'info',
+                    newest_on_top: 'true',
+                    element: 'body',
+                    placement: {
+                        from: 'bottom',
+                        align: 'right'
+                    },
+                    delay: '0',
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutDown'
+                    },
+                    onClose: function () {
+                        var boxTable = $('#box-table').dataTable();
+                        boxTable.api().ajax.reload(null, false);
+                        $('#update_status_button').prop('disabled', false);
+                    }
+                });
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) { 
                 document.write(XMLHttpRequest.responseText);
             }
         });
         return false;
-    }
-    function start_box(value) {
-        action_box_ajax('/box/start/' + value);
-    }
-    function stop_box(value) {
-        action_box_ajax('/box/stop/' + value);
-    }
-    function copy_box(value) {
-        action_box_ajax('/box/copy/' + value);
-    }
-    function delete_box(value) {
-        action_box_ajax('/box/delete/' + value);
-    }
-    function update_status() {
-        // action_box_ajax('/box/update_status/');
-    }
-</script>
-<script py:if="not tg.predicates.has_permission('manage')" type="text/javascript">
-    $(function ($) {
-        var boxTable = $('#box-table').dataTable({
-            fixedHeader: {
-                header: true,
-                headerOffset: 50
-            },
-            columnDefs: [ {
-                targets: 5,
-                orderable: false
-            } ],
-            pagingType: "numbers",
-            language: {
-                url: "/local/datatables.ru.lang"
-            },
-            ajax: "/box/get",
-            columns : [
-                {'data':'0'},
-                {'data':'1'},
-                {'data':'2'},
-                {'data':'3'},
-                {'data':'4'},
-                {
-                    'render': function (data, type, full, meta) {
-                        cell_code = '';
-                        if (full[2] != 'started') {
-                            cell_code += '&lt;button data-toggle="confirmation" name="start_box" value="' + full[0] + '" class="btn btn-success"&gt;Запустить&lt;/button&gt;';
-                        } else if (full[2] == 'started') {
-                            cell_code += '&lt;button data-toggle="confirmation" name="stop_box" value="' + full[0] + '" class="btn btn-warning"&gt;Остановить&lt;/button&gt;'
-                        }
-                        cell_code += '&lt;button data-toggle="confirmation" name="copy_box" value="' + full[0] + '" class="btn btn-default"&gt;Копировать&lt;/button&gt;'
-                        cell_code += '&lt;button data-toggle="confirmation" name="delete_box" value="' + full[0] + '" class="btn btn-danger" style="width:auto;"&gt;&lt;span class="glyphicon glyphicon-trash"/&gt;&lt;/button&lt;'
-                        return cell_code;
-                    }
-                }
-            ],
-            initComplete: onInitComplete
-        });
-
-        $('#box-table tbody').on( 'click', 'tr', function () {
-            window.location.href = '/box/id/' + boxTable.fnGetData(this)[0];
-        }); 
-    });
-</script>
-<script py:if="tg.predicates.has_permission('manage')" type="text/javascript">
-    $(function ($) {
-        var boxTable = $('#box-table').dataTable({
-            fixedHeader: {
-                header: true,
-                headerOffset: 50
-            },
-            columnDefs: [ {
-                targets: 6,
-                orderable: false
-            } ],
-            pagingType: "numbers",
-            language: {
-                url: "/local/datatables.ru.lang"
-            },
-            ajax: "/box/get",
-            columns : [
-                {'data':'0'},
-                {'data':'1'},
-                {'data':'2'},
-                {'data':'3'},
-                {'data':'4'},
-                {'data':'5'},
-                {
-                    'render': function (data, type, full, meta) {
-                        cell_code = '';
-                        if (full[2] != 'started') {
-                            cell_code += '&lt;button data-toggle="confirmation" name="start_box" value="' + full[0] + '" class="btn btn-success"&gt;Запустить&lt;/button&gt;';
-                        } else if (full[2] == 'started') {
-                            cell_code += '&lt;button data-toggle="confirmation" name="stop_box" value="' + full[0] + '" class="btn btn-warning"&gt;Остановить&lt;/button&gt;'
-                        }
-                        cell_code += '&lt;button data-toggle="confirmation" name="copy_box" value="' + full[0] + '" class="btn btn-default"&gt;Копировать&lt;/button&gt;'
-                        cell_code += '&lt;button data-toggle="confirmation" name="delete_box" value="' + full[0] + '" class="btn btn-danger" style="width:auto;"&gt;&lt;span class="glyphicon glyphicon-trash"/&gt;&lt;/button&lt;'
-                        return cell_code;
-                     }
-                }
-            ],
-            initComplete: onInitComplete
-        });
-
-        $('#box-table tbody').on( 'click', 'tr', function () {
-            window.location.href = '/box/id/' + boxTable.fnGetData(this)[0];
-        });
-    });    
+    }    
 </script>
 
 </html>

@@ -98,15 +98,6 @@
             lineNumbers: true,
             styleActiveLine: true
         });
-        var templateEditor = CodeMirror.fromTextArea(document.getElementById('vagrantfile-template-data'), {
-            mode: 'text/x-ruby',
-            theme: 'neat',
-            matchBrackets: true,
-            indentUnit: 2,
-            lineNumbers: true,
-            readOnly: true
-        });
-
         vagrantfileEditor.on("change", function(editor, change) {
             if (editor.getValue() !== '')
                 document.getElementById('create-button-1').disabled = "";
@@ -114,6 +105,15 @@
                 document.getElementById('create-button-1').disabled = "disabled";
 
             document.getElementById('vagrantfile-data').value = editor.getValue(); 
+        });
+
+        var templateEditor = CodeMirror.fromTextArea(document.getElementById('vagrantfile-template-data'), {
+            mode: 'text/x-ruby',
+            theme: 'neat',
+            matchBrackets: true,
+            indentUnit: 2,
+            lineNumbers: true,
+            readOnly: true
         });
         templateEditor.on("change", function(editor, change) {
             if (editor.getValue() !== '')
