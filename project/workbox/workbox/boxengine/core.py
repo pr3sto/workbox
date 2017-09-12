@@ -93,7 +93,7 @@ class BoxEngine(object):
 
         """
 
-        box = model.Box.get_by_box_id(box_id)
+        box = BoxEngine.get_box_by_id(box_id)
         if box is None:
             raise IndexError("Виртуальная среда не найдена")
             
@@ -149,6 +149,47 @@ class BoxEngine(object):
         return BoxEngine.create_box_from_vagrantfile(box_name, user_name, vagrantfile_data)
 
     @staticmethod
+    def update_all_boxes_status():
+        """
+        Update status of all boxes
+
+        """
+
+        boxes = BoxEngine.get_all_boxes()
+
+        for box in boxes:
+            vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
+            status = vagrant_box.status()
+
+            if status is not None and len(status) > 0 and status[0].state is not None:
+                if box.status == 'started' and status[0].state != 'running':
+                    model.Box.change_status(box.box_id, 'stopped')
+                if box.status != 'started' and status[0].state == 'running':
+                    model.Box.change_status(box.box_id, 'started')
+
+    @staticmethod
+    def update_all_user_boxes_status(user_id):
+        """
+        Update status of user boxes
+
+        Args:
+            user_id (int): user id in db
+
+        """
+
+        boxes = BoxEngine.get_all_user_boxes(user_id)
+
+        for box in boxes:
+            vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
+            status = vagrant_box.status()
+
+            if status is not None and len(status) > 0 and status[0].state is not None:
+                if box.status == 'started' and status[0].state != 'running':
+                    model.Box.change_status(box.box_id, 'stopped')
+                if box.status != 'started' and status[0].state == 'running':
+                    model.Box.change_status(box.box_id, 'started')
+
+    @staticmethod
     def start_box(box_id):
         """
         Start box
@@ -162,7 +203,7 @@ class BoxEngine(object):
 
         """
 
-        box = model.Box.get_by_box_id(box_id)
+        box = BoxEngine.get_box_by_id(box_id)
         if box is None:
             raise IndexError("Виртуальная среда не найдена")
 
@@ -191,7 +232,7 @@ class BoxEngine(object):
 
         """
 
-        box = model.Box.get_by_box_id(box_id)
+        box = BoxEngine.get_box_by_id(box_id)
         if box is None:
             raise IndexError("Виртуальная среда не найдена")
 
@@ -224,7 +265,7 @@ class BoxEngine(object):
 
         """
 
-        copied_box = model.Box.get_by_box_id(copied_box_id)
+        copied_box = BoxEngine.get_box_by_id(copied_box_id)
         if copied_box is None:
             raise IndexError("Виртуальная среда не найдена")
 
@@ -258,7 +299,7 @@ class BoxEngine(object):
 
         """
 
-        box = model.Box.get_by_box_id(box_id)
+        box = BoxEngine.get_box_by_id(box_id)
         if box is None:
             raise IndexError("Виртуальная среда не найдена")
 
@@ -287,12 +328,12 @@ class BoxEngine(object):
 
         """
 
-        box = model.Box.get_by_box_id(box_id)
+        box = BoxEngine.get_box_by_id(box_id)
         if box is None:
             raise IndexError("Виртуальная среда не найдена")
 
 
-        file_path = os.path.join(box.vagrantfile_path, 'Vagrantfile')
+        file_path = os.path.join(box.vagrantfile_path, "Vagrantfile")
 
         if not os.path.exists(file_path):
             raise EnvironmentError("Vagrantfile был удален")

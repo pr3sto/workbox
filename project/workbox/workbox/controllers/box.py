@@ -154,7 +154,10 @@ class BoxController(BaseController):
     def update_status(self):
         """Update status of boxes."""
 
-        pass
+        if has_permission('manage'):
+            BoxEngine.update_all_boxes_status()
+        else:
+            BoxEngine.update_all_user_boxes_status(request.identity['user']._id)
 
     @expose()
     def start(self, box_id):
