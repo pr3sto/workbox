@@ -5,33 +5,6 @@
  */
 
 
-/* font-family: "RobotoRegular"; */
-@font-face {
-    font-family: "RobotoRegular";
-    src: url("../fonts/RobotoRegular/RobotoRegular.eot");
-    src: url("../fonts/RobotoRegular/RobotoRegular.eot?#iefix")format("embedded-opentype"),
-    url("../fonts/RobotoRegular/RobotoRegular.woff") format("woff"),
-    url("../fonts/RobotoRegular/RobotoRegular.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}
-/* font-family: "RobotoLight"; */
-@font-face {
-    font-family: "RobotoLight";
-    src: url("../fonts/RobotoLight/RobotoLight.eot");
-    src: url("../fonts/RobotoLight/RobotoLight.eot?#iefix")format("embedded-opentype"),
-    url("../fonts/RobotoLight/RobotoLight.woff") format("woff"),
-    url("../fonts/RobotoLight/RobotoLight.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}
-  /* font-family: "RobotoMonoBold"; */
-@font-face {
-    font-family: "RobotoMonoBold";
-    src: url("../fonts/RobotoMono/RobotoMono-Bold.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}
 /* font-family: "RobotoMonoRegular"; */
 @font-face {
     font-family: "RobotoMonoRegular";
@@ -43,13 +16,6 @@
 @font-face {
     font-family: "RobotoMonoLight";
     src: url("../fonts/RobotoMono/RobotoMono-Light.ttf") format("truetype");
-    font-style: normal;
-    font-weight: normal;
-}
-  /* font-family: "RobotoMonoThin"; */
-@font-face {
-    font-family: "RobotoMonoThin";
-    src: url("../fonts/RobotoMono/RobotoMono-Thin.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
