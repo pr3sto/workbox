@@ -44,5 +44,5 @@ class ErrorController(BaseController):
 
         values = dict(prefix=request.environ.get('SCRIPT_NAME', ''),
                       code=resp_code,
-                      message=request.params.get('message', message.decode("utf8")))
+                      message=request.params.get('message', message.decode('utf8')))
         return values

@@ -5,7 +5,7 @@ import os
 import shutil
 import uuid
 import string
-from subprocess import CalledProcessError 
+from subprocess import CalledProcessError
 import vagrant
 
 from workbox import model
@@ -51,7 +51,7 @@ class BoxEngine(object):
             box_id (int): box_id in db
 
         Returns:
-            Box
+            model.Box or None
 
         """
 
@@ -64,6 +64,7 @@ class BoxEngine(object):
 
         Args:
             user_name (string): user name
+            box_id (int): id of box
 
         Raises:
             IndexError: no box with given box_id
@@ -73,10 +74,7 @@ class BoxEngine(object):
 
         """
 
-        try:
-            return model.Box.is_author(user_name, box_id)
-        except IndexError:
-            raise
+        return model.Box.is_author(user_name, box_id)
 
     @staticmethod
     def update_vagrantfile(box_id, vagrantfile_data):
@@ -95,17 +93,20 @@ class BoxEngine(object):
 
         box = BoxEngine.get_box_by_id(box_id)
         if box is None:
-            raise IndexError("Виртуальная среда не найдена")
-            
+            raise IndexError("Виртуальная среда #" + str(box_id) + " не найдена")
+
         file_path = os.path.join(box.vagrantfile_path, 'Vagrantfile')
 
         if not os.path.exists(file_path):
-            raise EnvironmentError("Vagrantfile был удален")
+            raise EnvironmentError("Vagrantfile был удален (#" + str(box_id) + ")")
 
         with open(file_path, 'wb') as v_file:
             v_file.write(vagrantfile_data)
 
-        model.Box.update_datetime_of_modify(box_id)
+        try:
+            model.Box.update_datetime_of_modify(box_id)
+        except IndexError:
+            raise
 
     @staticmethod
     def create_box_from_vagrantfile(box_name, user_name, vagrantfile_data):
@@ -153,13 +154,25 @@ class BoxEngine(object):
         """
         Update status of all boxes
 
+        Raises:
+            EnvironmentError: vagrant failed
+
         """
 
         boxes = BoxEngine.get_all_boxes()
+        status = None
 
         for box in boxes:
-            vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
-            status = vagrant_box.status()
+            try:
+                vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
+                status = vagrant_box.status()
+            except CalledProcessError:
+                raise EnvironmentError(
+                    "Не удалось выполнить 'vagrant status' (#" + str(box.box_id) + ")")
+            except OSError:
+                raise EnvironmentError(
+                    "Не удалось выполнить 'vagrant status' (проблема с доступом к Vagrantfile) (#"
+                    + str(box.box_id) + ")")
 
             if status is not None and len(status) > 0 and status[0].state is not None:
                 if box.status == 'started' and status[0].state != 'running':
@@ -175,13 +188,24 @@ class BoxEngine(object):
         Args:
             user_id (int): user id in db
 
+        Raises:
+            EnvironmentError: vagrant failed
+
         """
 
         boxes = BoxEngine.get_all_user_boxes(user_id)
 
         for box in boxes:
-            vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
-            status = vagrant_box.status()
+            try:
+                vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
+                status = vagrant_box.status()
+            except CalledProcessError:
+                raise EnvironmentError(
+                    "Не удалось выполнить 'vagrant status' (#" + str(box.box_id) + ")")
+            except OSError:
+                raise EnvironmentError(
+                    "Не удалось выполнить 'vagrant status' (проблема с доступом к Vagrantfile) (#"
+                    + str(box.box_id) + ")")
 
             if status is not None and len(status) > 0 and status[0].state is not None:
                 if box.status == 'started' and status[0].state != 'running':
@@ -205,16 +229,17 @@ class BoxEngine(object):
 
         box = BoxEngine.get_box_by_id(box_id)
         if box is None:
-            raise IndexError("Виртуальная среда не найдена")
+            raise IndexError("Виртуальная среда #" + str(box_id) + " не найдена")
 
         try:
             vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
             vagrant_box.up()
         except CalledProcessError:
-            raise EnvironmentError("Не удалось выполнить 'vagrant up'")
+            raise EnvironmentError("Не удалось выполнить 'vagrant up' (#" + str(box_id) + ")")
         except OSError:
             raise EnvironmentError(
-                "Не удалось выполнить 'vagrant up' (проблема с доступом к Vagrantfile)")
+                "Не удалось выполнить 'vagrant up' (проблема с доступом к Vagrantfile) (#"
+                + str(box_id) + ")")
 
         model.Box.change_status(box_id, 'started')
 
@@ -234,16 +259,17 @@ class BoxEngine(object):
 
         box = BoxEngine.get_box_by_id(box_id)
         if box is None:
-            raise IndexError("Виртуальная среда не найдена")
+            raise IndexError("Виртуальная среда #" + str(box_id) + " не найдена")
 
         try:
             vagrant_box = vagrant.Vagrant(box.vagrantfile_path)
             vagrant_box.destroy()
         except CalledProcessError:
-            raise EnvironmentError("Не удалось выполнить 'vagrant destroy'")
+            raise EnvironmentError("Не удалось выполнить 'vagrant destroy' (#" + str(box_id) + ")")
         except OSError:
             raise EnvironmentError(
-                "Не удалось выполнить 'vagrant up' (проблема с доступом к Vagrantfile)")
+                "Не удалось выполнить 'vagrant destroy' (проблема с доступом к Vagrantfile) (#"
+                + str(box_id) + ")")
 
         model.Box.change_status(box_id, 'stopped')
 
@@ -267,7 +293,7 @@ class BoxEngine(object):
 
         copied_box = BoxEngine.get_box_by_id(copied_box_id)
         if copied_box is None:
-            raise IndexError("Виртуальная среда не найдена")
+            raise IndexError("Виртуальная среда #" + str(copied_box_id) + " не найдена")
 
         port = None
         if copied_box.port != None:
@@ -279,7 +305,7 @@ class BoxEngine(object):
         file_path = os.path.join(copied_box.vagrantfile_path, 'Vagrantfile')
 
         if not os.path.exists(file_path):
-            raise EnvironmentError("Vagrantfile был удален")
+            raise EnvironmentError("Vagrantfile был удален (#" + str(copied_box_id) + ")")
 
         with open(file_path, 'r') as v_file:
             vagrantfile_path = BoxEngine._create_vagrantfile(v_file.read())
@@ -301,7 +327,7 @@ class BoxEngine(object):
 
         box = BoxEngine.get_box_by_id(box_id)
         if box is None:
-            raise IndexError("Виртуальная среда не найдена")
+            raise IndexError("Виртуальная среда #" + str(box_id) + " не найдена")
 
         if box.status == 'started':
             BoxEngine.stop_box(box_id)
@@ -330,13 +356,13 @@ class BoxEngine(object):
 
         box = BoxEngine.get_box_by_id(box_id)
         if box is None:
-            raise IndexError("Виртуальная среда не найдена")
+            raise IndexError("Виртуальная среда #" + str(box_id) + " не найдена")
 
 
-        file_path = os.path.join(box.vagrantfile_path, "Vagrantfile")
+        file_path = os.path.join(box.vagrantfile_path, 'Vagrantfile')
 
         if not os.path.exists(file_path):
-            raise EnvironmentError("Vagrantfile был удален")
+            raise EnvironmentError("Vagrantfile был удален (#" + str(box_id) + ")")
 
         with open(file_path, 'r') as v_file:
             return v_file.read()

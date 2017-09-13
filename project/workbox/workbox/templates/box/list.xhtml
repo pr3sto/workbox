@@ -88,6 +88,7 @@
 </script>
 <script type="text/javascript">
     // box table
+    var ajax_call = null;
     $(function ($) {
         table_columns.push({
             'render': function (data, type, full, meta) {
@@ -118,6 +119,12 @@
         });
         $('#box-table tbody').on( 'click', 'tr', function () {
             window.location.href = '/box/id/' + boxTable.fnGetData(this)[0];
+        });
+        $(window).on('unload', function(){
+            console.log(ajax_call);
+            if (ajax_call != null) {
+                ajax_call.abort();
+            }
         });
     });
 
@@ -170,6 +177,7 @@
                         align: 'right'
                     },
                     mouse_over: 'pause',
+                    z_index: '999999',
                     animate: {
                         enter: 'animated fadeInDown',
                         exit: 'animated fadeOutDown'
@@ -194,7 +202,7 @@
         action_call_ajax('/box/delete/' + value, 'Виртуальная среда успешно удалена');
     }
     function update_status() {
-        $.ajax({
+        ajax_call = $.ajax({
             type: 'POST',
             url: '/box/update_status',
             beforeSend: function(data) {
@@ -213,6 +221,7 @@
                         align: 'right'
                     },
                     delay: '0',
+                    z_index: '999999',
                     animate: {
                         enter: 'animated fadeInDown',
                         exit: 'animated fadeOutDown'

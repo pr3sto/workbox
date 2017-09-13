@@ -86,7 +86,7 @@ class Box(MappedClass):
         box = Box.get_by_box_id(box_id)
 
         if box is None:
-            raise IndexError("Виртуальная среда не найдена")
+            raise IndexError("Виртуальная среда #" + str(box_id) + " не найдена")
 
         if box.user == User.query.get(user_name=user_name):
             return True
@@ -198,7 +198,7 @@ class Box(MappedClass):
         box = Box.get_by_box_id(box_id)
 
         if box is None:
-            raise IndexError("Виртуальная среда не найдена")
+            raise IndexError("Виртуальная среда #" + str(box_id) + " не найдена")
 
         box.status = status
         DBSession.flush()
@@ -222,7 +222,7 @@ class Box(MappedClass):
         box = Box.get_by_box_id(box_id)
 
         if box is None:
-            raise IndexError("Виртуальная среда не найдена")
+            raise IndexError("Виртуальная среда #" + str(box_id) + " не найдена")
 
         box.datetime_of_modify = datetime.now()
         DBSession.flush()

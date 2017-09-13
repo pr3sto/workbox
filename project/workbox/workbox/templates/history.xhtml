@@ -41,6 +41,19 @@
             language: {
                 url: '/local/datatables.ru.lang'
             },
+            columns: [
+                {'data':'0'},
+                {'data':'1'},
+                {'render': function (data, type, full, meta) { 
+                    if (data == ' - ') {
+                        return data;
+                    } else {
+                        return "&lt;a href='/box/id/" + data + "'&gt;#" + data + "&lt;a&gt;";
+                    }
+                }},
+                {'data':'3'},
+                {'data':'4'}
+            ],
             ajax: '/history/get'
         });
     });

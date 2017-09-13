@@ -10,7 +10,7 @@
     position: fixed;
     height: calc(100% - 100px);
     width: 100%;
-    z-index: 999998; 
+    z-index: 999997; 
     visibility: hidden;
 }
 

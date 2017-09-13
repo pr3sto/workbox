@@ -29,7 +29,7 @@ html, body {
 .navbar {
     background-color: #fff;
     margin-bottom: 0;
-    z-index: 999999;
+    z-index: 999998;
 }
 
 .navbar a {
@@ -134,7 +134,7 @@ html, body {
     font-family: "RobotoMonoLight";
     text-align: right;
 	position: absolute;
-    z-index: 999999;
+    z-index: 999998;
     bottom: 0px;
     padding: 15px;
 	background: #fff;
@@ -196,7 +196,7 @@ html, body {
     font-family: 'RobotoMonoLight';
     color: #777;
 	position: absolute;
-    z-index: 999999;
+    z-index: 999998;
     bottom: 48px;
     right: 0px;
     padding: 15px;

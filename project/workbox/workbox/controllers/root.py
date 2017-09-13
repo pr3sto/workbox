@@ -3,8 +3,8 @@
 
 from tg import expose, lurl
 from tg import request, redirect, tmpl_context
-from tg.exceptions import HTTPFound
 from tg.predicates import has_permission
+from tg.exceptions import HTTPFound
 from tgext.admin.mongo import BootstrapTGMongoAdminConfig as TGAdminConfig
 from tgext.admin.controller import AdminController
 
@@ -47,7 +47,11 @@ class RootController(BaseController):
             my_boxes = BoxEngine.get_number_of_user_boxes(request.identity['user']._id)
             all_boxes = BoxEngine.get_number_of_all_boxes()
 
-            boxes = BoxEngine.get_all_user_boxes(request.identity['user']._id)
+            boxes = None
+            if has_permission('manage'):
+                boxes = BoxEngine.get_all_boxes()
+            else:
+                boxes = BoxEngine.get_all_user_boxes(request.identity['user']._id)
             boxes = sorted(boxes, key=lambda x: x.datetime_of_modify, reverse=True)
 
             return dict(page='index', load_value=load_value, my_boxes=my_boxes,
@@ -56,11 +60,11 @@ class RootController(BaseController):
             error_msg = None
             if failure is not None:
                 if failure == 'user-not-found':
-                    error_msg = 'Пользователь не найден'.decode("utf8")
+                    error_msg = "Пользователь не найден".decode('utf8')
                 elif failure == 'invalid-password':
-                    error_msg = 'Некорректный пароль'.decode("utf8")
+                    error_msg = "Некорректный пароль".decode('utf8')
                 else:
-                    error_msg = 'Ошибка авторизации'.decode("utf8")
+                    error_msg = "Ошибка авторизации".decode('utf8')
 
             return dict(page='index', came_from=came_from, login=login, error_msg=error_msg)
 
@@ -75,7 +79,7 @@ class RootController(BaseController):
         if not request.identity:
             redirect('/index', params=dict(came_from=came_from))
 
-        model.History.add_record(request.identity['repoze.who.userid'], None, 'Вход в аккаунт')
+        model.History.add_record(request.identity['repoze.who.userid'], None, "Вход в аккаунт")
 
         return HTTPFound(location=came_from)
 
