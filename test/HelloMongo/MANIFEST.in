@@ -1,4 +1,0 @@
-recursive-include hellomongo/public *
-include hellomongo/public/favicon.ico
-recursive-include hellomongo/i18n *
-recursive-include hellomongo/templates *
