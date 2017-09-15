@@ -21,7 +21,7 @@ class ErrorController(BaseController):
 
     @expose('workbox.templates.error')
     def document(self, *args, **kwargs):
-        """Render the error document"""
+        """Render the error document."""
 
         resp = request.environ.get('tg.original_response')
         resp_code = request.params.get('code', resp.status_int)

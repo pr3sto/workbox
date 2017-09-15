@@ -39,6 +39,7 @@
         </div>
     </section>
     <section id="id-content">
+        <!-- box info tables -->
         <div class="container">
             <div id="id-content-tables">
                 <div class="col-sm-6">
@@ -89,6 +90,7 @@
                 </div>
             </div>
         </div>
+        <!-- Vagrantfile editor -->
         <div class="container">
             <div id="id-content-vagrantfile">
                 <div class="panel panel-default">
@@ -111,126 +113,6 @@
 <script type="text/javascript" src="/js/codemirror/active-line.js"></script>
 <script type="text/javascript" src="/js/bootstrap-confirmation.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap-notify.min.js"></script>
-<script type="text/javascript">
-    $(function ($) {
-        $('[data-toggle="confirmation"]').confirmation({
-            rootSelector: '[data-toggle=confirmation]',
-            copyAttributes: 'name value',
-            singleton: true,
-            popout: true,
-            placement: 'left',
-            title: 'Вы уверены?',
-            btnOkClass: 'btn-primary',
-            btnCancelClass: 'btn-default',
-            btnOkLabel: '',
-            btnCancelLabel: '',
-            onConfirm: function() {
-                console.log($(this).attr('name'));
-                window[$(this).attr('name')]($(this).attr('value'));
-            }
-        });
-
-        var vagrantfileEditor = CodeMirror.fromTextArea(document.getElementById('vagrantfile-data'), {
-            mode: 'text/x-ruby',
-            theme: 'neat',
-            matchBrackets: true,
-            indentUnit: 2,
-            lineNumbers: true,
-            styleActiveLine: true
-        });
-
-        vagrantfileEditor.on("change", function(editor, change) {
-            if (editor.getValue() !== '')
-                document.getElementById('update-button').style.visibility = 'visible';
-            else
-                document.getElementById('update-button').style.visibility = 'hidden';
-
-            document.getElementById('vagrantfile-data').value = editor.getValue(); 
-        });
-
-        $("#update_vagrantfile").submit(function() {
-            var form = $(this);
-            var data = form.serialize();
-            $.ajax({
-                type: 'POST',
-                url: '/box/update_vagrantfile/',
-                data: data,
-                beforeSend: function(data) {
-                    $('.loading').css('visibility', 'visible');
-		        },
-                success: function(response){ 
-                    vagrantfileEditor.setValue(response);
-                    document.getElementById('update-button').style.visibility = 'hidden';
-                    $('.loading').fadeTo(500, 0, function () {
-                        $('.loading').css('visibility', 'hidden');
-                        $('.loading').css('opacity', 1);
-                    });
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                    document.write(XMLHttpRequest.responseText);
-                }
-            });
-            return false;
-        });
-    });
-
-    function action_call_ajax(url, action) {
-        $.ajax({
-            type: 'POST',
-            url: url,
-            beforeSend: function(data) {
-                $('.loading').css('visibility', 'visible');
-            },
-            success: function(response){ 
-                $('.loading').fadeTo(500, 0, function () {
-                    $('.loading').css('visibility', 'hidden');
-                    $('.loading').css('opacity', 1);
-                });
-                action();
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                document.write(XMLHttpRequest.responseText);
-            }
-        });
-        return false;
-    }
-    function start_box(value) {
-        action_call_ajax('/box/start/' + value, function() {
-            location.reload();
-        });
-    }
-    function stop_box(value) {
-        action_call_ajax('/box/stop/' + value, function() {
-            location.reload();
-        });
-    }
-    function copy_box(value) {
-        action_call_ajax('/box/copy/' + value, function() {
-            $.notify({
-                title: '&lt;b&gt;WorkBox:&lt;/b&gt;',
-                message: 'Виртуальная среда успешно скопирована'
-            },{
-                type: 'success',
-                newest_on_top: 'true',
-                element: 'body',
-                placement: {
-                    from: 'bottom',
-                    align: 'right'
-                },
-                mouse_over: 'pause',
-                z_index: '999999',
-                animate: {
-                    enter: 'animated fadeInDown',
-                    exit: 'animated fadeOutDown'
-                }
-            });
-        });
-    }
-    function delete_box(value) {
-        action_call_ajax('/box/delete/' + value, function() { 
-            window.location.href = '/box/list/';
-        });
-    }
-</script>
+<script type="text/javascript" src="/js/templates/box/id.js"></script>
 
 </html>

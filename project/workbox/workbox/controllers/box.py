@@ -108,6 +108,30 @@ class BoxController(BaseController):
         return json.dumps(json_entries)
 
     @expose()
+    def get_last_ten_worked(self):
+        """Returns last ten worked boxes data."""
+
+        entries = None
+        if has_permission('manage'):
+            entries = BoxEngine.get_all_boxes()
+        else:
+            entries = BoxEngine.get_all_user_boxes(request.identity['user']._id)
+        entries = sorted(entries, key=lambda x: x.datetime_of_modify, reverse=True)
+        entries = entries[:5]
+
+        data = []
+        for entry in entries:
+            box = {}
+            box['box_id'] = entry.box_id
+            box['name'] = entry.name
+            box['status'] = entry.status
+            box['datetime_of_creation'] = entry.datetime_of_creation.strftime("%Y-%m-%d %H:%M")
+            box['datetime_of_modify'] = entry.datetime_of_modify.strftime("%Y-%m-%d %H:%M")
+            data.append(box)
+
+        return json.dumps(data)
+
+    @expose()
     def create_from_vagrantfile(self):
         """Create box from given vagrantfile."""
 
@@ -174,7 +198,7 @@ class BoxController(BaseController):
     @expose()
     def stop(self, box_id):
         """Stop box."""
-        
+
         box_id = int(box_id)
 
         try:

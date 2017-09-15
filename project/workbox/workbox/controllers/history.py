@@ -20,10 +20,9 @@ class HistoryController(BaseController):
     # The predicate that must be met for all the actions in this controller:
     allow_only = not_anonymous(msg=l_('Only for authorized users'))
 
-
     @expose('workbox.templates.history')
     def index(self):
-        """Handle the history page"""
+        """Handle the history page."""
 
         return dict(page='history')
 

@@ -116,19 +116,7 @@
 
     <script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/js/navbar-shadow.js"></script>
-    <script type="text/javascript">
-        $('#dev').on('mouseover mouseout', function () {
-            var randomColor = '#' + Math.random().toString(16).slice(-6);
-            $('.icon-heart').css('color', randomColor);
-        });
-        $("#brand-img").on('mouseover', function () {
-            $(this).stop().fadeOut(0).attr('src', '/images/box.png').fadeIn(300);
-        });
-        $("#brand-img").on('mouseout', function () {
-            $(this).stop().fadeOut(0).attr('src', '/images/favicon.ico').fadeIn(300);
-        });
-    </script>
+    <script type="text/javascript" src="/js/templates/master.js"></script>
 </body>
 
 </html>

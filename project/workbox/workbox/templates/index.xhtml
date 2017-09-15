@@ -90,22 +90,14 @@
         <section id="last-ten-worked">
             <div class="container">
                 <!-- no boxes -->
-                <div py:if="len(last_ten_worked)==0" id="empty-placeholder" class="inner-center">
+                <div py:if="not has_boxes" id="empty-placeholder" class="inner-center">
                     <a href="/box/new/">Создать первую виртуальную среду</a>
                 </div>
                 <!-- last ten boxes -->
-                <div py:if="len(last_ten_worked)!=0">
+                <div py:if="has_boxes">
                     <h1>Последние виртуальные среды, с которыми Вы работали:</h1>
-                    <table class="table">
-                        <tbody>
-                            <py:for each="box in last_ten_worked">
-                                <tr>
-                                    <td><a href='/box/id/${box.box_id}'>#${box.box_id} - ${box.name} (${box.status})</a></td>
-                                    <td>Дата создания: ${box.datetime_of_creation.strftime("%Y-%m-%d %H:%M")}</td>
-                                    <td>Дата последнего изменения: ${box.datetime_of_modify.strftime("%Y-%m-%d %H:%M")}</td>
-                                </tr>
-                            </py:for>
-                        </tbody>
+                    <table id="last-ten-worked-table" class="table">
+                        <tbody />
                     </table>
                 </div>
             </div>
@@ -114,27 +106,6 @@
 </body>
 
 <script type="text/javascript" src="/js/jquery.drawDoughnutChart.js"></script>
-<script py:if="request.identity" type="text/javascript">
-    $(function ($) {
-        $('#doughnutGauge').drawDoughnutGauge(${load_value});
-
-        $('#doughnutChart1').drawDoughnutChart([
-            { title: "Запущенные", value: ${my_boxes['started']}, color: "#00C853" },
-            { title: "Остановленные", value: ${my_boxes['stopped']}, color: "#f44336" },
-            { title: "Созданные", value: ${my_boxes['created']}, color: "#00BCD4" }
-        ]);
-
-        $('#doughnutChart2').drawDoughnutChart([
-            { title: "Запущенные", value: ${all_boxes['started']}, color: "#00C853" },
-            { title: "Остановленные", value: ${all_boxes['stopped']}, color: "#f44336" },
-            { title: "Созданные", value: ${all_boxes['created']}, color: "#00BCD4" }
-        ]);
-
-        $('.icon-box').on('mouseover mouseout', function () {
-            var randomColor = '#' + Math.random().toString(16).slice(-6);
-            $('.icon-box').css('color', randomColor);
-        });
-    });
-</script>
+<script py:if="request.identity" type="text/javascript" src="/js/templates/index.js"></script>
 
 </html>
