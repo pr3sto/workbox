@@ -21,13 +21,13 @@
         <div class="container outer-center">
             <div class="input-group inner-center">
                 <!-- hidden elements for centering label -->
-                <div class="input-group-btn" style="visibility: hidden;">
+                <div py:if="has_boxes" class="input-group-btn" style="visibility: hidden;">
                     <button class="btn btn-default"></button>
                     <button class="btn btn-default">Обновить статус</button>
                 </div>
                 <label py:if="tg.predicates.has_permission('manage')" for="" class="control-label">Все виртуальные среды в <b>WorkBox</b></label>
                 <label py:if="not tg.predicates.has_permission('manage')" for="" class="control-label">Ваши виртуальные среды в <b>WorkBox</b></label>
-                <div class="input-group-btn">
+                <div py:if="has_boxes" class="input-group-btn">
                     <button style="visibility: hidden;" data-toggle="confirmation" name="refresh_boxes" value="" class="btn btn-default"></button>
                     <button data-toggle="confirmation" name="update_status" id="update_status_button" value="" class="btn btn-default">Обновить статус</button>
                     
