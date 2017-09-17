@@ -1,16 +1,10 @@
-# Выпускная квалификационная работа 2017 ЛЭТИ #
-  
-### Тема
+# WorkBox #
 
-Разработка сервиса запуска docker-контейнеров для организации лабораторных и практических занятий
+Cервис запуска виртуальных сред с использованием инструмента Vagrant
 
 ### Код сервиса
 
 [bsc_docker_service](https://bitbucket.org/pr3sto/bsc_docker_service/src) / workbox
-
-### Wiki
-
-### [**--->**](https://bitbucket.org/pr3sto/bsc_docker_service/wiki/Home)
 
 ### Сборка и развертывание
 
