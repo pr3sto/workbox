@@ -96,8 +96,12 @@ function action_call_ajax(url, notification) {
                 }
             });
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            document.write(XMLHttpRequest.responseText);
+        error: function(request, error) {
+            if (request.responseText != undefined) {
+                document.open();
+                document.write(request.responseText);
+                document.close();
+            }
         }
     });
 }
@@ -145,8 +149,12 @@ function update_status() {
                 }
             });
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            document.write(XMLHttpRequest.responseText);
+        error: function(request, error) {
+            if (request.responseText != undefined) {
+                document.open();
+                document.write(request.responseText);
+                document.close();
+            }
         }
     });
     return false;
