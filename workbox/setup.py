@@ -35,6 +35,7 @@ install_requires = [
     "gearbox",
     "tgext.admin >= 0.6.1",
     "WebHelpers2",
+    "markupsafe >= 1.0",
     "python-vagrant >= 0.5.14",
     "psutil >= 5.2.2"
 ]
@@ -45,11 +46,11 @@ if py_version != (3, 2):
 
 setup(
     name='workbox',
-    version='0.1',
-    description='Service for creating virtual environments',
-    maintainer='Chirukhin Alexey',
+    version='1.0',
+    description='Service for maintaining virtual environments',
+    maintainer='Alexey Chirukhin',
     maintainer_email='pr3sto1377@gmail.com',
-    author='Chirukhin Alexey',
+    author='Alexey Chirukhin',
     author_email='pr3sto1377@gmail.com',
     url='',
     packages=find_packages(exclude=['ez_setup']),
