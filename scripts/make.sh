@@ -18,7 +18,6 @@ cp scripts/postinst workboxenv/workbox/postinst
 cp scripts/prerm workboxenv/orkbox/prerm
 cp scripts/postrm workboxenv/workbox/postrm
 cp scripts/make_deb_package.sh workboxenv/workbox/make_deb_package.sh
-cp scripts/remove_deb_files.sh workboxenv/workbox/remove_deb_files.sh
 
 # navigate to venv
 cd workboxenv/
@@ -45,12 +44,11 @@ rm -f make_deb_package.sh
 rm -rf debian/
 rm -f ../${PWD##*/}_*
 rm -f ../${PWD##*/}-*
-rm -f -- "$0"
 
 # deactivate venv
 deactivate
 
 # exit
-GREEN='\033[0;32m'
 clear
+GREEN='\033[0;32m'
 printf "\n${GREEN}Done\n\n"
