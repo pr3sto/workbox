@@ -15,7 +15,7 @@ case "$1" in
     # remove all created files
     if [ -d /opt/venvs/workbox ]
     then
-      /bin/rm -rf /opt/venvs/workbox
+      rm -rf /opt/venvs/workbox
     fi
   ;;
 
@@ -23,13 +23,13 @@ case "$1" in
     # remove apache config
     if [ -f /etc/apache2/sites-available/workbox.conf ]
     then
-      /bin/rm -f /etc/apache2/sites-available/workbox.conf
+      rm -f /etc/apache2/sites-available/workbox.conf
     fi
 
     # remove log files
     if [ -d $LOGDIR ]
     then
-      /bin/rm -rf $LOGDIR
+      rm -rf $LOGDIR
     fi
   ;;
 

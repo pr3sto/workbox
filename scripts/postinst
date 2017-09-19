@@ -14,20 +14,20 @@ case "$1" in
 
   configure)
     # bind ip address
-    if ! /bin/grep -q -P '127.0.0.1\tworkbox' /etc/hosts ; then
-      /usr/bin/printf "\n# WorkBox service by Chirukhin Alexey\n127.0.0.1\tworkbox\n127.0.0.1\tbeta.workbox\n" >> /etc/hosts
+    if ! grep -q -P '127.0.0.1\tworkbox' /etc/hosts ; then
+      printf "\n# WorkBox service by Chirukhin Alexey\n127.0.0.1\tworkbox\n127.0.0.1\tbeta.workbox\n" >> /etc/hosts
     fi
 
     # disable if site exists
     if [ -f /etc/apache2/sites-enabled/workbox.conf ]
     then
-      /bin/date >> $INSTLOGFILE
-      /usr/sbin/a2dissite workbox.conf >> $INSTLOGFILE
+      date >> $INSTLOGFILE
+      a2dissite workbox.conf >> $INSTLOGFILE
       printf "\n" >> $INSTLOGFILE
     fi
 
     # Set up our config for apache
-    /usr/bin/printf "<VirtualHost *:80>
+    printf "<VirtualHost *:80>
     ServerName workbox
     RedirectMatch permanent ^/(.*)$ http://beta.workbox/\$1
 </VirtualHost>
@@ -58,8 +58,8 @@ case "$1" in
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet\n" > /etc/apache2/sites-available/workbox.conf
 
     # enable site
-    /bin/date >> $INSTLOGFILE
-    /usr/sbin/a2ensite workbox.conf >> $INSTLOGFILE
+    date >> $INSTLOGFILE
+    a2ensite workbox.conf >> $INSTLOGFILE
     printf "\n" >> $INSTLOGFILE
     /etc/init.d/apache2 reload
   ;;
@@ -68,8 +68,8 @@ case "$1" in
     # enable site
     if [ -f /etc/apache2/sites-available/workbox.conf ] && [ ! -f /etc/apache2/sites-enabled/workbox.conf ]
     then
-      /bin/date >> $RMLOGFILE
-      /usr/sbin/a2ensite workbox.conf >> $RMLOGFILE
+      date >> $RMLOGFILE
+      a2ensite workbox.conf >> $RMLOGFILE
       printf "\n" >> $RMLOGFILE
       /etc/init.d/apache2 reload
     fi

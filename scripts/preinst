@@ -10,7 +10,7 @@ case "$1" in
     NC='\033[0m'
 
     # service apache2 should be started
-    /bin/ps ax | /bin/grep -v /bin/grep | /bin/grep apache2 > /dev/null || ( /usr/bin/printf "\n${RED}Error:${NC} service apache2 not started\n\n"; exit 1 )
+    ps ax | grep -v grep | grep apache2 > /dev/null || ( printf "\n${RED}Error:${NC} service apache2 not started\n\n"; exit 1 )
   ;;
 
 # ----

@@ -15,8 +15,8 @@ case "$1" in
     # disable if site exists
     if [ -f /etc/apache2/sites-enabled/workbox.conf ]
     then
-      /bin/date >> $RMLOGFILE
-      /usr/sbin/a2dissite workbox.conf >> $RMLOGFILE
+      date >> $RMLOGFILE
+      a2dissite workbox.conf >> $RMLOGFILE
       printf "\n" >> $RMLOGFILE
       /etc/init.d/apache2 reload
     fi

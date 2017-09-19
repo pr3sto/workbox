@@ -4,7 +4,7 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 # service mongod should be started
-if /bin/ps ax | /bin/grep -v /bin/grep | /bin/grep mongod > /dev/null
+if ps ax | grep -v grep | grep mongod > /dev/null
 then
 
   # setup workbox
@@ -15,7 +15,7 @@ then
 
 else
 
-  /usr/bin/printf "\n${RED}Error:${NC} service mongod not started\n\n"
+  printf "\n${RED}Error:${NC} service mongod not started\n\n"
   exit 1
 
 fi
