@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 cd ../
 
@@ -15,7 +16,7 @@ cp -r workbox workboxenv/workbox
 # copy all scripts
 cp scripts/preinst workboxenv/workbox/preinst
 cp scripts/postinst workboxenv/workbox/postinst
-cp scripts/prerm workboxenv/orkbox/prerm
+cp scripts/prerm workboxenv/workbox/prerm
 cp scripts/postrm workboxenv/workbox/postrm
 cp scripts/make_deb_package.sh workboxenv/workbox/make_deb_package.sh
 
@@ -49,6 +50,5 @@ rm -f ../${PWD##*/}-*
 deactivate
 
 # exit
-clear
 GREEN='\033[0;32m'
 printf "\n${GREEN}Done\n\n"
