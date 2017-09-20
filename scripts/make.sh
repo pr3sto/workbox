@@ -1,39 +1,43 @@
 #!/bin/bash
+
 set -e
 
-cd ../
-
-# install venv
+# install dependencies
 apt-get update
-apt-get -y install python python-virtualenv
+apt-get -y install python python-dev python-virtualenv
+apt-get -y install debhelper dh-virtualenv
 
 # create venv for project
+cd ../
 virtualenv --no-site-packages workboxenv
 
 # copy project to venv directory
 cp -r workbox workboxenv/workbox
 
-# copy all scripts
-cp scripts/preinst workboxenv/workbox/preinst
-cp scripts/postinst workboxenv/workbox/postinst
-cp scripts/prerm workboxenv/workbox/prerm
-cp scripts/postrm workboxenv/workbox/postrm
-cp scripts/make_deb_package.sh workboxenv/workbox/make_deb_package.sh
-
-# navigate to venv
-cd workboxenv/
-
 # activate venv
+cd workboxenv/
 . bin/activate
 
 # install turbogears dependencies
 pip install tg.devtools
+# deb package maker dependencies
+pip install make-deb
 
-# build deb
+# create debian configurations
 cd workbox/
-./make_deb_package.sh
+make-deb
 
-# copy deb package
+# copy all scripts
+cp ../../scripts/preinst ./debian
+cp ../../scripts/postinst ./debian
+cp ../../scripts/prerm ./debian
+cp ../../scripts/postrm ./debian
+
+# add service dependencies
+awk -i inplace '/Depends:/{print $0 ", apache2, libapache2-mod-wsgi (>= 4.3), mongodb-org (>= 3.0), vagrant (>= 1.9)"; next}1' ./debian/control
+
+# build package
+dpkg-buildpackage -us -uc
 cp ../workbox_*.deb ../../
 
 # cleanup
